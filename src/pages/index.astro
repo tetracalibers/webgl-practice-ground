@@ -1,7 +1,25 @@
 ---
 import BaseHtml from "@/layout/base-html.astro"
+import { getCollection } from "astro:content"
+
+const studyPages = await getCollection("study")
+
+const slugs = [...studyPages.map((page) => page.slug)] as const
+type Slug = (typeof slugs)[number]
+
+const order: Slug[] = ["write-triangle"]
+
+const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slug === slug)!!)
 ---
 
-<BaseHtml title="WebGL Practice Ground">
-  <h1>WebGLのデモ置き場</h1>
+<BaseHtml title="TOC - WebGL Study Demo">
+  <ul>
+    {
+      orderedStudyPages.map((page) => (
+        <li>
+          <a href={`/my-blog-url/${page.slug}`}>{page.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
 </BaseHtml>
