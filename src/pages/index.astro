@@ -17,7 +17,7 @@ const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slu
     {
       orderedStudyPages.map((page) => (
         <li>
-          <a href={`/my-blog-url/${page.slug}`}>{page.data.title}</a>
+          <a href={`/${page.slug}`}>{page.data.title}</a>
         </li>
       ))
     }
