@@ -1,0 +1,24 @@
+<canvas id="gl-canvas" width="300" height="300"></canvas>
+
+<script>
+  import { Space } from "@/lib/canvas/index"
+
+  window.onload = () => {
+    const space = new Space("gl-canvas")
+    const canvas = space.canvas()
+    const gl = space.gl2()
+    if (!canvas || !gl) return
+
+    const configure = () => {
+      space.setSize(300, 300)
+      // canvasを初期化する色を設定する
+      gl.clearColor(0.0, 0.0, 0.0, 1.0)
+      // canvasを初期化する際の深度を設定する
+      gl.clearDepth(1.0)
+
+      console.log("configure succcessfully")
+    }
+
+    configure()
+  }
+</script>
