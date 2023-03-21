@@ -48,6 +48,18 @@ export class Camera {
     this._focusPoint = new Vector3(x, y, z)
   }
 
+  set fov(angle: number) {
+    this._fov = angle
+  }
+
+  set near(val: number) {
+    this._near = val
+  }
+
+  set far(val: number) {
+    this._far = val
+  }
+
   get fov() {
     return this._fov
   }
