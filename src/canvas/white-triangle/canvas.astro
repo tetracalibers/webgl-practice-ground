@@ -2,15 +2,18 @@
 
 <script>
   import { Space } from "@/lib/canvas/index"
-  import { Program } from "@/lib/webgl/program"
+  import { Program, Attribute } from "@/lib/webgl/program"
   import vertexSource from "./index.vert?raw"
   import fragmentSource from "./index.frag?raw"
+  import { Scene } from "@/lib/webgl/scene"
 
   window.onload = () => {
     const space = new Space("gl-canvas")
     const canvas = space.canvas()
     const gl = space.gl2()
     if (!canvas || !gl) return
+
+    let scene: Scene
 
     const configure = () => {
       space.setSize(300, 300)
@@ -21,12 +24,14 @@
 
       const program = new Program(gl, vertexSource, fragmentSource)
 
-      const attributes = ["aVertexPosition"]
+      const attributes: Attribute[] = ["aVertexPosition"]
       const uniforms = ["uMvpMatrix"]
 
       program.load(attributes, uniforms)
 
-      console.log("configure succcessfully")
+      scene = new Scene(gl, program)
+
+      console.log("configuring successfully")
     }
 
     configure()

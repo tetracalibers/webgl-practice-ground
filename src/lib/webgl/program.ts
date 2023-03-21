@@ -1,5 +1,7 @@
 import { ShaderCompiler } from "../shader/compile"
 
+export type Attribute = "aVertexPosition" | "aVertexNormal" | "aVertexColor" | "aVertexTextureCoords"
+
 export class Program {
   private _gl: WebGL2RenderingContext
   private _program: WebGLProgram | null
@@ -53,6 +55,10 @@ export class Program {
     for (const uniform of uniforms) {
       this._uniforms[uniform] = this._gl.getUniformLocation(this._program, uniform)
     }
+  }
+
+  getAttributeLocation(attribute: Attribute) {
+    return this._attributes[attribute]
   }
 
   load(attributes: string[], uniforms: string[]) {
