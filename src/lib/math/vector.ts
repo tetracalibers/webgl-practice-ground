@@ -201,8 +201,12 @@ export class Vector3 extends Vector3Base {
    * @return {number}
    * @memberof Vector3
    */
-  dot(other: Vector3): number {
+  dotV(other: Vector3): number {
     return this.x * other.x + this.y * other.y + this.z * other.z
+  }
+
+  dot(x: number, y: number, z: number): number {
+    return this.x * x + this.y * y + this.z * z
   }
 
   /**
@@ -212,10 +216,18 @@ export class Vector3 extends Vector3Base {
    * @return {Vector3}
    * @memberof Vector3
    */
-  cross(other: Vector3): Vector3 {
+  crossV(other: Vector3): Vector3 {
     const cx: number = this.y * other.z - this.z * other.y
     const cy: number = this.z * other.x - this.x * other.z
     const cz: number = this.x * other.y - this.y * other.x
+
+    return new Vector3(cx, cy, cz)
+  }
+
+  cross(x: number, y: number, z: number): Vector3 {
+    const cx: number = this.y * z - this.z * y
+    const cy: number = this.z * x - this.x * z
+    const cz: number = this.x * y - this.y * x
 
     return new Vector3(cx, cy, cz)
   }

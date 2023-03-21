@@ -204,14 +204,14 @@ export class Matrix4 implements Matrix {
     cameraUp: Vector3
   ): Matrix4 {
     const zAxis: Vector3 = cameraPosition.sub(lookAtPosition).normalize()
-    const xAxis: Vector3 = cameraUp.cross(zAxis).normalize()
-    const yAxis: Vector3 = zAxis.cross(xAxis).normalize()
+    const xAxis: Vector3 = cameraUp.crossV(zAxis).normalize()
+    const yAxis: Vector3 = zAxis.crossV(xAxis).normalize()
 
     return new Matrix4(
       xAxis.x, yAxis.x, zAxis.x, 0.0,
       xAxis.y, yAxis.y, zAxis.y, 0.0,
       xAxis.z, yAxis.z, zAxis.z, 0.0,
-      -cameraPosition.dot(xAxis), -cameraPosition.dot(yAxis), -cameraPosition.dot(zAxis), 1.0
+      -cameraPosition.dotV(xAxis), -cameraPosition.dotV(yAxis), -cameraPosition.dotV(zAxis), 1.0
     )
   }
 
