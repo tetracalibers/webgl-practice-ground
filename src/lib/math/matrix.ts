@@ -249,28 +249,16 @@ export class Matrix4 implements Matrix {
 
   /**
    * Returns a frustrum projection matrix.
-   *
-   * @static
-   * @param {{ top: number; bottom: number; left: number; right: number; near: number; far: number }} argsObject
-   * @return {Matrix4}
-   * @memberof Matrix4
    */
   // prettier-ignore
-  static frustum(argsObject: {
-    top: number
-    bottom: number
-    left: number
-    right: number
-    near: number
+  static frustum(
+    top: number,
+    bottom: number,
+    left: number,
+    right: number,
+    near: number,
     far: number
-  }): Matrix4 {
-    const top: number = argsObject.top
-    const bottom: number = argsObject.bottom
-    const left: number = argsObject.left
-    const right: number = argsObject.right
-    const near: number = argsObject.near
-    const far: number = argsObject.far
-
+  ): Matrix4 {
     return new Matrix4(
       (2 * near) / (right - left), 0.0, 0.0, 0.0,
       0.0, (2 * near) / (top - bottom), 0.0, 0.0,
@@ -281,28 +269,16 @@ export class Matrix4 implements Matrix {
 
   /**
    * Returns a perspective projection matrix.
-   *
-   * @static
-   * @param {{ fovYRadian: number; aspectRatio: number; near: number; far: number }} argsObject
-   * @return {Matrix4}
-   * @memberof Matrix4
    */
-  static perspective(argsObject: { fovYRadian: number; aspectRatio: number; near: number; far: number }): Matrix4 {
-    const top = argsObject.near * Math.tan(argsObject.fovYRadian * 0.5)
+  static perspective(fov: number, aspectRatio: number, near: number, far: number): Matrix4 {
+    const top = near * Math.tan(fov * 0.5)
     const height = top * 2
-    const width = argsObject.aspectRatio * height
+    const width = aspectRatio * height
     const left = -0.5 * width
     const right = left + width
     const bottom = top - height
 
-    return Matrix4.frustum({
-      top,
-      bottom,
-      left,
-      right,
-      near: argsObject.near,
-      far: argsObject.far
-    })
+    return Matrix4.frustum(top, bottom, left, right, near, far)
   }
 
   /**
