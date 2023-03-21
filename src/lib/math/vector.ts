@@ -4,6 +4,8 @@
  * https://github.com/kotofurumiya/matrixgl/blob/master/LICENSE.md
  */
 
+import type { Matrix4 } from "./matrix"
+
 // @see https://github.com/kotofurumiya/matrixgl/blob/master/src/vector_base.ts
 // @see https://github.com/kotofurumiya/matrixgl/blob/master/src/float32vector.ts
 
@@ -245,5 +247,23 @@ export class Vector3 extends Vector3Base {
       return this
     }
     return new Vector3(this.x / mag, this.y / mag, this.z / mag)
+  }
+
+  translateByMat4(matrix: Matrix4): Vector3 {
+    const m11: number = matrix.values[0]
+    const m12: number = matrix.values[4]
+    const m13: number = matrix.values[8]
+    const m21: number = matrix.values[1]
+    const m22: number = matrix.values[5]
+    const m23: number = matrix.values[9]
+    const m31: number = matrix.values[2]
+    const m32: number = matrix.values[6]
+    const m33: number = matrix.values[10]
+
+    const outX = this.dot(m11, m12, m13)
+    const outY = this.dot(m21, m22, m23)
+    const outZ = this.dot(m31, m32, m33)
+
+    return new Vector3(outX, outY, outZ)
   }
 }
