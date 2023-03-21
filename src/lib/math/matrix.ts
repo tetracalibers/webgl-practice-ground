@@ -526,6 +526,30 @@ export class Matrix4 implements Matrix {
     return new Matrix4(...inv)
   }
 
+  transpose() {
+    const m = this.#values
+    let out: number[] = []
+
+    out[0] = m[0]
+    out[1] = m[4]
+    out[2] = m[8]
+    out[3] = m[12]
+    out[4] = m[1]
+    out[5] = m[5]
+    out[6] = m[9]
+    out[7] = m[13]
+    out[8] = m[2]
+    out[9] = m[6]
+    out[10] = m[10]
+    out[11] = m[14]
+    out[12] = m[3]
+    out[13] = m[7]
+    out[14] = m[11]
+    out[15] = m[15]
+
+    return new Matrix4(...out)
+  }
+
   /**
    * Translate the matrix and returns new `Matrix4`.
    * This method does not mutate the matrix.
