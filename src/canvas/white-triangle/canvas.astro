@@ -2,11 +2,12 @@
 
 <script>
   import { Space } from "@/lib/canvas/index"
-  import { Program, Attribute } from "@/lib/webgl/program"
+  import { Program, Attribute, Uniform } from "@/lib/webgl/program"
   import vertexSource from "./index.vert?raw"
   import fragmentSource from "./index.frag?raw"
   import { Scene } from "@/lib/webgl/scene"
   import { Clock } from "@/lib/event/clock"
+  import { Camera } from "@/lib/webgl/camera"
 
   window.onload = () => {
     const space = new Space("gl-canvas")
@@ -16,6 +17,7 @@
 
     let scene: Scene
     let clock: Clock
+    let camera: Camera
 
     const configure = () => {
       space.setSize(300, 300)
@@ -27,12 +29,16 @@
       const program = new Program(gl, vertexSource, fragmentSource)
 
       const attributes: Attribute[] = ["aVertexPosition"]
-      const uniforms = ["uMvpMatrix"]
+      const uniforms: Uniform[] = ["uModelViewMatrix", "uProjectionMatrix"]
 
       program.load(attributes, uniforms)
 
       scene = new Scene(gl, program)
       clock = new Clock()
+
+      camera = new Camera()
+      camera.position = [0.0, 1.0, 3.0]
+      camera.update()
 
       console.log("configuring successfully")
     }
