@@ -1,13 +1,18 @@
 import type { Program } from "./program"
 
-interface RenderObject {
-  alias: string
+interface RenderObjectSetting {
+  alias?: string
   vertices: number[]
   indices: number[]
-  ibo: WebGLBuffer | null
-  vao: WebGLVertexArrayObject | null
   hidden?: boolean
 }
+
+interface RenderObjectBuffer {
+  ibo: WebGLBuffer | null
+  vao: WebGLVertexArrayObject | null
+}
+
+type RenderObject = RenderObjectSetting & Partial<RenderObjectBuffer>
 
 export class Scene {
   private _gl: WebGL2RenderingContext
