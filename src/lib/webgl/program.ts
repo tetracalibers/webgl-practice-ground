@@ -1,12 +1,16 @@
 import { ShaderCompiler } from "../shader/compile"
 
 export type Attribute = "aVertexPosition" | "aVertexNormal" | "aVertexColor" | "aVertexTextureCoords"
+export type Uniform = "uModelViewMatrix" | "uProjectionMatrix" | "uNormalMatrix"
+
+type AttributeMap = Record<Attribute, number>
+type UniformMap = Record<Uniform, WebGLUniformLocation | null>
 
 export class Program {
   private _gl: WebGL2RenderingContext
   private _program: WebGLProgram | null
-  private _attributes: Record<string, number> = {}
-  private _uniforms: Record<string, WebGLUniformLocation | null> = {}
+  private _attributes: AttributeMap = <AttributeMap>{}
+  private _uniforms: UniformMap = <UniformMap>{}
 
   constructor(gl: WebGL2RenderingContext, vertexShaderSource: string, fragmentShaderSource: string) {
     this._gl = gl
@@ -43,14 +47,14 @@ export class Program {
     this._gl.useProgram(this._program)
   }
 
-  setAttributeLocations(attributes: string[]) {
+  setAttributeLocations(attributes: Attribute[]) {
     if (!this._program) return
     for (const attribute of attributes) {
       this._attributes[attribute] = this._gl.getAttribLocation(this._program, attribute)
     }
   }
 
-  setUniformLocation(uniforms: string[]) {
+  setUniformLocation(uniforms: Uniform[]) {
     if (!this._program) return
     for (const uniform of uniforms) {
       this._uniforms[uniform] = this._gl.getUniformLocation(this._program, uniform)
@@ -61,7 +65,11 @@ export class Program {
     return this._attributes[attribute]
   }
 
-  load(attributes: string[], uniforms: string[]) {
+  getUniformLocation(uniform: Uniform) {
+    return this._uniforms[uniform]
+  }
+
+  load(attributes: Attribute[], uniforms: Uniform[]) {
     this.useProgram()
     this.setAttributeLocations(attributes)
     this.setUniformLocation(uniforms)
