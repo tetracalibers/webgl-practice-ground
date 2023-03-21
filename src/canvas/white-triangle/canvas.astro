@@ -1,4 +1,18 @@
-<canvas id="gl-canvas" width="300" height="300"></canvas>
+<canvas id="gl-canvas"></canvas>
+
+<style>
+  canvas {
+    width: 100vw;
+    height: 100vw;
+  }
+
+  @media (orientation: landscape) {
+    canvas {
+      width: 100vh;
+      height: 100vh;
+    }
+  }
+</style>
 
 <script>
   import { Space } from "@/lib/canvas/index"
@@ -22,7 +36,8 @@
     let transforms: Transforms
 
     const configure = () => {
-      space.setSize(300, 300)
+      space.autoResize(() => space.fitScreenSquare())
+
       // canvasを初期化する色を設定する
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
       // canvasを初期化する際の深度を設定する

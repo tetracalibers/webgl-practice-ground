@@ -14,15 +14,20 @@ export class Space {
     this._canvas.height = height
   }
 
-  fullScreen() {
+  fitScreen() {
     this._canvas.width = window.innerWidth
     this._canvas.height = window.innerHeight
   }
 
-  autoResizeOn() {
-    this.fullScreen()
-    const observer = new ResizeObserver(this.fullScreen)
-    observer.observe(document.body)
+  fitScreenSquare() {
+    const size = Math.min(window.innerWidth, window.innerHeight)
+    this.setSize(size, size)
+  }
+
+  autoResize(setSizeFn: () => void) {
+    setSizeFn()
+    const obserber = new ResizeObserver(setSizeFn)
+    obserber.observe(document.body)
   }
 
   get canvas(): HTMLCanvasElement | null {
