@@ -1,11 +1,12 @@
 export class Space {
   private _canvas: HTMLCanvasElement
+  private _gl: WebGL2RenderingContext
 
   constructor(id: string) {
     this._canvas = <HTMLCanvasElement>document.getElementById(id)
-    if (!this._canvas) {
-      throw new Error("Canvas not found")
-    }
+    this._gl = <WebGL2RenderingContext>this._canvas.getContext("webgl2")
+    if (!this._canvas) console.error("Canvas not found")
+    if (!this._gl) console.error("WebGL2 is not available on your browser")
   }
 
   setSize(width: number, height: number) {
@@ -24,12 +25,11 @@ export class Space {
     observer.observe(document.body)
   }
 
-  canvas(): HTMLCanvasElement | null {
+  get canvas(): HTMLCanvasElement | null {
     return this._canvas
   }
 
-  gl2(options?: WebGLContextAttributes) {
-    const ctx = this._canvas.getContext("webgl2", options)
-    return ctx
+  get gl() {
+    return this._gl
   }
 }

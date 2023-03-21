@@ -12,8 +12,8 @@
 
   window.onload = () => {
     const space = new Space("gl-canvas")
-    const canvas = space.canvas()
-    const gl = space.gl2()
+    const canvas = space.canvas
+    const gl = space.gl
     if (!canvas || !gl) return
 
     let scene: Scene
