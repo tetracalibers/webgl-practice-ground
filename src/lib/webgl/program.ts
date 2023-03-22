@@ -54,7 +54,7 @@ export class Program {
     }
   }
 
-  setUniformLocation(uniforms: Uniform[]) {
+  setUniformLocations(uniforms: Uniform[]) {
     if (!this._program) return
     for (const uniform of uniforms) {
       this._uniforms[uniform] = this._gl.getUniformLocation(this._program, uniform)
@@ -72,6 +72,6 @@ export class Program {
   load(attributes: Attribute[], uniforms: Uniform[]) {
     this.useProgram()
     this.setAttributeLocations(attributes)
-    this.setUniformLocation(uniforms)
+    this.setUniformLocations(uniforms)
   }
 }
