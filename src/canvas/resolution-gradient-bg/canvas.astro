@@ -14,6 +14,7 @@
   import fragmentSource from "./index.frag?raw"
   import { Clock } from "@/lib/event/clock"
   import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
+  import { UniformReflect } from "@/lib/webgl/uniform-reflect"
 
   window.onload = () => {
     const space = new Space("gl-canvas")
@@ -38,8 +39,8 @@
 
       program.load(attributes, uniforms)
 
-      // TODO: これをどうにかユーティリティ化したい
-      gl.uniform2fv(program.getUniformLocation("uResolution"), [canvas.width, canvas.height])
+      const reflect = new UniformReflect(gl, program)
+      reflect.resolution()
 
       clock = new Clock()
     }
