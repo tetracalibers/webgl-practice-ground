@@ -2,7 +2,7 @@
 
 ```
 src
-├── canvas（描画スクリプト）
+├── canvas（描画サンプル）
 │   └── *
 │       ├── canvas.astro（canvas要素とその描画処理）
 │       ├── index.frag（フラグメントシェーダ）
@@ -30,7 +30,9 @@ src
 │       ├── camera.ts（カメラ）
 │       ├── program.ts（シェーダとプログラム）
 │       ├── scene.ts（描画オブジェクトの管理）
-│       └── transforms.ts（座標変換）
+│       ├── shader-data.type.ts（ユニフォーム/アトリビュート関連の型）
+│       ├── transforms.ts（座標変換）
+│       └── uniform-reflect.ts（ユニフォーム変数をシェーダに送る）
 └── pages（ページ）
     ├── [slug].astro（各描画サンプル表示ページ）
     └── index.astro（目次ページ）
