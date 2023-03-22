@@ -1,7 +1,7 @@
 import { Matrix4 } from "../math/matrix"
 import type { Camera } from "./camera"
 import type { Program } from "./program"
-import type { Uniform } from "./shader-data.type"
+import type { UniformMatrix4fv } from "./shader-data.type"
 
 export class Transforms {
   private _gl: WebGL2RenderingContext
@@ -55,7 +55,7 @@ export class Transforms {
     this._projectionMatrix = this.calcPerspective()
   }
 
-  private setUniformMatrix4fv(uniform: Uniform, matrix: Matrix4) {
+  private setUniformMatrix4fv(uniform: UniformMatrix4fv, matrix: Matrix4) {
     this._gl.uniformMatrix4fv(this._program.getUniformLocation(uniform), false, matrix.values)
   }
 
