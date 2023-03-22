@@ -9,10 +9,11 @@
 
 <script>
   import { Space } from "@/lib/canvas/index"
-  import { Program, Attribute, Uniform } from "@/lib/webgl/program"
+  import { Program } from "@/lib/webgl/program"
   import vertexSource from "./index.vert?raw"
   import fragmentSource from "./index.frag?raw"
   import { Clock } from "@/lib/event/clock"
+  import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
 
   window.onload = () => {
     const space = new Space("gl-canvas")

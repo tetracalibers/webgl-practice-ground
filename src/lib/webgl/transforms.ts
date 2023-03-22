@@ -1,6 +1,7 @@
 import { Matrix4 } from "../math/matrix"
 import type { Camera } from "./camera"
-import type { Program, Uniform } from "./program"
+import type { Program } from "./program"
+import type { Uniform } from "./shader-data.type"
 
 export class Transforms {
   private _gl: WebGL2RenderingContext

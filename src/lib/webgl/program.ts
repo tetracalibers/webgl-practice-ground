@@ -1,10 +1,5 @@
 import { ShaderCompiler } from "../shader/compile"
-
-export type Attribute = "aVertexPosition" | "aVertexNormal" | "aVertexColor" | "aVertexTextureCoords"
-export type Uniform = "uModelViewMatrix" | "uProjectionMatrix" | "uNormalMatrix" | "uResolution"
-
-type AttributeMap = Record<Attribute, number>
-type UniformMap = Record<Uniform, WebGLUniformLocation | null>
+import type { AttributeMap, UniformMap, Attribute, Uniform } from "./shader-data.type"
 
 export class Program {
   private _gl: WebGL2RenderingContext
