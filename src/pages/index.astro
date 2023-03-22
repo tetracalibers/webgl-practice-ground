@@ -7,7 +7,7 @@ const studyPages = await getCollection("study")
 const slugs = [...studyPages.map((page) => page.slug)] as const
 type Slug = (typeof slugs)[number]
 
-const order: Slug[] = ["white-triangle", "rainbow-triangle", "solid-bg"]
+const order: Slug[] = ["white-triangle", "rainbow-triangle", "solid-bg", "resolution-gradient-bg"]
 
 const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slug === slug)!!)
 ---
