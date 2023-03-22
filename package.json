@@ -8,13 +8,15 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "new:canvas": "node ./scripts/make-new-canvas.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^0.18.1",
     "astro": "^2.0.18"
   },
   "devDependencies": {
+    "fs-extra": "^11.1.1",
     "prettier": "^2.8.5"
   }
 }
