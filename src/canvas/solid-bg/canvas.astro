@@ -12,7 +12,6 @@
   import { Program } from "@/lib/webgl/program"
   import vertexSource from "./index.vert?raw"
   import fragmentSource from "./index.frag?raw"
-  import { Clock } from "@/lib/event/clock"
   import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
 
   window.onload = () => {
@@ -21,10 +20,8 @@
     const gl = space.gl
     if (!canvas || !gl) return
 
-    let clock: Clock
-
     const configure = () => {
-      space.autoResize(() => space.fitScreenSquare())
+      space.autoResize(() => space.fitScreen())
 
       // canvasを初期化する色を設定する
       gl.clearColor(0.0, 0.0, 0.0, 1.0)
@@ -37,8 +34,6 @@
       const uniforms: Uniform[] = []
 
       program.load(attributes, uniforms)
-
-      clock = new Clock()
     }
 
     const draw = () => {
@@ -51,7 +46,7 @@
 
     const init = () => {
       configure()
-      clock.on("tick", draw)
+      draw()
     }
 
     init()

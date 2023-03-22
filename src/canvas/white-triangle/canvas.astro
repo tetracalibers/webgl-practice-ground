@@ -20,7 +20,6 @@
   import vertexSource from "./index.vert?raw"
   import fragmentSource from "./index.frag?raw"
   import { Scene } from "@/lib/webgl/scene"
-  import { Clock } from "@/lib/event/clock"
   import { Camera } from "@/lib/webgl/camera"
   import { Transforms } from "@/lib/webgl/transforms"
   import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
@@ -32,7 +31,6 @@
     if (!canvas || !gl) return
 
     let scene: Scene
-    let clock: Clock
     let camera: Camera
     let transforms: Transforms
 
@@ -52,7 +50,6 @@
       program.load(attributes, uniforms)
 
       scene = new Scene(gl, program)
-      clock = new Clock()
 
       camera = new Camera()
       camera.position = [0.0, 1.0, 3.0]
@@ -93,7 +90,7 @@
     const init = () => {
       configure()
       generateTriangle()
-      clock.on("tick", draw)
+      draw()
     }
 
     init()
