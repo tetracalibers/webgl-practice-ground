@@ -15,6 +15,8 @@ src
 ├── lib（オレオレヘルパーライブラリ）
 │   ├── canvas（canvas要素とそのコンテキストの操作）
 │   │   └── index.ts
+│   ├── control（ユーザ操作や状態の管理）
+│   │   └── timer.ts（経過時間の管理）
 │   ├── event（イベント処理）
 │   │   ├── clock.ts（レンダーループの管理）
 │   │   └── event-emitter.ts（独自イベント制御）
