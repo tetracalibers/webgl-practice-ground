@@ -39,3 +39,7 @@ src
     ├── [slug].astro（各描画サンプル表示ページ）
     └── index.astro（目次ページ）
 ```
+
+## コンテンツ
+
+- [hsv2rgbのロジックを追う](/src/canvas/hsv-color-space-bg/doc/hsv2rgb.md)
