@@ -30,6 +30,11 @@ export class Space {
     obserber.observe(document.body)
   }
 
+  set onResize(callback: () => void) {
+    const obserber = new ResizeObserver(callback)
+    obserber.observe(document.body)
+  }
+
   get canvas(): HTMLCanvasElement | null {
     return this._canvas
   }
