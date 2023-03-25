@@ -5,6 +5,7 @@ src
 ├── canvas（描画サンプル）
 │   └── *
 │       ├── canvas.astro（canvas要素とその描画処理）
+│       ├── doc（アルゴリズムノート）
 │       ├── index.frag（フラグメントシェーダ）
 │       └── index.vert（頂点シェーダ）
 ├── content（ページのコンテンツ）
@@ -16,6 +17,7 @@ src
 │   ├── canvas（canvas要素とそのコンテキストの操作）
 │   │   └── index.ts
 │   ├── control（ユーザ操作や状態の管理）
+│   │   ├── mouse-coords.ts（マウス座標の管理）
 │   │   └── timer.ts（経過時間の管理）
 │   ├── event（イベント処理）
 │   │   ├── clock.ts（レンダーループの管理）
