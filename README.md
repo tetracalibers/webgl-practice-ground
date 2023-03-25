@@ -45,3 +45,4 @@ src
 ## コンテンツ
 
 - [hsv2rgbのロジックを追う](/src/canvas/hsv-color-space-bg/doc/hsv2rgb.md)
+- [矩形のSDFのロジックを追う](/src/canvas/sdf-rect-bg)
