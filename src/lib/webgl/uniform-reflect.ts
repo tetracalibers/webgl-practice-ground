@@ -22,6 +22,10 @@ export class UniformReflect {
     this.floatVector2("uResolution", [this._gl.canvas.width, this._gl.canvas.height])
   }
 
+  mouse(coords: [number, number]) {
+    this.floatVector2("uMouse", coords)
+  }
+
   time(time: number) {
     // ミリ秒単位の時間をそのまま渡すと非常に大きな数字になってしまうため、
     // 千分の一にしてシェーダに送る
