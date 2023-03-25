@@ -8,20 +8,20 @@ const slugs = [...studyPages.map((page) => page.slug)] as const
 type Slug = (typeof slugs)[number]
 
 const order: Slug[] = [
-  "white-triangle",
-  "solid-bg",
-  "resolution-gradient-bg",
-  "lerp-2color-bg",
-  "lerp-3color-bg",
-  "bilerp-4color-bg",
-  "step-posterization-bg",
+  "white-triangle", // https://wgld.org/d/webgl/w014.html
+  "solid-bg", // https://www.shadertoy.com/view/NdySRV
+  "resolution-gradient-bg", // https://www.shadertoy.com/view/7sGXzK
+  "lerp-2color-bg", // https://www.shadertoy.com/view/NdySR3
+  "lerp-3color-bg", // https://www.shadertoy.com/view/fdGXR3
+  "bilerp-4color-bg", // https://www.shadertoy.com/view/NsKSDG
+  "step-posterization-bg", // https://www.shadertoy.com/view/fsVXWG
   "smooth-step-posterization-bg",
-  "polar-gradient-bg",
-  "polar-dot-gradient-bg",
-  "hsv-color-space-bg",
-  "legacy-hash-1d-bg",
+  "polar-gradient-bg", // https://www.shadertoy.com/view/fdKSDG
+  "polar-dot-gradient-bg", // https://www.shadertoy.com/view/NdKSDG
+  "hsv-color-space-bg", // https://www.shadertoy.com/view/fdVSDG
+  "legacy-hash-1d-bg", // https://www.shadertoy.com/view/NsfcDM
   "legacy-hash-2d-bg",
-  "plot-linear-func",
+  "plot-linear-func", // https://thebookofshaders.com/05/
   "plot-pow-func",
   "plot-step-func",
   "plot-smoothstep-func",
