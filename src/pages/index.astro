@@ -36,7 +36,8 @@ const order: Slug[] = [
   "circle-outline-by-glsl-dot",
   "sdf-circle-bg", // https://www.shadertoy.com/view/NlXczr
   "sdf-rect-bg", // https://www.shadertoy.com/view/ftfczr
-  "sdf-circle-manhattan-distance" // original
+  "sdf-circle-manhattan-distance", // original
+  "sdf-circle-chebyshev-distance"
 ]
 
 const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slug === slug)!!)
