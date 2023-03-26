@@ -45,7 +45,6 @@ float vnoise21(vec2 pos) {
   
   // タイル内のどの辺にいるか（小数部分）によってエルミート補間
   vec2 f = smoothstep(0.0, 1.0, fract(pos));
-  //vec2 f = fract(pos);
   
   // 双線形補間
   return mix(mix(corner00, corner10, f.x), mix(corner01, corner11, f.x), f.y);
