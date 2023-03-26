@@ -62,5 +62,20 @@ const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slu
 <style>
   body {
     overflow-y: auto;
+    line-height: 2;
+  }
+
+  a {
+    color: var(--color);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  a:not(:visited) {
+    color: #7286d3;
+  }
+
+  a:hover {
+    text-decoration-style: dotted;
   }
 </style>
