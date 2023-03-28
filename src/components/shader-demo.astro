@@ -1,0 +1,20 @@
+---
+import { Prism } from "@astrojs/prism"
+
+interface Props {
+  fragSrc: string
+  canvasSize: "full-screen" | "full-square"
+}
+
+const { fragSrc, canvasSize } = Astro.props
+---
+
+<canvas id="gl-canvas" class={canvasSize}></canvas>
+<Prism lang="glsl" code={fragSrc} />
+
+<style>
+  .full-screen {
+    width: 100vw;
+    height: 100vh;
+  }
+</style>
