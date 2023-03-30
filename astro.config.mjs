@@ -25,6 +25,8 @@ export default defineConfig(
         rehypePlugins: [rehypeKatex]
       })
     ],
+    site: "https://tetracalibers.github.io",
+    base: "webgl-practice-ground",
     markdown: {
       syntaxHighlight: "prism"
     }
