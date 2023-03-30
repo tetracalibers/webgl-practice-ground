@@ -26,6 +26,7 @@ export default defineConfig(
       })
     ],
     site: "https://tetracalibers.github.io",
+    base: "/webgl-practice-ground",
     markdown: {
       syntaxHighlight: "prism"
     }
