@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>Xorshiftによる3Dの乱数（引数も戻り値も3D）</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.a8deed41.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+<span class="token keyword">uniform</span> <span class="token keyword">float</span> uTime<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token comment">// 符号なし整数の最大値</span>
+<span class="token keyword">const</span> <span class="token keyword">uint</span> UINT_MAX <span class="token operator">=</span> <span class="token number">0xffffffffu</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 算術積に使う大きな桁数の定数</span>
+<span class="token keyword">uvec3</span> k <span class="token operator">=</span> <span class="token keyword">uvec3</span><span class="token punctuation">(</span><span class="token number">0x456789abu</span><span class="token punctuation">,</span> <span class="token number">0x6789ab45u</span><span class="token punctuation">,</span> <span class="token number">0x89ab4567u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// シフト数</span>
+<span class="token keyword">uvec3</span> u <span class="token operator">=</span> <span class="token keyword">uvec3</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 符号なし整数の3d => 3dハッシュ関数</span>
+<span class="token keyword">uvec3</span> <span class="token function">uhash33</span><span class="token punctuation">(</span><span class="token keyword">uvec3</span> n<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  n <span class="token operator">^=</span> <span class="token punctuation">(</span>n<span class="token punctuation">.</span>yzx <span class="token operator">&lt;&lt;</span> u<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  n <span class="token operator">^=</span> <span class="token punctuation">(</span>n<span class="token punctuation">.</span>yzx <span class="token operator">>></span> u<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  n <span class="token operator">*=</span> k<span class="token punctuation">;</span>
+  n <span class="token operator">^=</span> <span class="token punctuation">(</span>n<span class="token punctuation">.</span>yzx <span class="token operator">&lt;&lt;</span> u<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> n <span class="token operator">*</span> k<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 浮動小数点数の3d => 3dハッシュ関数</span>
+<span class="token keyword">vec3</span> <span class="token function">hash33</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ビット列を符号なし整数に変換</span>
+  <span class="token keyword">uvec3</span> n <span class="token operator">=</span> <span class="token function">floatBitsToUint</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// 値の正規化</span>
+  <span class="token keyword">return</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token function">uhash33</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span>UINT_MAX<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">vec2</span> pos <span class="token operator">=</span> gl_FragCoord<span class="token punctuation">.</span>xy<span class="token punctuation">;</span>
+  
+  <span class="token comment">// 1秒間に60カウント</span>
+  <span class="token keyword">float</span> time <span class="token operator">=</span> <span class="token function">floor</span><span class="token punctuation">(</span><span class="token number">60.0</span> <span class="token operator">*</span> uTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// フラグメント座標を時間変動させる</span>
+  pos <span class="token operator">+=</span> time<span class="token punctuation">;</span>
+  
+  outColor<span class="token punctuation">.</span>rgb <span class="token operator">=</span> <span class="token function">hash33</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> time<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  outColor<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+  </body></html>

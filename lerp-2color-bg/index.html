@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>線形補間によって2色を繋いだグラデーション</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.aa4890fd.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">vec2</span> pos <span class="token operator">=</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">/</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> RED <span class="token operator">=</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> BLUE <span class="token operator">=</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// x座標上の線形補間</span>
+  <span class="token keyword">vec3</span> xlerpColor <span class="token operator">=</span> <span class="token function">mix</span><span class="token punctuation">(</span>RED<span class="token punctuation">,</span> BLUE<span class="token punctuation">,</span> pos<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  outColor <span class="token operator">=</span> <span class="token keyword">vec4</span><span class="token punctuation">(</span>xlerpColor<span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+  </body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>チェビシェフ距離による円のSDFと等高線</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.bb9f924c.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uMouse<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token comment">// 円周率</span>
+<span class="token keyword">const</span> <span class="token keyword">float</span> PI <span class="token operator">=</span> <span class="token number">3.1415926</span><span class="token punctuation">;</span>
+
+<span class="token comment">// チェビシェフ距離 max(|t_x - f_x|, |t_y - f_y|)</span>
+<span class="token keyword">float</span> <span class="token function">cdistance</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> from<span class="token punctuation">,</span> <span class="token keyword">vec2</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">vec2</span> diff <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>to <span class="token operator">-</span> from<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token function">max</span><span class="token punctuation">(</span>diff<span class="token punctuation">.</span>x<span class="token punctuation">,</span> diff<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 円</span>
+<span class="token keyword">float</span> <span class="token function">circle</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> point<span class="token punctuation">,</span> <span class="token keyword">vec2</span> center<span class="token punctuation">,</span> <span class="token keyword">float</span> radius<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">cdistance</span><span class="token punctuation">(</span>point<span class="token punctuation">,</span> center<span class="token punctuation">)</span> <span class="token operator">-</span> radius<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 等高線</span>
+<span class="token keyword">vec3</span> <span class="token function">contour</span><span class="token punctuation">(</span><span class="token keyword">float</span> v<span class="token punctuation">,</span> <span class="token keyword">float</span> interval<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token function">abs</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0.01</span>
+    <span class="token operator">?</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">)</span> <span class="token comment">// 等高線を黒で描画</span>
+    <span class="token operator">:</span> <span class="token function">mod</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> interval<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0.01</span>
+      <span class="token operator">?</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span> <span class="token comment">// 等間隔の値の等高線を白で描画</span>
+      <span class="token operator">:</span> <span class="token function">mix</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">atan</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token operator">/</span> PI <span class="token operator">+</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 等高線以外は中間色で描画</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ビューポートの中心を原点としてスケール</span>
+  <span class="token keyword">vec2</span> pos <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">2.0</span> <span class="token operator">*</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">-</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token function">min</span><span class="token punctuation">(</span>uResolution<span class="token punctuation">.</span>x<span class="token punctuation">,</span> uResolution<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 等高線を描く値の間隔</span>
+  <span class="token keyword">float</span> interval <span class="token operator">=</span> <span class="token number">0.1</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 等高線の描画</span>
+  outColor<span class="token punctuation">.</span>rgb <span class="token operator">=</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token function">contour</span><span class="token punctuation">(</span><span class="token function">circle</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">)</span><span class="token punctuation">,</span> interval<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  outColor<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+  </body></html>

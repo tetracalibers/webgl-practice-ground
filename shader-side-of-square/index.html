@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>シェーダーで四角形の辺を塗りつぶす</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.923669e0.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// フラグメント座標を正規化</span>
+  <span class="token comment">// * 割合なので、[0, 1]の範囲になる</span>
+  <span class="token keyword">vec2</span> xy <span class="token operator">=</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">/</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">;</span>
+  
+  <span class="token comment">// float left = step(0.1, xy.x); // x &lt; 0.1 なら黒 = 0.0</span>
+  <span class="token comment">// float bottom = step(0.1, xy.y); // y &lt; 0.1 なら黒 = 0.0</span>
+  <span class="token comment">// ↑を合わせて書いた</span>
+  <span class="token keyword">vec2</span> bottom_left <span class="token operator">=</span> <span class="token function">step</span><span class="token punctuation">(</span><span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> xy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// xy座標を反転（紙をひっくり返すように）</span>
+  <span class="token comment">// 原点が左下[0, 0]から右上[1, 1]になる</span>
+  xy <span class="token operator">=</span> <span class="token number">1.0</span> <span class="token operator">-</span> xy<span class="token punctuation">;</span>
+  
+  <span class="token comment">// ひっくり返した上で同様に辺を描く</span>
+  <span class="token keyword">vec2</span> top_right <span class="token operator">=</span> <span class="token function">step</span><span class="token punctuation">(</span><span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> xy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 掛け算 = AND演算</span>
+  <span class="token comment">// * 両方の値が 1.0 だった場合にのみ 1.0</span>
+  <span class="token comment">// * つまり、左辺でも底辺でもない箇所のみ白で塗りつぶす（それ以外は黒）</span>
+  <span class="token keyword">float</span> color <span class="token operator">=</span> bottom_left<span class="token punctuation">.</span>x <span class="token operator">*</span> bottom_left<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+  <span class="token comment">// 同様に</span>
+  color <span class="token operator">*=</span> top_right<span class="token punctuation">.</span>x <span class="token operator">*</span> top_right<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+  
+  outColor <span class="token operator">=</span> <span class="token keyword">vec4</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span>color<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+  </body></html>

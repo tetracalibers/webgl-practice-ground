@@ -1,0 +1,1 @@
+class r{_coords;constructor(o,s=.5,e=.5){this._coords=[s,e],o.addEventListener("mousemove",this.onMouseMove,!0)}onMouseMove=o=>{this._coords=[o.offsetX,o.offsetY]};get xy(){return this._coords}}export{r as M};

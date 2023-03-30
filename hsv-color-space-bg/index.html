@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>HSV色空間の断面</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.47cda94e.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token comment">// 円周率</span>
+<span class="token keyword">const</span> <span class="token keyword">float</span> PI <span class="token operator">=</span> <span class="token number">3.1415926</span><span class="token punctuation">;</span>
+
+<span class="token comment">// atan を x = 0 上でも定義した拡張版</span>
+<span class="token comment">// tan(y) = x となるy（偏角）を(-PI, PI]の範囲で返す</span>
+<span class="token keyword">float</span> <span class="token function">atan2</span><span class="token punctuation">(</span><span class="token keyword">float</span> y<span class="token punctuation">,</span> <span class="token keyword">float</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// x = 0 の場合、点 (x, y) はy軸上</span>
+  <span class="token comment">// => つまり、偏角は 90° か -90° で、yの符号によって決まる</span>
+  <span class="token keyword">return</span> x <span class="token operator">==</span> <span class="token number">0.0</span> <span class="token operator">?</span> <span class="token function">sign</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token operator">*</span> PI <span class="token operator">/</span> <span class="token number">2.0</span> <span class="token operator">:</span> <span class="token function">atan</span><span class="token punctuation">(</span>y<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 直交座標 (x, y) -> 極座標 (偏角s, 動径t)</span>
+<span class="token keyword">vec2</span> <span class="token function">xy2pol</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> xy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token function">atan2</span><span class="token punctuation">(</span>xy<span class="token punctuation">.</span>y<span class="token punctuation">,</span> xy<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">length</span><span class="token punctuation">(</span>xy<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 極座標 (偏角s, 動径t) -> 直交座標 (x, y)</span>
+<span class="token keyword">vec2</span> <span class="token function">pol2xy</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> pol<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 単位円（半径 = 1）の場合、(x, y) = (cos, sin)</span>
+  <span class="token keyword">return</span> pol<span class="token punctuation">.</span>t <span class="token operator">*</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token function">cos</span><span class="token punctuation">(</span>pol<span class="token punctuation">.</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">sin</span><span class="token punctuation">(</span>pol<span class="token punctuation">.</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// fork from https://www.shadertoy.com/view/MsS3Wc</span>
+<span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> a <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>m <span class="token operator">-</span> <span class="token number">3.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> rgb <span class="token operator">=</span> <span class="token function">clamp</span><span class="token punctuation">(</span>a <span class="token operator">-</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+  <span class="token comment">// 白とrgbを彩度（動径）に沿って補間したものに明度をかける</span>
+  <span class="token keyword">return</span> color<span class="token punctuation">.</span>z <span class="token operator">*</span> <span class="token function">mix</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> rgb<span class="token punctuation">,</span> color<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// フラグメント座標を正規化</span>
+  <span class="token comment">// * 割合なので、[0, 1]の範囲になる</span>
+  <span class="token keyword">vec2</span> pos <span class="token operator">=</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">/</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">;</span>
+  
+  <span class="token comment">// フラグメント座標範囲を[-1, 1]区間に変換</span>
+  <span class="token comment">// * 元々、フラグメント座標は第一象限内[0, 1]</span>
+  <span class="token comment">// * 2倍することで、[0, 2]に</span>
+  <span class="token comment">// * 1を引くことで、[-1, 1]に</span>
+  pos <span class="token operator">=</span> <span class="token number">2.0</span> <span class="token operator">*</span> pos<span class="token punctuation">.</span>xy <span class="token operator">-</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 極座標に変換</span>
+  pos <span class="token operator">=</span> <span class="token function">xy2pol</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  pos<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span><span class="token number">0.5</span> <span class="token operator">*</span> pos<span class="token punctuation">.</span>x <span class="token operator">/</span> PI<span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  outColor<span class="token punctuation">.</span>rgb <span class="token operator">=</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  outColor<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="hsv2rgb-のロジックを追う">hsv2rgb のロジックを追う</h2>
+<p><img src="/articles/hsv-color-space-bg/hue-circle.png" alt=""/></p>
+<h3 id="vec3colorx">vec3(color.x)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span>color<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>r = g = b であることから、Red も Green も Blue も均等に混ざり合って、グレースケールになる。</li>
+</ul>
+<p><img src="/articles/hsv-color-space-bg/00.png" alt=""/></p>
+<h3 id="vec3colorx--06">vec3(color.x * 0.6)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span>hue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>原点から 60° 分色がつく。</li>
+</ul>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/01.png" alt=""/></p>
+<h3 id="vec300-40-20">vec3(0.0, 4.0, 2.0)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>色は(0.0, 4.0, 2.0) = (0.0, 1.0, 1.0) = (0, 255, 255)</li>
+</ul>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/02.png" alt=""/></p>
+<h3 id="hue--vec300-40-20">hue + vec3(0.0, 4.0, 2.0)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/03.png" alt=""/></p>
+<h3 id="modhue--vec300-40-20-60">mod(hue + vec3(0.0, 4.0, 2.0), 6.0)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> m<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>water (0, 255, 255) … hue が 0 の場合、m = (0.0, 4.0, 2.0)</li>
+<li>pink (255, 0, 255) … hue が 2 の場合、m = (2.0, 0.0, 4.0)</li>
+<li>yellow (255, 255, 0) … hue が 4 の場合、m = (4.0, 2.0, 0.0)</li>
+</ul>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/04.png" alt=""/></p>
+<h3 id="absmodhue--vec300-40-20-60---30">abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> a <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>m <span class="token operator">-</span> <span class="token number">3.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>hue = 0 の場合
+<ul>
+<li>a = abs(-3.0, 1.0, -1.0) = (3.0, 1.0, 1.0) = white</li>
+</ul>
+</li>
+<li>hue = 2 の場合
+<ul>
+<li>a = abs(-1.0, -3.0, 1.0) = (1.0, 3.0, 1.0) = white</li>
+</ul>
+</li>
+<li>hue = 4 の場合
+<ul>
+<li>a = abs(1.0, -1.0, -3.0) = (1.0, 1.0, 3.0) = white</li>
+</ul>
+</li>
+</ul>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/05.png" alt=""/></p>
+<h3 id="absmodhue--vec300-40-20-60---30---10">abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> a <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>m <span class="token operator">-</span> <span class="token number">3.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> a <span class="token operator">-</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>hue = 0 の場合
+<ul>
+<li>a - 1.0 = (3.0, 1.0, 1.0) - 1.0 = (2.0, 0.0, 0.0) = red</li>
+</ul>
+</li>
+<li>hue = 2 の場合
+<ul>
+<li>a - 1.0 = (1.0, 3.0, 1.0) - 1.0 = (0.0, 2.0, 0.0) = green</li>
+</ul>
+</li>
+<li>hue = 4 の場合
+<ul>
+<li>a - 1.0 = (1.0, 1.0, 3.0) - 1.0 = (0.0, 0.0, 2.0) = blue</li>
+</ul>
+</li>
+</ul>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/06.png" alt=""/></p>
+<h3 id="clampabsmodhue--vec300-40-20-60---30---10-00-10">clamp(abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> a <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>m <span class="token operator">-</span> <span class="token number">3.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> rgb <span class="token operator">=</span> <span class="token function">clamp</span><span class="token punctuation">(</span>a <span class="token operator">-</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> rgb<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>見た目は変わらず。</p>
+<ul>
+<li>hue = 0 の場合 (1.0, 0.0, 0.0) = red</li>
+<li>hue = 2 の場合 (0.0, 1.0, 0.0) = green</li>
+<li>hue = 4 の場合 (0.0, 0.0, 1.0) = blue</li>
+</ul>
+<h3 id="mixvec310-rgb-colory">mix(vec3(1.0), rgb, color.y)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> a <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>m <span class="token operator">-</span> <span class="token number">3.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> rgb <span class="token operator">=</span> <span class="token function">clamp</span><span class="token punctuation">(</span>a <span class="token operator">-</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 白とrgbを彩度（動径）に沿って補間</span>
+  <span class="token keyword">return</span> <span class="token function">mix</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> rgb<span class="token punctuation">,</span> color<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>color.y は彩度 s = 円錐の半径</li>
+</ul>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/07.png" alt=""/></p>
+<h3 id="colorz--mixvec310-rgb-colory">color.z * mix(vec3(1.0), rgb, color.y)</h3>
+<pre class="language-glsl"><code class="language-glsl"><span class="token keyword">vec3</span> <span class="token function">hsv2rgb</span><span class="token punctuation">(</span><span class="token keyword">vec3</span> color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Hueを[0, 1]から[0, 6]へスケール</span>
+  <span class="token keyword">float</span> hue <span class="token operator">=</span> color<span class="token punctuation">.</span>x <span class="token operator">*</span> <span class="token number">6.0</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">vec3</span> m <span class="token operator">=</span> <span class="token function">mod</span><span class="token punctuation">(</span>hue <span class="token operator">+</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">6.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> a <span class="token operator">=</span> <span class="token function">abs</span><span class="token punctuation">(</span>m <span class="token operator">-</span> <span class="token number">3.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">vec3</span> rgb <span class="token operator">=</span> <span class="token function">clamp</span><span class="token punctuation">(</span>a <span class="token operator">-</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 白とrgbを彩度（動径）に沿って補間したものに明度をかける</span>
+  <span class="token keyword">return</span> color<span class="token punctuation">.</span>z <span class="token operator">*</span> <span class="token function">mix</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> rgb<span class="token punctuation">,</span> color<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><img src="/ARTICLES/HSV-COLOR-SPACE-BG/08.png" alt=""/></p>
+<h3 id="参考">参考</h3>
+<ul>
+<li><a href="https://sites.google.com/site/bknobiboroku/programming-tips/wpf/Csharp_wpf_HSB_to_RGB">HSB(HSV)から if 文を使わずに RGB へ変換する</a></li>
+<li><a href="https://zenn.dev/tetracalibers/articles/78474ee3e8678e">RGB -&gt; HSV 変換式を中学数学でガチ導出する</a></li>
+</ul>
+  </body></html>

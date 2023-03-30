@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>一次関数のグラフとグラデーション</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.f2a1d13a.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token keyword">float</span> <span class="token function">plot</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> xy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// smoothstep(a, b, x)</span>
+  <span class="token comment">// * x &lt; a の場合、 0</span>
+  <span class="token comment">// * a &lt;= x &lt;= b の場合、t^2(3 - 2t), t = (x - a)/(b - a)</span>
+  <span class="token comment">// * x > b の場合、 1</span>
+  
+  <span class="token comment">// 0.0～1.0までの値を用いてyに線を引く</span>
+  <span class="token comment">// * 線の太さを0.005で制御している</span>
+  <span class="token comment">// * xy.y - xy.xは、[-1.0, 1.0]</span>
+  <span class="token comment">// * => 絶対値を取ることで、[0.0, 1.0]に</span>
+  <span class="token keyword">return</span> <span class="token function">smoothstep</span><span class="token punctuation">(</span><span class="token number">0.005</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token function">abs</span><span class="token punctuation">(</span>xy<span class="token punctuation">.</span>y <span class="token operator">-</span> xy<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// フラグメント座標を正規化</span>
+  <span class="token comment">// * 割合なので、[0, 1]の範囲になる</span>
+  <span class="token keyword">vec2</span> xy <span class="token operator">=</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">/</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">;</span>
+  
+  <span class="token comment">// smoothstepの性質より、[0, 1]の範囲内</span>
+  <span class="token keyword">float</span> graph <span class="token operator">=</span> <span class="token function">plot</span><span class="token punctuation">(</span>xy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// graphに沿って線形補間</span>
+  <span class="token comment">// * mix(背景色, グラフの色, ...)</span>
+  <span class="token keyword">vec3</span> color <span class="token operator">=</span> <span class="token function">mix</span><span class="token punctuation">(</span><span class="token keyword">vec3</span><span class="token punctuation">(</span>xy<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> graph<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  outColor <span class="token operator">=</span> <span class="token keyword">vec4</span><span class="token punctuation">(</span>color<span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+  </body></html>

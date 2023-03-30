@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>GLSLのlength関数の代わりに内積を使った円周の描画</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.465b01ba.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token comment">// 円 f(x, y) = length(xy, center) - radius</span>
+<span class="token keyword">float</span> <span class="token function">circle</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> xy<span class="token punctuation">,</span> <span class="token keyword">vec2</span> center<span class="token punctuation">,</span> <span class="token keyword">float</span> radius<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">vec2</span> fromCenter <span class="token operator">=</span> xy <span class="token operator">-</span> center<span class="token punctuation">;</span>
+  <span class="token comment">// dot(c, c) = ||c|| * ||c|| * cos(0) = ||c||^2 = length(c)^2</span>
+  <span class="token comment">// pow(dot(c, c), 0.5) = length(c)^2^0.5 = length(c)^(2 * 0.5) = length(c)</span>
+  <span class="token keyword">return</span> <span class="token function">pow</span><span class="token punctuation">(</span><span class="token function">dot</span><span class="token punctuation">(</span>fromCenter<span class="token punctuation">,</span> fromCenter<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token operator">-</span> radius<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 円周</span>
+<span class="token keyword">vec3</span> <span class="token function">circumference</span><span class="token punctuation">(</span><span class="token keyword">float</span> circle<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// f(x, y) = 0を満たすのが円周</span>
+  <span class="token comment">// それだけだと線が細すぎるので、-0.005 &lt; f(x, y) &lt; 0.005を円周として黒塗りする</span>
+  <span class="token keyword">return</span> <span class="token function">abs</span><span class="token punctuation">(</span>circle<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0.005</span> <span class="token operator">?</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ビューポートの中心を原点として [0, 1] -> [-1, 1] にスケール</span>
+  <span class="token comment">// @see https://docs.google.com/presentation/d/12RrqyAkFanKmfL96ZHvhDCozE-_rKFPlU1YVwej4_bc/htmlpresent</span>
+  <span class="token comment">// * min = x なら、 2.0 * gl_FragCoord.xy / x - [1, y / x]</span>
+  <span class="token comment">// * min = y なら、 2.0 * gl_FragCoord.xy / y - [x / y, 1]</span>
+  <span class="token keyword">vec2</span> pos <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">2.0</span> <span class="token operator">*</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">-</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token function">min</span><span class="token punctuation">(</span>uResolution<span class="token punctuation">.</span>x<span class="token punctuation">,</span> uResolution<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  outColor<span class="token punctuation">.</span>rgb <span class="token operator">=</span> <span class="token function">circumference</span><span class="token punctuation">(</span><span class="token function">circle</span><span class="token punctuation">(</span>pos<span class="token punctuation">,</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  outColor<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+  </body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+    <link href="/prism-pastelfairy.css" rel="stylesheet">
+    <title>偏角が時間変容する極座標にグラデーションをマッピング</title>
+  <link rel="stylesheet" href="/_astro/_slug_.c93fc5fd.css" /><script type="module">
+</script><link rel="stylesheet" href="/_astro/shader-demo.astro_astro_type_style_index_0_lang.f50daec7.css" /><script src="/_astro/canvas.astro_astro_type_script_index_0_lang.e4779f0f.js" type="module"></script></head>
+  <body>
+    <canvas id="gl-canvas" class="full-screen astro-RK3C6AMG"></canvas>
+<pre class="astro-RK3C6AMG language-glsl"><code class="language-glsl"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">version</span> <span class="token expression"><span class="token number">300</span> es</span></span>
+
+<span class="token comment">// 全ての浮動小数点型の変数に高い精度を指定</span>
+<span class="token keyword">precision</span> <span class="token keyword">highp</span> <span class="token keyword">float</span><span class="token punctuation">;</span>
+
+<span class="token keyword">uniform</span> <span class="token keyword">vec2</span> uResolution<span class="token punctuation">;</span>
+<span class="token keyword">uniform</span> <span class="token keyword">float</span> uTime<span class="token punctuation">;</span>
+
+<span class="token keyword">out</span> <span class="token keyword">vec4</span> outColor<span class="token punctuation">;</span>
+
+<span class="token comment">// 円周率</span>
+<span class="token keyword">const</span> <span class="token keyword">float</span> PI <span class="token operator">=</span> <span class="token number">3.1415926</span><span class="token punctuation">;</span>
+
+<span class="token comment">// atan を x = 0 上でも定義した拡張版</span>
+<span class="token comment">// tan(y) = x となるy（偏角）を(-PI, PI]の範囲で返す</span>
+<span class="token keyword">float</span> <span class="token function">atan2</span><span class="token punctuation">(</span><span class="token keyword">float</span> y<span class="token punctuation">,</span> <span class="token keyword">float</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// x = 0 の場合、点 (x, y) はy軸上</span>
+  <span class="token comment">// => つまり、偏角は 90° か -90° で、yの符号によって決まる</span>
+  <span class="token keyword">return</span> x <span class="token operator">==</span> <span class="token number">0.0</span> <span class="token operator">?</span> <span class="token function">sign</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token operator">*</span> PI <span class="token operator">/</span> <span class="token number">2.0</span> <span class="token operator">:</span> <span class="token function">atan</span><span class="token punctuation">(</span>y<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 直交座標 (x, y) -> 極座標 (偏角s, 動径t)</span>
+<span class="token keyword">vec2</span> <span class="token function">xy2pol</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> xy<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token function">atan2</span><span class="token punctuation">(</span>xy<span class="token punctuation">.</span>y<span class="token punctuation">,</span> xy<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">length</span><span class="token punctuation">(</span>xy<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 極座標 (偏角s, 動径t) -> 直交座標 (x, y)</span>
+<span class="token keyword">vec2</span> <span class="token function">pol2xy</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> pol<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 単位円（半径 = 1）の場合、(x, y) = (cos, sin)</span>
+  <span class="token keyword">return</span> pol<span class="token punctuation">.</span>t <span class="token operator">*</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token function">cos</span><span class="token punctuation">(</span>pol<span class="token punctuation">.</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">sin</span><span class="token punctuation">(</span>pol<span class="token punctuation">.</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// グラデーションを極座標に対してマッピング（時間変化Ver.）</span>
+<span class="token keyword">vec3</span> <span class="token function">tex</span><span class="token punctuation">(</span><span class="token keyword">vec2</span> pol<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 速度調整</span>
+  <span class="token keyword">float</span> time <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> uTime<span class="token punctuation">;</span>
+  
+  <span class="token comment">// (0.5, 0.5, 1.0)を中心とした、z=1平面上の半径0.5の円上を動くベクトル</span>
+  <span class="token comment">// * pol2xy(vec2(time, 0.5)) </span>
+  <span class="token comment">// * ... 偏角timeが時間変化、動径は0.5で固定</span>
+  <span class="token comment">// * 0.5 * pol2xy(vec2(time, 0.5))</span>
+  <span class="token comment">// * ... RGB色空間の頂点はRed,Green,Blueなので、淡くするために中心から頂点までの距離の半分に位置する色を使う</span>
+  <span class="token comment">// * pol2xy(vec2(time, 0.5)) + 0.5 </span>
+  <span class="token comment">// * ... 半径0.5の円周上の点を得る</span>
+  <span class="token comment">// * zは1.0で固定 ... 奥行きなし</span>
+  <span class="token keyword">vec3</span> circ <span class="token operator">=</span> <span class="token keyword">vec3</span><span class="token punctuation">(</span><span class="token number">0.5</span> <span class="token operator">*</span> <span class="token function">pol2xy</span><span class="token punctuation">(</span><span class="token keyword">vec2</span><span class="token punctuation">(</span>time<span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// スウィズル演算子を使ってcircの成分をずらし、3つのベクトルを作る</span>
+  <span class="token comment">// * RGB色空間の立方体の3つの側面上を円状に動くベクトル</span>
+  <span class="token keyword">vec3</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> colors3 <span class="token operator">=</span> <span class="token keyword">vec3</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span>circ<span class="token punctuation">.</span>rgb<span class="token punctuation">,</span> circ<span class="token punctuation">.</span>gbr<span class="token punctuation">,</span> circ<span class="token punctuation">.</span>brg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 配列のインデックスに対応させるため、偏角の範囲を[0, 2)区間に対応</span>
+  <span class="token comment">// * 偏角は(-PI, PI]の範囲なので、PIで割ると(-1.0, 1.0]</span>
+  <span class="token comment">// * 1.0を足すことで、(0.0, 2.0]になる</span>
+  pol<span class="token punctuation">.</span>s <span class="token operator">=</span> pol<span class="token punctuation">.</span>s <span class="token operator">/</span> PI <span class="token operator">+</span> <span class="token number">1.0</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 偏角を時間とともに動かす</span>
+  pol<span class="token punctuation">.</span>s <span class="token operator">+=</span> time<span class="token punctuation">;</span>
+  
+  <span class="token comment">// 整数型に変換することで、0, 1, 2のいずれかの値になる</span>
+  <span class="token keyword">int</span> idx <span class="token operator">=</span> <span class="token keyword">int</span><span class="token punctuation">(</span>pol<span class="token punctuation">.</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 偏角に沿って赤、青、赤を線形補間</span>
+  <span class="token comment">// * idx = 0 なら、mix(colors3[0], colors3[1], ...)</span>
+  <span class="token comment">// * idx = 1 なら、mix(colors3[1], colors3[0], ...)</span>
+  <span class="token comment">// * idx = 2 なら、mix(colors3[0], colors3[1], ...)</span>
+  <span class="token keyword">vec3</span> lerpedRB <span class="token operator">=</span> <span class="token function">mix</span><span class="token punctuation">(</span>colors3<span class="token punctuation">[</span>idx <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> colors3<span class="token punctuation">[</span><span class="token punctuation">(</span>idx <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token function">fract</span><span class="token punctuation">(</span>pol<span class="token punctuation">.</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 動径に沿ってlerpRBと白を線形補間</span>
+  <span class="token keyword">return</span> <span class="token function">mix</span><span class="token punctuation">(</span>colors3<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> lerpedRB<span class="token punctuation">,</span> pol<span class="token punctuation">.</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// フラグメント座標を正規化</span>
+  <span class="token comment">// * 割合なので、[0, 1]の範囲になる</span>
+  <span class="token keyword">vec2</span> pos <span class="token operator">=</span> gl_FragCoord<span class="token punctuation">.</span>xy <span class="token operator">/</span> uResolution<span class="token punctuation">.</span>xy<span class="token punctuation">;</span>
+  
+  <span class="token comment">// フラグメント座標範囲を[-1, 1]区間に変換</span>
+  <span class="token comment">// * 元々、フラグメント座標は第一象限内[0, 1]</span>
+  <span class="token comment">// * 2倍することで、[0, 2]に</span>
+  <span class="token comment">// * 1を引くことで、[-1, 1]に</span>
+  pos <span class="token operator">=</span> <span class="token number">2.0</span> <span class="token operator">*</span> pos<span class="token punctuation">.</span>xy <span class="token operator">-</span> <span class="token keyword">vec2</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// 極座標に変換</span>
+  pos <span class="token operator">=</span> <span class="token function">xy2pol</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+  <span class="token comment">// テクスチャマッピング</span>
+  outColor <span class="token operator">=</span> <span class="token keyword">vec4</span><span class="token punctuation">(</span><span class="token function">tex</span><span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+  </body></html>
