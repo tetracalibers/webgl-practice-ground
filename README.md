@@ -41,8 +41,3 @@ src
     ├── [slug].astro（各描画サンプル表示ページ）
     └── index.astro（目次ページ）
 ```
-
-## コンテンツ
-
-- [マンハッタン距離による円のSDFと等高線](/src/canvas/sdf-circle-manhattan-distance)
-- [チェビシェフ距離による円のSDFと等高線](/src/canvas/sdf-circle-chebyshev-distance)
