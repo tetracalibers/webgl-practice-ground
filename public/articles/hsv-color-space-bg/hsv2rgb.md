@@ -1,14 +1,6 @@
----
-title: "HSV色空間の断面"
----
+## hsv2rgbのロジックを追う
 
-import Canvas from "@/canvas/hsv-color-space-bg/canvas.astro"
-
-<Canvas />
-
-## hsv2rgb のロジックを追う
-
-![](/webgl-practice-ground/articles/hsv-color-space-bg/hue-circle.png)
+![](./hue-circle.png)
 
 ### vec3(color.x)
 
@@ -18,24 +10,25 @@ vec3 hsv2rgb(vec3 color) {
 }
 ```
 
-- r = g = b であることから、Red も Green も Blue も均等に混ざり合って、グレースケールになる。
+- r = g = b であることから、RedもGreenもBlueも均等に混ざり合って、グレースケールになる。
 
-![](/webgl-practice-ground/articles/hsv-color-space-bg/00.png)
+![](./00.png)
 
-### vec3(color.x \* 0.6)
+### vec3(color.x * 0.6)
 
 ```glsl
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   return vec3(hue);
 }
 ```
 
-- 原点から 60° 分色がつく。
+- 原点から60°分色がつく。
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/01.png)
+![](./01.png)
+
 
 ### vec3(0.0, 4.0, 2.0)
 
@@ -43,14 +36,14 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   return vec3(0.0, 4.0, 2.0);
 }
 ```
 
 - 色は(0.0, 4.0, 2.0) = (0.0, 1.0, 1.0) = (0, 255, 255)
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/02.png)
+![](./02.png)
 
 ### hue + vec3(0.0, 4.0, 2.0)
 
@@ -58,12 +51,12 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   return hue + vec3(0.0, 4.0, 2.0);
 }
 ```
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/03.png)
+![](./03.png)
 
 ### mod(hue + vec3(0.0, 4.0, 2.0), 6.0)
 
@@ -71,18 +64,18 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   vec3 m = mod(hue + vec3(0.0, 4.0, 2.0), 6.0);
-
+  
   return m;
 }
 ```
 
-- water (0, 255, 255) ... hue が 0 の場合、m = (0.0, 4.0, 2.0)
-- pink (255, 0, 255) ... hue が 2 の場合、m = (2.0, 0.0, 4.0)
-- yellow (255, 255, 0) ... hue が 4 の場合、m = (4.0, 2.0, 0.0)
+- water  (0, 255, 255) ... hueが0の場合、m = (0.0, 4.0, 2.0)
+- pink   (255, 0, 255) ... hueが2の場合、m = (2.0, 0.0, 4.0)
+- yellow (255, 255, 0) ... hueが4の場合、m = (4.0, 2.0, 0.0)
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/04.png)
+![](./04.png)
 
 ### abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0)
 
@@ -90,10 +83,10 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   vec3 m = mod(hue + vec3(0.0, 4.0, 2.0), 6.0);
   vec3 a = abs(m - 3.0);
-
+  
   return a;
 }
 ```
@@ -105,7 +98,7 @@ vec3 hsv2rgb(vec3 color) {
 - hue = 4 の場合
   - a = abs(1.0, -1.0, -3.0) = (1.0, 1.0, 3.0) = white
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/05.png)
+![](./05.png)
 
 ### abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0
 
@@ -113,10 +106,10 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   vec3 m = mod(hue + vec3(0.0, 4.0, 2.0), 6.0);
   vec3 a = abs(m - 3.0);
-
+  
   return a - 1.0;
 }
 ```
@@ -128,7 +121,7 @@ vec3 hsv2rgb(vec3 color) {
 - hue = 4 の場合
   - a - 1.0 = (1.0, 1.0, 3.0) - 1.0 = (0.0, 0.0, 2.0) = blue
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/06.png)
+![](./06.png)
 
 ### clamp(abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0)
 
@@ -136,11 +129,11 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   vec3 m = mod(hue + vec3(0.0, 4.0, 2.0), 6.0);
   vec3 a = abs(m - 3.0);
   vec3 rgb = clamp(a - 1.0, 0.0, 1.0);
-
+  
   return rgb;
 }
 ```
@@ -157,39 +150,39 @@ vec3 hsv2rgb(vec3 color) {
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   vec3 m = mod(hue + vec3(0.0, 4.0, 2.0), 6.0);
   vec3 a = abs(m - 3.0);
   vec3 rgb = clamp(a - 1.0, 0.0, 1.0);
-
+  
   // 白とrgbを彩度（動径）に沿って補間
   return mix(vec3(1.0), rgb, color.y);
 }
 ```
 
-- color.y は彩度 s = 円錐の半径
+- color.y は彩度s = 円錐の半径
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/07.png)
+![](./07.png)
 
-### color.z \* mix(vec3(1.0), rgb, color.y)
+### color.z * mix(vec3(1.0), rgb, color.y)
 
 ```glsl
 vec3 hsv2rgb(vec3 color) {
   // Hueを[0, 1]から[0, 6]へスケール
   float hue = color.x * 6.0;
-
+  
   vec3 m = mod(hue + vec3(0.0, 4.0, 2.0), 6.0);
   vec3 a = abs(m - 3.0);
   vec3 rgb = clamp(a - 1.0, 0.0, 1.0);
-
+    
   // 白とrgbを彩度（動径）に沿って補間したものに明度をかける
   return color.z * mix(vec3(1.0), rgb, color.y);
 }
 ```
 
-![](/ARTICLES/HSV-COLOR-SPACE-BG/08.png)
+![](./08.png)
 
 ### 参考
 
-- [HSB(HSV)から if 文を使わずに RGB へ変換する](https://sites.google.com/site/bknobiboroku/programming-tips/wpf/Csharp_wpf_HSB_to_RGB)
+- [HSB(HSV)からif文を使わずにRGBへ変換する](https://sites.google.com/site/bknobiboroku/programming-tips/wpf/Csharp_wpf_HSB_to_RGB)
 - [RGB -> HSV 変換式を中学数学でガチ導出する](https://zenn.dev/tetracalibers/articles/78474ee3e8678e)
