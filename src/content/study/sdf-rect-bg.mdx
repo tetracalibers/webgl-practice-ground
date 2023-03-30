@@ -5,3 +5,121 @@ title: "矩形のSDFと等高線"
 import Canvas from "@/canvas/sdf-rect-bg/canvas.astro"
 
 <Canvas />
+
+## 矩形 SDF のロジックを追う
+
+### 矩形の外部
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return length(point);
+}
+```
+
+![](/articles/sdf-rect-bg/01.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return length(point - dist);
+}
+```
+
+![](/articles/sdf-rect-bg/02.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return max(point - dist, vec2(0.0)).x;
+}
+```
+
+![](/articles/sdf-rect-bg/03.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return max(point - dist, vec2(0.0)).y;
+}
+```
+
+![](/articles/sdf-rect-bg/04.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return length(max(point - dist, vec2(0.0)));
+}
+```
+
+![](/articles/sdf-rect-bg/05.png)
+
+### 矩形の内部
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return point.x - dist.x;
+}
+```
+
+![](/articles/sdf-rect-bg/06.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return point.y - dist.y;
+}
+```
+
+![](/articles/sdf-rect-bg/07.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return max(point.x - dist.x, point.y - dist.y);
+}
+```
+
+![](/articles/sdf-rect-bg/08.png)
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return min(max(point.x - dist.x, point.y - dist.y), 0.0);
+}
+```
+
+![](/articles/sdf-rect-bg/09.png)
+
+### 外部 + 内部
+
+```glsl
+// centerを中心とした、center + distを頂点とする矩形
+float rect(vec2 xy, vec2 center, vec2 dist) {
+  // xyを中心からの距離に変換
+  vec2 point = abs(xy - center);
+  return length(max(point - dist, vec2(0.0))) + min(max(point.x - dist.x, point.y - dist.y), 0.0);
+}
+```
+
+![](/articles/sdf-rect-bg/10.png)

@@ -44,7 +44,5 @@ src
 
 ## コンテンツ
 
-- [hsv2rgbのロジックを追う](/src/canvas/hsv-color-space-bg/doc/hsv2rgb.md)
-- [矩形のSDFのロジックを追う](/src/canvas/sdf-rect-bg)
 - [マンハッタン距離による円のSDFと等高線](/src/canvas/sdf-circle-manhattan-distance)
 - [チェビシェフ距離による円のSDFと等高線](/src/canvas/sdf-circle-chebyshev-distance)
