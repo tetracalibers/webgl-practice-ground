@@ -23,15 +23,8 @@ pre[class*="language-"] {
 }
 
 /* Selection */
-code[class*="language-"]::-moz-selection,
-code[class*="language-"] *::-moz-selection,
-pre[class*="language-"] *::-moz-selection {
-  background: rgba(207, 216, 220, 0.5);
-  color: inherit;
-}
-
-code[class*="language-"]::selection,
-code[class*="language-"] *::selection,
+code::selection,
+code *::selection,
 pre[class*="language-"] *::selection {
   background: rgba(207, 216, 220, 0.5);
   color: inherit;
@@ -40,16 +33,25 @@ pre[class*="language-"] *::selection {
 /* Code blocks */
 pre[class*="language-"] {
   padding: 1em;
+  padding-block-end: 0;
   margin: 1em;
-  overflow: auto;
   border-radius: 0.3em;
 }
 
+pre[class*="language-"] > code {
+  overflow: auto;
+  display: block;
+  padding-block-end: 1em;
+}
+
 /* Inline code */
-:not(pre) > code[class*="language-"] {
+:not(pre) > code {
   padding: 0.2em 0.3em;
   border-radius: 0.3em;
   white-space: normal;
+  color: #867070;
+  line-height: 1.5;
+  font-size: 1rem;
 }
 
 .token.bold {
