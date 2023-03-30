@@ -9,6 +9,7 @@ type Slug = (typeof slugs)[number]
 
 const order: Slug[] = [
   "white-triangle", // https://wgld.org/d/webgl/w014.html
+  "render-full-screen-trinangle-in-wegbl2", //
   "solid-bg", // https://www.shadertoy.com/view/NdySRV
   "resolution-gradient-bg", // https://www.shadertoy.com/view/7sGXzK
   "lerp-2color-bg", // https://www.shadertoy.com/view/NdySR3
@@ -63,19 +64,5 @@ const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slu
   body {
     overflow-y: auto;
     line-height: 2;
-  }
-
-  a {
-    color: var(--color);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.25em;
-  }
-
-  a:not(:visited) {
-    color: #7286d3;
-  }
-
-  a:hover {
-    text-decoration-style: dotted;
   }
 </style>
