@@ -8,7 +8,7 @@ import Canvas from "@/canvas/hsv-color-space-bg/canvas.astro"
 
 ## hsv2rgb のロジックを追う
 
-![](/articles/hsv-color-space-bg/hue-circle.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/hue-circle.png)
 
 ### vec3(color.x)
 
@@ -20,7 +20,7 @@ vec3 hsv2rgb(vec3 color) {
 
 - r = g = b であることから、Red も Green も Blue も均等に混ざり合って、グレースケールになる。
 
-![](/articles/hsv-color-space-bg/00.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/00.png)
 
 ### vec3(color.x \* 0.6)
 
