@@ -30,12 +30,52 @@ const { title } = Astro.props
   </body>
 </html>
 
-<style>
+<style is:global>
   body {
     --color: #354259;
     margin: 0;
     overflow-x: hidden;
     font-family: "Baloo 2", "Zen Maru Gothic";
     color: var(--color);
+  }
+
+  body > :not(canvas) {
+    padding-inline: 1.5rem;
+  }
+
+  h1 {
+    line-height: 1.5;
+  }
+
+  p {
+    margin: 0;
+    line-height: 2;
+    padding-block: 0.5em;
+  }
+
+  ul {
+    margin: 1rem;
+    list-style-position: inside;
+  }
+
+  a {
+    color: var(--color);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  a:not(:visited) {
+    color: #7286d3;
+  }
+
+  a:hover {
+    text-decoration-style: dotted;
+  }
+
+  img {
+    width: 90%;
+    margin: auto;
+    max-width: 800px;
+    display: block;
   }
 </style>
