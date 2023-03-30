@@ -35,7 +35,7 @@ vec3 hsv2rgb(vec3 color) {
 
 - 原点から 60° 分色がつく。
 
-![](/articles/hsv-color-space-bg/01.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/01.png)
 
 ### vec3(0.0, 4.0, 2.0)
 
@@ -50,7 +50,7 @@ vec3 hsv2rgb(vec3 color) {
 
 - 色は(0.0, 4.0, 2.0) = (0.0, 1.0, 1.0) = (0, 255, 255)
 
-![](/articles/hsv-color-space-bg/02.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/02.png)
 
 ### hue + vec3(0.0, 4.0, 2.0)
 
@@ -63,7 +63,7 @@ vec3 hsv2rgb(vec3 color) {
 }
 ```
 
-![](/articles/hsv-color-space-bg/03.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/03.png)
 
 ### mod(hue + vec3(0.0, 4.0, 2.0), 6.0)
 
@@ -82,7 +82,7 @@ vec3 hsv2rgb(vec3 color) {
 - pink (255, 0, 255) ... hue が 2 の場合、m = (2.0, 0.0, 4.0)
 - yellow (255, 255, 0) ... hue が 4 の場合、m = (4.0, 2.0, 0.0)
 
-![](/articles/hsv-color-space-bg/04.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/04.png)
 
 ### abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0)
 
@@ -105,7 +105,7 @@ vec3 hsv2rgb(vec3 color) {
 - hue = 4 の場合
   - a = abs(1.0, -1.0, -3.0) = (1.0, 1.0, 3.0) = white
 
-![](/articles/hsv-color-space-bg/05.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/05.png)
 
 ### abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0
 
@@ -128,7 +128,7 @@ vec3 hsv2rgb(vec3 color) {
 - hue = 4 の場合
   - a - 1.0 = (1.0, 1.0, 3.0) - 1.0 = (0.0, 0.0, 2.0) = blue
 
-![](/articles/hsv-color-space-bg/06.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/06.png)
 
 ### clamp(abs(mod(hue + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0)
 
@@ -169,7 +169,7 @@ vec3 hsv2rgb(vec3 color) {
 
 - color.y は彩度 s = 円錐の半径
 
-![](/articles/hsv-color-space-bg/07.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/07.png)
 
 ### color.z \* mix(vec3(1.0), rgb, color.y)
 
@@ -187,7 +187,7 @@ vec3 hsv2rgb(vec3 color) {
 }
 ```
 
-![](/articles/hsv-color-space-bg/08.png)
+![](/webgl-practice-ground/articles/hsv-color-space-bg/08.png)
 
 ### 参考
 
