@@ -18,6 +18,8 @@ await fs.writeFile(
   `
 ---
 title: ""
+category: glsl
+subcategory: shape
 ---
 
 import Canvas from "@/canvas/${newTitle}/canvas.astro"
