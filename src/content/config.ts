@@ -48,6 +48,9 @@ export const glslCategoryDetail: Record<(typeof glslCategories)[number], { title
   shape: {
     title: "Shape"
   },
+  pattern: {
+    title: "Pattern"
+  },
   "3d": {
     title: "3D"
   },
@@ -62,9 +65,6 @@ export const glslCategoryDetail: Record<(typeof glslCategories)[number], { title
   },
   motion: {
     title: "動き"
-  },
-  pattern: {
-    title: "繰り返し"
   },
   physics: {
     title: "物理"
