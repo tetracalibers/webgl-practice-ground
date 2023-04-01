@@ -1,0 +1,30 @@
+---
+title: "2点を結ぶ線分を描くline関数の実装"
+category: glsl
+subcategory: shape
+---
+
+import Canvas from "@/canvas/draw-line-glsl/canvas.astro"
+
+<Canvas />
+
+## 線分の判定
+
+### dist の指し示す点が線分上にある
+
+- dot(xy - p1, p2 - p1) が正（なす角が 90 度より小）
+- dot(xy - p2, p1 - p2) が正（なす角が 90 度より小）
+
+![](/webgl-practice-ground/articles/draw-line-glsl/dot-p-times-p.svg)
+
+### dist の指し示す点は線分上にない
+
+- dot(xy - p1, p2 - p1) が正（なす角が 90 度より小）
+- dot(xy - p2, p1 - p2) が負（なす角が 90 度より大）
+
+![](/webgl-practice-ground/articles/draw-line-glsl/dot-p-times-n.svg)
+
+- dot(xy - p1, p2 - p1) が負（なす角が 90 度より大）
+- dot(xy - p2, p1 - p2) が正（なす角が 90 度より小）
+
+![](/webgl-practice-ground/articles/draw-line-glsl/dot-n-times-p.svg)
