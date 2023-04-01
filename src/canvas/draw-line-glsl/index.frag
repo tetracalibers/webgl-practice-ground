@@ -39,7 +39,7 @@ float line(vec2 xy, vec2 p1, vec2 p2, float thickness, float antispread) {
   float l = 1.0 / td;
   
   return dot(xy - p2, p1 - p2) > 0.0 && dot(xy - p1, p2 - p1) > 0.0 
-    ? pow(l, antispread) // 線分上の点（antispreadが大きいほど、境界が滑らかに）
+    ? pow(l, antispread) // 線分上の点（antispreadが大きいほど、境界がはっきり）
     : 0.0; // 直線上ではあるが、線分上ではない場合
 }
 
