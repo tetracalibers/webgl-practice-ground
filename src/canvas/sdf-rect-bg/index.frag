@@ -33,7 +33,9 @@ void main() {
   // 等高線を描く値の間隔
   float interval = 0.1;
   
+  float sdf = rect(pos, vec2(0.0), vec2(0.5));
+  
   // 等高線の描画
-  outColor.rgb = vec3(contour(rect(pos, vec2(0.0), vec2(0.5)), interval));
+  outColor.rgb = vec3(contour(sdf, interval));
   outColor.a = 1.0;
 }

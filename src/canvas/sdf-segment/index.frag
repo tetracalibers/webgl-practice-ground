@@ -46,7 +46,9 @@ void main() {
   // 等高線を描く値の間隔
   float interval = 0.1;
   
+  float sdf = segment(pos, vec2(0.0), mouse);
+  
   // 等高線の描画
-  outColor.rgb = vec3(contour(segment(pos, vec2(0.0), mouse), interval));
+  outColor.rgb = vec3(contour(sdf, interval));
   outColor.a = 1.0;
 }
