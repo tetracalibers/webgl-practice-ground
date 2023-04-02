@@ -4,17 +4,8 @@
 precision highp float;
 
 uniform vec2 uResolution;
-uniform vec2 uMouse;
 
 out vec4 outColor;
-
-float norm(float v, float min, float max) {
-  return (v - min) / (max - min);
-}
-
-float map(float v, float min1, float max1, float min2, float max2) {
-  return mix(min2, max2, norm(v, min1, max1));
-}
 
 // 円 f(x, y) = length(xy, center) - radius の距離関数
 float circleSdf(vec2 xy, vec2 center, float radius) {
