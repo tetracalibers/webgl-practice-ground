@@ -24,7 +24,8 @@ export const glslCategories = [
   "image-processing",
   "3d",
   "application",
-  "simulation"
+  "simulation",
+  "transform"
 ] as const
 
 export const glslCategoryDetail: Record<(typeof glslCategories)[number], { title: string }> = {
@@ -54,6 +55,9 @@ export const glslCategoryDetail: Record<(typeof glslCategories)[number], { title
   },
   pattern: {
     title: "Pattern"
+  },
+  transform: {
+    title: "Transform"
   },
   "3d": {
     title: "3D"
