@@ -11,6 +11,7 @@ const zWebglStudy = z.object({
 export const glslCategories = [
   "color",
   "basic",
+  "math",
   "interpolation",
   "coordinate-system",
   "plot",
@@ -29,6 +30,9 @@ export const glslCategories = [
 export const glslCategoryDetail: Record<(typeof glslCategories)[number], { title: string }> = {
   basic: {
     title: "Basic"
+  },
+  math: {
+    title: "Mathematics"
   },
   interpolation: {
     title: "Interpolation"
