@@ -42,7 +42,7 @@ import fragmentSource from "./index.frag?raw"
 
       reflect = new UniformReflect(gl, program)
       clock = new Clock()
-      mouse = new MouseCoords(canvas)
+      mouse = new MouseCoords(canvas, 0.0, 0.0)
 
       space.onResize = onResize
     }
