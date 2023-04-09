@@ -2,12 +2,20 @@ export class MouseCoords {
   private _rect: DOMRect
   private _coords: [number, number]
 
-  constructor(canvas: HTMLCanvasElement, x = 0.5, y = 0.5) {
+  constructor(canvas: HTMLCanvasElement, flagX?: number, flagY?: number) {
     this._rect = canvas.getBoundingClientRect()
+
+    const { width, left, top, height } = this._rect
+    const x = left + width * (flagX !== undefined ? this.clampToFragCoord(flagX) : 0.5)
+    const y = top + height * (flagY !== undefined ? this.clampToFragCoord(flagY) : 0.5)
     this._coords = [x, y]
 
     canvas.addEventListener("mousemove", this.onMove, { passive: false })
     canvas.addEventListener("touchmove", this.onMove, { passive: false })
+  }
+
+  private clampToFragCoord(v: number) {
+    return Math.min(Math.max(v, 0), 1)
   }
 
   private innerPos = (x: number, y: number): [number, number] => {
