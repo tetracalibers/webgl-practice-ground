@@ -69,4 +69,8 @@ export class Program {
     this.setAttributeLocations(attributes)
     this.setUniformLocations(uniforms)
   }
+
+  get() {
+    return this._program
+  }
 }
