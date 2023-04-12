@@ -7,7 +7,7 @@ export class Program {
   private _attributes: AttributeMap = <AttributeMap>{}
   private _uniforms: UniformMap = <UniformMap>{}
 
-  constructor(gl: WebGL2RenderingContext, vertexShaderSource: string, fragmentShaderSource: string) {
+  constructor(gl: WebGL2RenderingContext, vertexShaderSource: string, fragmentShaderSource: string, use = true) {
     this._gl = gl
     this._program = gl.createProgram()
 
@@ -35,7 +35,7 @@ export class Program {
       return
     }
 
-    this.useProgram()
+    use && this.useProgram()
   }
 
   useProgram() {
