@@ -2,9 +2,9 @@ export class Space {
   private _canvas: HTMLCanvasElement
   private _gl: WebGL2RenderingContext
 
-  constructor(id: string) {
+  constructor(id: string, options?: WebGLContextAttributes) {
     this._canvas = <HTMLCanvasElement>document.getElementById(id)
-    this._gl = <WebGL2RenderingContext>this._canvas.getContext("webgl2")
+    this._gl = <WebGL2RenderingContext>this._canvas.getContext("webgl2", options)
     if (!this._canvas) console.error("Canvas not found")
     if (!this._gl) console.error("WebGL2 is not available on your browser")
   }
