@@ -18,12 +18,12 @@ float circleSdf(vec2 xy, vec2 center, float radius) {
   return pow(dot(fromCenter, fromCenter), 0.5) - radius;
 }
 
-// 塗りつぶされた円
-vec4 circle(vec2 xy, vec2 center, float radius, float spread) {
+// colorで円を塗りつぶし、それ以外の領域は透明に
+vec4 circle(vec2 xy, vec2 center, float radius, float spread, vec4 color) {
   float sdf = circleSdf(xy, center, radius);
   float shape = smoothstep(radius - radius * spread, radius + radius * spread, sdf);
   
-  return mix(vec4(1.0, 0.0, 1.0, 0.5), vec4(1.0, 0.0, 0.0, 0.0), shape);
+  return mix(color, vec4(1.0, 0.0, 0.0, 0.0), shape);
 }
 
 void main() {
@@ -35,5 +35,6 @@ void main() {
   mouse -= 1.0;
   mouse.y *= -1.0;
   
-  outColor = circle(pos, mouse, 0.1, 0.005);
+  vec4 shapeColor = vec4(1.0, 0.0, 1.0, 0.5);
+  outColor = circle(pos, mouse, 0.1, 0.005, shapeColor);
 }
