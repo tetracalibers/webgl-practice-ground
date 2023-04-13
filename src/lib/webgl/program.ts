@@ -45,6 +45,10 @@ export class Program<A extends string = Attribute, U extends string = Uniform> {
     this._gl.useProgram(this._program)
   }
 
+  use() {
+    this.useProgram()
+  }
+
   setAttributeLocations(attributes: A[]) {
     if (!this._program) return
     for (const attribute of attributes) {
