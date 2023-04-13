@@ -6,8 +6,6 @@ precision highp float;
 uniform vec2 uResolution;
 uniform vec2 uMouse;
 
-in vec2 vTextureCoords;
-
 out vec4 outColor;
 
 // 円 f(x, y) = length(xy, center) - radius の距離関数
