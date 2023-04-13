@@ -1,11 +1,9 @@
-<canvas id="gl-canvas"></canvas>
+---
+import ShaderDemo from "@/components/shader-demo.astro"
+import fragmentSource from "./index.frag?raw"
+---
 
-<style>
-  .full-screen {
-    width: 100vw;
-    height: 100svh;
-  }
-</style>
+<ShaderDemo fragSrc={fragmentSource} canvasSize={"full-screen"} />
 
 <script>
   import { onload } from "./render"
