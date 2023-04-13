@@ -21,9 +21,9 @@ float circleSdf(vec2 xy, vec2 center, float radius) {
 // 塗りつぶされた円
 vec4 circle(vec2 xy, vec2 center, float radius, float spread) {
   float sdf = circleSdf(xy, center, radius);
-  float circleStep = smoothstep(radius - radius * spread, radius + radius * spread, sdf);
+  float shape = smoothstep(radius - radius * spread, radius + radius * spread, sdf);
   
-  return mix(vec4(1.0, 0.0, 1.0, 0.5), vec4(1.0, 0.0, 0.0, 0.0), circleStep);
+  return mix(vec4(1.0, 0.0, 1.0, 0.5), vec4(1.0, 0.0, 0.0, 0.0), shape);
 }
 
 void main() {
