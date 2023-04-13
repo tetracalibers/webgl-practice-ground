@@ -1,5 +1,5 @@
 ---
-import { glslCategoryDetail } from "@/content/config"
+import { glslCategoryDetail, webglCategoryDetail } from "@/content/config"
 import BaseHtml from "@/layout/base-html.astro"
 import { getCollection } from "astro:content"
 
@@ -99,15 +99,24 @@ const glslStudyPages = orderedStudyPages.filter((page) => page.data.category ===
     })
   }
   <h2>WebGL</h2>
-  <ul>
-    {
-      webglStudyPages.map((page) => (
-        <li>
-          <a href={`/webgl-practice-ground/${page.slug}`}>{page.data.title}</a>
-        </li>
-      ))
-    }
-  </ul>
+  {
+    Object.entries(webglCategoryDetail).map(([ckey, cdetail]) => {
+      const pages = webglStudyPages.filter((page) => page.data.subcategory === ckey)
+      if (pages.length < 1) return null
+      return (
+        <>
+          <h3>{cdetail.title}</h3>
+          <ul>
+            {pages.map((page) => (
+              <li>
+                <a href={`/webgl-practice-ground/${page.slug}`}>{page.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    })
+  }
 </BaseHtml>
 
 <style>
