@@ -18,17 +18,9 @@ float circleSdf(vec2 xy, vec2 center, float radius) {
   return pow(dot(fromCenter, fromCenter), 0.5) - radius;
 }
 
-// 円 f(x, y) = length(xy, center) - radius
-float rcircle(vec2 xy, vec2 center, float radius) {
-  vec2 fromCenter = xy - center;
-  // dot(c, c) = ||c|| * ||c|| * cos(0) = ||c||^2 = length(c)^2
-  // pow(dot(c, c), 0.5) = length(c)^2^0.5 = length(c)^(2 * 0.5) = length(c)
-  return pow(dot(fromCenter, fromCenter), 0.5) - radius;
-}
-
 // 塗りつぶされた円
 vec4 circle(vec2 xy, vec2 center, float radius, float spread) {
-  float sdf = rcircle(xy, center, radius);
+  float sdf = circleSdf(xy, center, radius);
   float circleStep = smoothstep(radius - radius * spread, radius + radius * spread, sdf);
   
   return mix(vec4(1.0, 0.0, 1.0, 0.5), vec4(1.0, 0.0, 0.0, 0.0), circleStep);
