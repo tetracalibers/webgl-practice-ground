@@ -12,13 +12,15 @@ import compositeFragment from "./composite.frag?raw"
 import postVertexSource from "./post-process.vert?raw"
 import postFragmentSource from "./post-process.frag?raw"
 
+class MainProgram extends Program<Attribute, Uniform | "uPrevTexture" | "uCurrTexture"> {}
+
 export const onload = () => {
   const space = new Space("gl-canvas")
   const canvas = space.canvas
   const gl = space.gl
   if (!canvas || !gl) return
 
-  let program: Program
+  let program: MainProgram
   let reflect: UniformReflect
   let reflect2: UniformReflect
   let mouse: MouseCoords
@@ -42,7 +44,7 @@ export const onload = () => {
     gl.clearColor(1.0, 1.0, 1.0, 1.0)
     gl.clearDepth(1.0)
 
-    program = new Program(gl, vertexSource, compositeFragment, false)
+    program = new MainProgram(gl, vertexSource, compositeFragment, false)
 
     mouse = new MouseCoords(canvas)
     clock = new Clock()

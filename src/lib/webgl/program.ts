@@ -1,11 +1,14 @@
 import { ShaderCompiler } from "../shader/compile"
-import type { AttributeMap, UniformMap, Attribute, Uniform } from "./shader-data.type"
+import type { Attribute, Uniform } from "./shader-data.type"
 
-export class Program {
+type AttributeMap<A extends string> = Record<A, number>
+type UniformMap<U extends string> = Record<U, WebGLUniformLocation | null>
+
+export class Program<A extends string = Attribute, U extends string = Uniform> {
   private _gl: WebGL2RenderingContext
   private _program: WebGLProgram | null
-  private _attributes: AttributeMap = <AttributeMap>{}
-  private _uniforms: UniformMap = <UniformMap>{}
+  private _attributes: AttributeMap<A> = <AttributeMap<A>>{}
+  private _uniforms: UniformMap<U> = <UniformMap<U>>{}
 
   constructor(gl: WebGL2RenderingContext, vertexShaderSource: string, fragmentShaderSource: string, use = true) {
     this._gl = gl
@@ -42,29 +45,29 @@ export class Program {
     this._gl.useProgram(this._program)
   }
 
-  setAttributeLocations(attributes: Attribute[]) {
+  setAttributeLocations(attributes: A[]) {
     if (!this._program) return
     for (const attribute of attributes) {
       this._attributes[attribute] = this._gl.getAttribLocation(this._program, attribute)
     }
   }
 
-  setUniformLocations(uniforms: Uniform[]) {
+  setUniformLocations(uniforms: U[]) {
     if (!this._program) return
     for (const uniform of uniforms) {
       this._uniforms[uniform] = this._gl.getUniformLocation(this._program, uniform)
     }
   }
 
-  getAttributeLocation(attribute: Attribute) {
+  getAttributeLocation(attribute: A) {
     return this._attributes[attribute]
   }
 
-  getUniformLocation(uniform: Uniform) {
+  getUniformLocation(uniform: U) {
     return this._uniforms[uniform]
   }
 
-  load(attributes: Attribute[], uniforms: Uniform[]) {
+  load(attributes: A[], uniforms: U[]) {
     this.useProgram()
     this.setAttributeLocations(attributes)
     this.setUniformLocations(uniforms)
