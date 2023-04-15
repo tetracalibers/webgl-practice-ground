@@ -5,6 +5,7 @@ interface RenderObjectSetting {
   vertices: number[]
   indices: number[]
   colors?: number[]
+  normals?: number[]
   hidden?: boolean
 }
 
@@ -34,6 +35,7 @@ export class Scene {
 
     // attributes
     this.registerPositions(obj.vertices)
+    obj.normals && this.registerNormals(obj.normals)
     obj.colors && this.registerColors(obj.colors)
 
     // add
@@ -91,6 +93,12 @@ export class Scene {
   private registerPositions(vertices: number[]) {
     const location = this._program.getAttributeLocation("aVertexPosition")
     const data = new Float32Array(vertices)
+    this.registerAtrribute(data, location, 3)
+  }
+
+  private registerNormals(normals: number[]) {
+    const location = this._program.getAttributeLocation("aVertexNormal")
+    const data = new Float32Array(normals)
     this.registerAtrribute(data, location, 3)
   }
 
