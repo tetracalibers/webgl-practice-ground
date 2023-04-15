@@ -1,0 +1,55 @@
+---
+import CodeBlock from "./code-block.astro"
+
+interface Props {
+  glSrc?: string
+  vertSrc?: string
+  fragSrc?: string
+  canvasSize: "full-screen" | "full-square" | [number, number]
+}
+
+const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
+---
+
+<div class="container">
+  {
+    typeof canvasSize === "string" ? (
+      <canvas id="gl-canvas" class={canvasSize} />
+    ) : (
+      <canvas id="gl-canvas" width={canvasSize[0]} height={canvasSize[1]} />
+    )
+  }
+  {vertSrc && <CodeBlock title="Vertex Shader" src={vertSrc} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />}
+  {fragSrc && <CodeBlock title="Fragment Shader" src={fragSrc} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />}
+  {glSrc && <CodeBlock title="WebGL Script" src={glSrc} lang="ts" bgcolor="rgba(247, 200, 224, 0.3)" />}
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 2em;
+  }
+
+  canvas {
+    align-self: center;
+  }
+
+  .full-screen {
+    width: 100vw;
+    height: 100svh;
+  }
+
+  .full-square {
+    width: 100vw;
+    height: 100vw;
+  }
+
+  @media (orientation: landscape) {
+    .full-square {
+      width: 100svh;
+      height: 100svh;
+    }
+  }
+</style>
