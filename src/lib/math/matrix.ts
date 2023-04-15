@@ -353,6 +353,8 @@ export class Matrix4 implements Matrix {
     )
   }
 
+  multiply = this.mulByMatrix4
+
   /**
    * Returns the inverse matrix.
    * This method does not mutate the matrix.
