@@ -9,11 +9,11 @@ export class Transforms {
   private _camera: Camera
   private _canvas: HTMLCanvasElement
 
-  private _modelViewMatrix: Matrix4
-  private _projectionMatrix: Matrix4
-  private _normalMatrix: Matrix4
+  private _matrixMV: Matrix4
+  private _matrixP: Matrix4
+  private _matrixNormal: Matrix4
 
-  private stack: Matrix4[]
+  private _stack: Matrix4[]
 
   constructor(gl: WebGL2RenderingContext, program: Program, camera: Camera, canvas: HTMLCanvasElement) {
     this._gl = gl
@@ -21,19 +21,19 @@ export class Transforms {
     this._camera = camera
     this._canvas = canvas
 
-    this._modelViewMatrix = this.calcModelView()
-    this._projectionMatrix = this.calcPerspective()
-    this._normalMatrix = this.calcNormal()
+    this._matrixMV = this.calcView()
+    this._matrixP = this.calcPerspective()
+    this._matrixNormal = this.calcNormal()
 
-    this.stack = []
+    this._stack = []
   }
 
-  private calcModelView() {
+  private calcView() {
     return this._camera.viewTransform
   }
 
   private calcNormal() {
-    return this._modelViewMatrix.inverse().transpose()
+    return this._matrixMV.inverse().transpose()
   }
 
   private calcPerspective() {
@@ -43,16 +43,16 @@ export class Transforms {
     return Matrix4.perspective(fov, aspectRatio, near, far)
   }
 
-  updateModelView() {
-    this._modelViewMatrix = this.calcModelView()
+  private calcModelView(newModel?: Matrix4) {
+    return newModel ? this.calcView().multiply(newModel) : this.calcView()
   }
 
   updateNormal() {
-    this._normalMatrix = this.calcNormal()
+    this._matrixNormal = this.calcNormal()
   }
 
   updatePerspective() {
-    this._projectionMatrix = this.calcPerspective()
+    this._matrixP = this.calcPerspective()
   }
 
   private setUniformMatrix4fv(uniform: UniformMatrix4fv, matrix: Matrix4) {
@@ -61,19 +61,24 @@ export class Transforms {
 
   setMatrixUniforms() {
     this.updateNormal()
-    this.setUniformMatrix4fv("uModelViewMatrix", this._modelViewMatrix)
-    this.setUniformMatrix4fv("uProjectionMatrix", this._projectionMatrix)
-    this.setUniformMatrix4fv("uNormalMatrix", this._normalMatrix)
+    this.setUniformMatrix4fv("uModelViewMatrix", this._matrixMV)
+    this.setUniformMatrix4fv("uProjectionMatrix", this._matrixP)
+    this.setUniformMatrix4fv("uNormalMatrix", this._matrixNormal)
   }
 
-  push() {
-    this.stack.push(this._modelViewMatrix)
+  push(model?: Matrix4) {
+    this._stack.push(this.calcModelView(model))
   }
 
   pop() {
-    if (!this.stack.length) return
-    const item = this.stack.pop()
+    if (!this._stack.length) return
+    const item = this._stack.pop()
     if (!item) return
-    this._modelViewMatrix = item
+    this._matrixMV = item
+  }
+
+  reset() {
+    this._stack = []
+    this._matrixMV = this.calcView()
   }
 }
