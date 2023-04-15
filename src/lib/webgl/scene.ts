@@ -4,6 +4,7 @@ interface RenderObjectSetting {
   alias?: string
   vertices: number[]
   indices: number[]
+  colors?: number[]
   hidden?: boolean
 }
 
@@ -32,7 +33,8 @@ export class Scene {
     const cleanUp = this.bindVertexArray(obj.vao)
 
     // attributes
-    this.registerPositions(obj)
+    this.registerPositions(obj.vertices)
+    obj.colors && this.registerColors(obj.colors)
 
     // add
     this._objects.push(obj)
@@ -86,9 +88,31 @@ export class Scene {
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, null)
   }
 
-  private registerPositions(obj: RenderObject) {
+  private registerPositions(vertices: number[]) {
     const location = this._program.getAttributeLocation("aVertexPosition")
-    const data = new Float32Array(obj.vertices)
+    const data = new Float32Array(vertices)
     this.registerAtrribute(data, location, 3)
+  }
+
+  private registerColors(colors: number[]) {
+    const location = this._program.getAttributeLocation("aVertexColor")
+    const data = new Float32Array(colors)
+    this.registerAtrribute(data, location, 4)
+  }
+
+  draw() {
+    const gl = this._gl
+    this.tranverse((obj) => {
+      if (obj.hidden) return
+
+      gl.bindVertexArray(obj.vao ?? null)
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
+
+      gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
+
+      gl.bindVertexArray(null)
+      gl.bindBuffer(gl.ARRAY_BUFFER, null)
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
+    })
   }
 }
