@@ -1,0 +1,42 @@
+---
+import { Prism } from "@astrojs/prism"
+
+interface Props {
+  title: string
+  src: string
+  lang: "ts" | "glsl"
+  bgcolor?: `rgba(${number}, ${number}, ${number}, ${number})`
+}
+
+const { title, src, lang, bgcolor = "rgba(255, 255, 255, 0.3)" } = Astro.props
+---
+
+<div class="code-block">
+  <h2 class="code-block__title">{title}</h2>
+  <Prism lang={lang} code={src} class="code-block__code" />
+</div>
+
+<style define:vars={{ "code-title-tape-color": bgcolor }}>
+  .code-block {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 1em;
+  }
+
+  .code-block__title {
+    width: fit-content;
+    margin: 0;
+    background-color: var(--code-title-tape-color); /* テープ背景色と透過*/
+    border-left: 2px dotted rgba(0, 0, 0, 0.1); /* テープのギザギザ左*/
+    border-right: 2px dotted rgba(0, 0, 0, 0.1); /* テープのギザギザ右*/
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /*テープ影*/
+    transform: rotate(-2deg); /*テープの傾き*/
+    font-size: 1em; /*タイトル文字の大きさ*/
+    color: #666; /*タイトル文字色 */
+    padding: 0 1em;
+  }
+
+  pre[class*="language-"].code-block__code {
+    margin: 0;
+  }
+</style>
