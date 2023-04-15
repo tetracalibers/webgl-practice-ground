@@ -35,7 +35,7 @@ export const torus = (
       const v = j / radialSegments
 
       vertices.push(x, y, z)
-      normals.push(x - radius * Math.cos(theta), y - radius * Math.sin(theta), z)
+      normals.push(Math.cos(theta) * Math.cos(phi), Math.sin(theta), Math.cos(theta) * Math.sin(phi))
       uvs.push(u, v)
 
       // 処理中の断面円の色
