@@ -32,11 +32,6 @@ export const onload = () => {
 
     const program = new Program(gl, vertexSource, fragmentSource)
 
-    const attributes: Attribute[] = ["aVertexPosition", "aVertexColor"]
-    const uniforms: Uniform[] = ["uModelViewMatrix", "uProjectionMatrix"]
-
-    program.load(attributes, uniforms)
-
     scene = new Scene(gl, program)
 
     camera = new Camera()

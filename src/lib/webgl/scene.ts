@@ -24,6 +24,8 @@ export class Scene {
   constructor(gl: WebGL2RenderingContext, program: Program) {
     this._gl = gl
     this._program = program
+
+    program.setAttributeLocations(["aVertexPosition", "aVertexColor", "aVertexNormal"])
   }
 
   add(obj: RenderObject) {

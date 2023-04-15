@@ -26,6 +26,8 @@ export class Transforms {
     this._matrixNormal = this.calcNormal()
 
     this._stack = []
+
+    program.setUniformLocations(["uModelViewMatrix", "uProjectionMatrix", "uNormalMatrix"])
   }
 
   private calcView() {

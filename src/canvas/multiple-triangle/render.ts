@@ -5,7 +5,6 @@ import fragmentSource from "./index.frag?raw"
 import { Scene } from "@/lib/webgl/scene"
 import { Camera } from "@/lib/webgl/camera"
 import { Transforms } from "@/lib/webgl/transforms"
-import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
 import { equilateralTriangle } from "@/lib/shape/triangle"
 import { Matrix4 } from "@/lib/math/matrix"
 
@@ -35,11 +34,6 @@ export const onload = () => {
     gl.clearDepth(1.0)
 
     const program = new Program(gl, vertexSource, fragmentSource)
-
-    const attributes: Attribute[] = ["aVertexPosition", "aVertexColor"]
-    const uniforms: Uniform[] = ["uModelViewMatrix", "uProjectionMatrix"]
-
-    program.load(attributes, uniforms)
 
     scene = new Scene(gl, program)
 
