@@ -5,7 +5,7 @@ import fragmentSource from "./index.frag?raw"
 import { Scene } from "@/lib/webgl/scene"
 import { Camera } from "@/lib/webgl/camera"
 import { Transforms } from "@/lib/webgl/transforms"
-import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
+import { equilateralTriangle } from "@/lib/shape/triangle"
 
 export const onload = () => {
   const space = new Space("gl-canvas")
@@ -40,8 +40,7 @@ export const onload = () => {
   }
 
   const generateTriangle = () => {
-    const vertices = [0.0, 1.0, 0.0, 1.0, 0.0, 0.0, -1.0, 0.0, 0.0]
-    const indices = [0, 1, 2]
+    const { indices, vertices } = equilateralTriangle(3, [0, 1.5])
 
     scene.add({ vertices, indices })
   }
