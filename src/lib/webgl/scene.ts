@@ -6,6 +6,7 @@ interface RenderObjectSetting {
   indices: number[]
   colors?: number[]
   normals?: number[]
+  texCoords?: number[]
   hidden?: boolean
 }
 
@@ -25,7 +26,7 @@ export class Scene {
     this._gl = gl
     this._program = program
 
-    program.setAttributeLocations(["aVertexPosition", "aVertexColor", "aVertexNormal"])
+    program.setAttributeLocations(["aVertexPosition", "aVertexColor", "aVertexNormal", "aVertexTextureCoords"])
   }
 
   add(obj: RenderObject) {
@@ -39,6 +40,7 @@ export class Scene {
     this.registerPositions(obj.vertices)
     obj.normals && this.registerNormals(obj.normals)
     obj.colors && this.registerColors(obj.colors)
+    obj.texCoords && this.registerTexCoords(obj.texCoords)
 
     // add
     this._objects.push(obj)
@@ -108,6 +110,12 @@ export class Scene {
     const location = this._program.getAttributeLocation("aVertexColor")
     const data = new Float32Array(colors)
     this.registerAtrribute(data, location, 4)
+  }
+
+  private registerTexCoords(texCoords: number[]) {
+    const location = this._program.getAttributeLocation("aVertexTextureCoords")
+    const data = new Float32Array(texCoords)
+    this.registerAtrribute(data, location, 2) // vec2型（xy座標）
   }
 
   draw() {

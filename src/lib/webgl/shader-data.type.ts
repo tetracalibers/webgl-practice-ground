@@ -3,7 +3,7 @@ export type Uniform2fv = "uResolution" | "uMouse"
 export type Uniform3fv = "uLightDirection" | "uEyeDirection"
 export type Uniform4fv = "uAmbientColor"
 export type Uniform1f = "uTime"
-export type Uniform1i = "uTexture"
+export type Uniform1i = "uTexture" | `uTexture${number}`
 
 export type Attribute = "aVertexPosition" | "aVertexNormal" | "aVertexColor" | "aVertexTextureCoords"
 export type Uniform = UniformMatrix4fv | Uniform2fv | Uniform1f | Uniform1i | Uniform3fv | Uniform4fv
