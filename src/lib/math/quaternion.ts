@@ -39,6 +39,21 @@ export class Quaternion {
     return new Quaternion(normalizedAxis.x * sin, normalizedAxis.y * sin, normalizedAxis.z * sin, cos)
   }
 
+  static rotationX(radian: number) {
+    const axisX = new Vector3(1.0, 0.0, 0.0).normalize()
+    return Quaternion.rotationAround(axisX, radian)
+  }
+
+  static rotationY(radian: number) {
+    const axisY = new Vector3(0.0, 1.0, 0.0).normalize()
+    return Quaternion.rotationAround(axisY, radian)
+  }
+
+  static rotationZ(radian: number) {
+    const axisZ = new Vector3(0.0, 0.0, 1.0).normalize()
+    return Quaternion.rotationAround(axisZ, radian)
+  }
+
   /**
    * Returns a conjugate quaternion.
    *
