@@ -1,6 +1,6 @@
 import { z, defineCollection } from "astro:content"
 
-export const webglCategories = ["basic", "lighting", "framebuffer", "texture", "transform"] as const
+export const webglCategories = ["basic", "lighting", "framebuffer", "texture", "transform", "camera"] as const
 
 export const webglCategoryDetail: Record<(typeof webglCategories)[number], { title: string }> = {
   basic: {
@@ -11,6 +11,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   transform: {
     title: "Transform"
+  },
+  camera: {
+    title: "Camera"
   },
   texture: {
     title: "Texture Mapping"
