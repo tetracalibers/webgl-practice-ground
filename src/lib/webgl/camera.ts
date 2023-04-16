@@ -1,5 +1,4 @@
 import { Matrix4 } from "../math/matrix"
-import { rad } from "../math/radian"
 import { Vector3 } from "../math/vector"
 
 export class Camera {
@@ -9,14 +8,8 @@ export class Camera {
   private _focusPoint: Vector3
   // カメラの各方向
   private _up: Vector3
-  private _right: Vector3
-  private _normal: Vector3
   // 行列
-  private _lookAt: Matrix4
-  // 方位角
-  private _azimuth: number
-  // 仰角
-  private _elevation: number
+  private _matrix: Matrix4
   // 視野（Field of View）
   private _fov: number
   // minZ
@@ -27,14 +20,10 @@ export class Camera {
   constructor() {
     this._position = new Vector3(0.0, 0.0, 0.0)
     this._focusPoint = new Vector3(0.0, 0.0, 0.0)
-    this._right = new Vector3(1.0, 0.0, 0.0)
     this._up = new Vector3(0.0, 1.0, 0.0)
-    this._normal = new Vector3(0.0, 0.0, 1.0)
 
-    this._lookAt = new Matrix4()
+    this._matrix = new Matrix4()
 
-    this._azimuth = 0
-    this._elevation = 0
     this._fov = 45
     this._near = 0.1
     this._far = 10000
@@ -42,6 +31,10 @@ export class Camera {
 
   set position([x, y, z]: [number, number, number]) {
     this._position = new Vector3(x, y, z)
+  }
+
+  set positionVector(vec: Vector3) {
+    this._position = vec
   }
 
   set focusPoint([x, y, z]: [number, number, number]) {
@@ -60,6 +53,14 @@ export class Camera {
     this._far = val
   }
 
+  set up([x, y, z]: [number, number, number]) {
+    this._up = new Vector3(x, y, z)
+  }
+
+  set upVector(vec: Vector3) {
+    this._up = vec
+  }
+
   get fov() {
     return this._fov
   }
@@ -76,29 +77,12 @@ export class Camera {
     return this._position.rawValues
   }
 
-  // カメラの各方向を更新
-  private updateOrientation() {
-    this._right = new Vector3(1.0, 0.0, 0.0).translateByMat4(this._lookAt)
-    this._up = new Vector3(0.0, 1.0, 0.0).translateByMat4(this._lookAt)
-    this._normal = new Vector3(0.0, 0.0, 1.0).translateByMat4(this._lookAt)
-  }
-
   // カメラを更新
   update() {
-    const { x: tx, y: ty, z: tz } = this._position
-
-    const matrix = this._lookAt
-      .rotateY(rad.from(this._azimuth))
-      .rotateX(rad.from(this._elevation))
-      .translate(tx, ty, tz)
-
-    // lookAt配列を更新
-    this._lookAt = matrix
-    // 各方向ベクトルも同時に更新する
-    this.updateOrientation()
+    this._matrix = Matrix4.lookAt(this._position, this._focusPoint, this._up)
   }
 
   get viewTransform() {
-    return this._lookAt.inverse()
+    return this._matrix
   }
 }

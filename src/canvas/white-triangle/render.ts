@@ -30,7 +30,7 @@ export const onload = () => {
     scene = new Scene(gl, program)
 
     camera = new Camera()
-    camera.position = [0.0, 1.0, 3.0]
+    camera.position = [0.0, 0.0, 3.0]
     camera.fov = 90
     camera.far = 100
     camera.update()
@@ -40,7 +40,7 @@ export const onload = () => {
   }
 
   const generateTriangle = () => {
-    const { indices, vertices } = equilateralTriangle(3, [0, 1.5])
+    const { indices, vertices } = equilateralTriangle(3, [0, 0.5])
 
     scene.add({ vertices, indices })
   }
