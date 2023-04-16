@@ -17,6 +17,11 @@ interface RenderObjectBuffer {
 
 type RenderObject = RenderObjectSetting & Partial<RenderObjectBuffer>
 
+interface RenderObjectWithHelper extends RenderObject {
+  bind: () => void
+  cleanup: () => void
+}
+
 export class Scene {
   private _gl: WebGL2RenderingContext
   private _program: Program
@@ -52,6 +57,24 @@ export class Scene {
   tranverse(callback: (obj: RenderObject, idx: number) => void) {
     for (const [i, obj] of this._objects.entries()) {
       callback(obj, i)
+    }
+  }
+
+  traverseDraw(callback: (obj: RenderObjectWithHelper, idx: number) => void) {
+    for (const [i, obj] of this._objects.entries()) {
+      if (obj.hidden) continue
+
+      const bind = () => {
+        this._gl.bindVertexArray(obj.vao ?? null)
+        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
+      }
+      const cleanup = () => {
+        this._gl.bindVertexArray(null)
+        this._gl.bindBuffer(this._gl.ARRAY_BUFFER, null)
+        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, null)
+      }
+
+      callback({ ...obj, bind, cleanup }, i)
     }
   }
 
