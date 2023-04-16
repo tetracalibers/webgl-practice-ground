@@ -1,3 +1,6 @@
+import { Quaternion } from "../math/quaternion"
+import { Vector3 } from "../math/vector"
+
 export class MouseCoords {
   private _rect: DOMRect
   private _coords: [number, number]
@@ -47,5 +50,18 @@ export class MouseCoords {
 
   get xy() {
     return this._coords
+  }
+
+  quaternion() {
+    const { width, height } = this._rect
+    let [x, y] = this._coords
+    // キャンバス中央からの相対的な座標に変換
+    x -= width * 0.5
+    y -= height * 0.5
+    const cvsNorm = Math.sqrt(width * width + height * height)
+    const mouseNorm = Math.sqrt(x * x + y * y)
+    const angle = (mouseNorm * 2.0 * Math.PI) / cvsNorm
+    const axis = new Vector3(y, x, 0.0).normalize()
+    return Quaternion.rotationAround(axis, angle).toRotationMatrix4()
   }
 }
