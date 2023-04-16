@@ -72,6 +72,10 @@ export class Camera {
     return this._far
   }
 
+  get position() {
+    return this._position.rawValues
+  }
+
   // カメラの各方向を更新
   private updateOrientation() {
     this._right = new Vector3(1.0, 0.0, 0.0).translateByMat4(this._lookAt)
