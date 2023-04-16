@@ -8,6 +8,7 @@ export class Light {
   private _eye: [number, number, number] = [0, 0, 0]
   private _invModelMatrix: Matrix4 = Matrix4.identity()
   private _ambientColor: [number, number, number, number] = [0, 0, 0, 1.0]
+  private _isUse = true
 
   constructor(gl: WebGL2RenderingContext, program: Program) {
     this._gl = gl
@@ -32,12 +33,22 @@ export class Light {
     this._invModelMatrix = model.inverse()
   }
 
+  enable() {
+    this._isUse = true
+  }
+
+  disable() {
+    this._isUse = false
+  }
+
   reflect() {
     const uLightDirection = this._program.getUniformLocation("uLightDirection")
     const uInvModelMatrix = this._program.getUniformLocation("uInvModelMatrix")
     const uAmbientColor = this._program.getUniformLocation("uAmbientColor")
     const uEyeDirection = this._program.getUniformLocation("uEyeDirection")
+    const uIsUseLight = this._program.getUniformLocation("uIsUseLight")
 
+    this._gl.uniform1i(uIsUseLight, this._isUse ? 1 : 0)
     this._gl.uniform3fv(uLightDirection, this._direction)
     this._gl.uniform3fv(uEyeDirection, this._eye)
     this._gl.uniform4fv(uAmbientColor, this._ambientColor)
