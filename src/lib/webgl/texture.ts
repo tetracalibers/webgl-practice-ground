@@ -56,10 +56,6 @@ export class Texture {
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
-  set src(path: string) {
-    this._image.src = path
-  }
-
   get() {
     return this._texture
   }
