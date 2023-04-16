@@ -266,4 +266,8 @@ export class Vector3 extends Vector3Base {
 
     return new Vector3(outX, outY, outZ)
   }
+
+  get rawValues(): [number, number, number] {
+    return [this.x, this.y, this.z]
+  }
 }
