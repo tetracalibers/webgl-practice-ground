@@ -21,7 +21,8 @@ export class Light {
       "uInvModelMatrix",
       "uAmbientColor",
       "uEyeDirection",
-      "uModelMatrix"
+      "uModelMatrix",
+      "uLightPosition"
     ])
   }
 
