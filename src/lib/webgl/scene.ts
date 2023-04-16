@@ -117,20 +117,4 @@ export class Scene {
     const data = new Float32Array(texCoords)
     this.registerAtrribute(data, location, 2) // vec2型（xy座標）
   }
-
-  draw() {
-    const gl = this._gl
-    this.tranverse((obj) => {
-      if (obj.hidden) return
-
-      gl.bindVertexArray(obj.vao ?? null)
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
-
-      gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
-
-      gl.bindVertexArray(null)
-      gl.bindBuffer(gl.ARRAY_BUFFER, null)
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
-    })
-  }
 }
