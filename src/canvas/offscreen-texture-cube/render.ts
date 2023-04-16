@@ -152,7 +152,6 @@ export const onload = () => {
       obj.bind()
 
       offscreen.useAsTexture()
-      light.reflect()
       transforms.push(Matrix4.identity().rotateAround(rotateAxis, rad2))
       drawOne(obj.indices)
 
