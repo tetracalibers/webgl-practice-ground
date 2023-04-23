@@ -217,28 +217,9 @@ export class Matrix4 implements Matrix {
 
   /**
    * Returns an orthographic projection matrix.
-   *
-   * @static
-   * @param {{top: number; bottom: number; left: number; right: number; near: number; far: number}} argsObject
-   * @return {Matrix4}
-   * @memberof Matrix4
    */
-  // prettier-ignore
-  static orthographic(argsObject: {
-    top: number
-    bottom: number
-    left: number
-    right: number
-    near: number
-    far: number
-  }): Matrix4 {
-    const top: number = argsObject.top
-    const bottom: number = argsObject.bottom
-    const left: number = argsObject.left
-    const right: number = argsObject.right
-    const near: number = argsObject.near
-    const far: number = argsObject.far
-
+  static orthographic(top: number, bottom: number, left: number, right: number, near: number, far: number): Matrix4 {
+    // prettier-ignore
     return new Matrix4(
       2 / (right - left), 0.0, 0.0, 0.0,
       0.0, 2 / (top - bottom), 0.0, 0.0,
@@ -608,6 +589,23 @@ export class Matrix4 implements Matrix {
   rotateAround(normalizedAxis: Vector3, radian: number): Matrix4 {
     const r = Matrix4.rotationAround(normalizedAxis, radian)
     return this.mulByMatrix4(r)
+  }
+
+  /**
+   * @param {Vector3} cameraPosition
+   * @param {Vector3} lookAtPosition
+   * @param {Vector3} cameraUp
+   * @return {Matrix4}
+   * @memberof Matrix4
+   */
+  lookAt(cameraPosition: Vector3, lookAtPosition: Vector3, cameraUp: Vector3): Matrix4 {
+    const lootAt = Matrix4.lookAt(cameraPosition, lookAtPosition, cameraUp)
+    return this.mulByMatrix4(lootAt)
+  }
+
+  orthographic(top: number, bottom: number, left: number, right: number, near: number, far: number): Matrix4 {
+    const ortho = Matrix4.orthographic(top, bottom, left, right, near, far)
+    return this.mulByMatrix4(ortho)
   }
 
   get values(): Float32Array {
