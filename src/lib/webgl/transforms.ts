@@ -75,6 +75,13 @@ export class Transforms {
     this._matrixMV = item
   }
 
+  tee() {
+    if (!this._stack.length) return
+    const item = this._stack.at(-1)
+    if (!item) return
+    this._matrixMV = item
+  }
+
   reset() {
     this._stack = []
     this._matrixMV = this.calcView()
