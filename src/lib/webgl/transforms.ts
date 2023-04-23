@@ -53,10 +53,6 @@ export class Transforms {
     this._matrixNormal = this.calcNormal()
   }
 
-  updatePerspective() {
-    this._matrixP = this.calcPerspective()
-  }
-
   private setUniformMatrix4fv(uniform: UniformMatrix4fv, matrix: Matrix4) {
     this._gl.uniformMatrix4fv(this._program.getUniformLocation(uniform), false, matrix.values)
   }
