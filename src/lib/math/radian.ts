@@ -1,5 +1,1 @@
-const from = (angle: number) => (angle * Math.PI) / 180
-
-export const rad = {
-  from
-}
+export const toRad = (angle: number) => (angle * Math.PI) / 180
