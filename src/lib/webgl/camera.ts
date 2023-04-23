@@ -37,8 +37,12 @@ export class Camera {
     this._position = vec
   }
 
-  set focusPoint([x, y, z]: [number, number, number]) {
+  set eye([x, y, z]: [number, number, number]) {
     this._focusPoint = new Vector3(x, y, z)
+  }
+
+  set eyeVector(vec: Vector3) {
+    this._focusPoint = vec
   }
 
   set fov(angle: number) {
@@ -75,6 +79,10 @@ export class Camera {
 
   get position() {
     return this._position.rawValues
+  }
+
+  get eye() {
+    return this._focusPoint.rawValues
   }
 
   // カメラを更新
