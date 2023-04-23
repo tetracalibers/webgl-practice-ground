@@ -8,7 +8,12 @@ export class ControlUi {
     this._gui.close()
   }
 
-  rgb(label: string, value: [number, number, number], onChangeCallback: (color: [number, number, number]) => void) {
+  rgb(label: string, value: RawVector3, onChangeCallback: (color: RawVector3) => void) {
+    const controller = this._gui.addColor({ [label]: value }, label)
+    controller.onChange(onChangeCallback)
+  }
+
+  rgba(label: string, value: RawVector4, onChangeCallback: (color: RawVector4) => void) {
     const controller = this._gui.addColor({ [label]: value }, label)
     controller.onChange(onChangeCallback)
   }
