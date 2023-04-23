@@ -1,4 +1,5 @@
 import GUI from "lil-gui"
+import type { RawVector3, RawVector4 } from "../math/raw-vector"
 
 export class ControlUi {
   private _gui: GUI
@@ -20,11 +21,11 @@ export class ControlUi {
 
   xyz(
     label: string,
-    value: [number, number, number],
+    value: RawVector3,
     min: { x: number; y: number; z: number } | number,
     max: { x: number; y: number; z: number } | number,
     step: { x: number; y: number; z: number } | number,
-    onChangeCallback: (value: [number, number, number]) => void
+    onChangeCallback: (value: RawVector3) => void
   ) {
     const folder = this._gui.addFolder(label)
     folder
