@@ -5,8 +5,8 @@ export type UniformMatrix4fv =
   | "uInvModelMatrix"
   | "uModelMatrix"
 export type Uniform2fv = "uResolution" | "uMouse"
-export type Uniform3fv = "uLightDirection" | "uEyeDirection" | "uLightPosition"
-export type Uniform4fv = "uAmbientColor"
+export type Uniform3fv = "uLightDirection" | "uEyeDirection" | "uLightPosition" | "uLightDiffuse"
+export type Uniform4fv = "uAmbientColor" | "uMaterialDiffuse"
 export type Uniform1f = "uTime"
 export type Uniform1i = "uTexture" | `uTexture${number}` | "uIsUseLight"
 
