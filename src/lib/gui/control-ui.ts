@@ -19,6 +19,23 @@ export class ControlUi {
     controller.onChange(onChangeCallback)
   }
 
+  number(
+    label: string,
+    value: number,
+    min: number,
+    max: number,
+    step: number,
+    onChangeCallback: (value: number) => void
+  ) {
+    const controller = this._gui.add({ [label]: value }, label, min, max, step)
+    controller.onChange(onChangeCallback)
+  }
+
+  boolean(label: string, value: boolean, onChangeCallback: (value: boolean) => void) {
+    const controller = this._gui.add({ [label]: value }, label)
+    controller.onChange(onChangeCallback)
+  }
+
   xyz(
     label: string,
     value: RawVector3,
