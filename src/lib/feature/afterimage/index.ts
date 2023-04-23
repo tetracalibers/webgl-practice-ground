@@ -27,8 +27,8 @@ export class Afterimage {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND)
 
-    this._prevCapture = new Frame(gl, canvas, offscreenVertexSrc, prevFragmentSrc)
-    this._currCapture = new Frame(gl, canvas, offscreenVertexSrc, fragmentSrc)
+    this._prevCapture = new Frame(gl, canvas, offscreenVertexSrc, prevFragmentSrc, 0)
+    this._currCapture = new Frame(gl, canvas, offscreenVertexSrc, fragmentSrc, 1)
 
     const uniforms: Uniform[] = ["uMouse", "uResolution", "uTime"]
     this._mouse = new MouseCoords(canvas)
@@ -87,13 +87,13 @@ export class Afterimage {
 
     // draw current capture to framebuffer
     gl.bindFramebuffer(gl.FRAMEBUFFER, this._currCapture.frameBuffer)
-    this._currCapture.bind(1)
+    this._currCapture.bind()
     this.setStateUniforms(this._currCapture.program)
     this._currCapture.draw()
 
     // draw previous capture to framebuffer
     gl.bindFramebuffer(gl.FRAMEBUFFER, this._prevCapture.frameBuffer)
-    this._prevCapture.bind(0)
+    this._prevCapture.bind()
     gl.bindTexture(gl.TEXTURE_2D, null)
     this._prevCapture.draw()
 

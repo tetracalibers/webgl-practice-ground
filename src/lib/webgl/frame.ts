@@ -12,12 +12,14 @@ export class Frame {
   private _vertexBuffer: WebGLBuffer | null
   private _textureBuffer: WebGLBuffer | null
   private _program: Program
+  private _textureUnit: number
 
   constructor(
     gl: WebGL2RenderingContext,
     canvas: HTMLCanvasElement,
     srcVertexShader: string,
-    srcFragmentShader: string
+    srcFragmentShader: string,
+    textureUnit = 0
   ) {
     this._gl = gl
     this._canvas = canvas
@@ -27,6 +29,7 @@ export class Frame {
     this._vertexBuffer = null
     this._textureBuffer = null
     this._program = new Program(gl, srcVertexShader, srcFragmentShader, false)
+    this._textureUnit = textureUnit
 
     this.configureFramebuffer()
     this.configureGeometry()
@@ -85,7 +88,7 @@ export class Frame {
 
   private configureProgram() {
     const attributes: Attribute[] = ["aVertexTextureCoords", "aVertexPosition"]
-    const uniforms: Uniform[] = ["uTexture"]
+    const uniforms: Uniform[] = [`uTexture${this._textureUnit}`]
 
     this._program.setAttributeLocations(attributes)
     this._program.setUniformLocations(uniforms)
@@ -108,7 +111,7 @@ export class Frame {
     gl.bindRenderbuffer(gl.RENDERBUFFER, null)
   }
 
-  bind(texNumber = 0) {
+  bind() {
     const gl = this._gl
 
     this._program.useProgram()
@@ -127,9 +130,9 @@ export class Frame {
     gl.vertexAttribPointer(aVertexTexCoord, 2, gl.FLOAT, false, 0, 0)
 
     // Bind the texture from the framebuffer
-    gl.activeTexture(gl.TEXTURE0 + texNumber)
+    gl.activeTexture(gl.TEXTURE0 + this._textureUnit)
     gl.bindTexture(gl.TEXTURE_2D, this._texture)
-    gl.uniform1i(uTexture, texNumber)
+    gl.uniform1i(uTexture, this._textureUnit)
   }
 
   draw() {
