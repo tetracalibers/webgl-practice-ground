@@ -30,9 +30,9 @@ export const onload = () => {
 
   const initGuiControls = () => {
     const ui = new ControlUi()
-    ui.rgb("球の色", sphereColor, (v) => (sphereColor = v))
-    ui.rgb("光の色", lightDiffuseColor, (v) => (lightDiffuseColor = v))
-    ui.xyz("光線の向き", lightDirection, -10, 10, -0.1, (v) => (lightDirection = [-v[0], -v[1], v[2]]))
+    ui.rgb("Material Diffuse", sphereColor, (v) => (sphereColor = v))
+    ui.rgb("Light Diffuse", lightDiffuseColor, (v) => (lightDiffuseColor = v))
+    ui.xyz("Light Direction", lightDirection, -10, 10, -0.1, (v) => (lightDirection = [-v[0], -v[1], v[2]]))
   }
 
   const onResize = () => {
