@@ -1907,6 +1907,11 @@ kleur@^4.0.3, kleur@^4.1.4:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.5.tgz#95106101795f7050c6c650f350c683febddb1780"
   integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
 
+lil-gui@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/lil-gui/-/lil-gui-0.18.1.tgz#879035a72400d458ef4ec41e0f7ca4fd690875b2"
+  integrity sha512-nsDJLflFGro81hcGqaiDNBEKgkMKNF9okmMmW3Xc6sPXP1zyfD3oIftyctvBQD2iTIUgWDw6CuME1IQZD+OvLw==
+
 load-yaml-file@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/load-yaml-file/-/load-yaml-file-0.2.0.tgz#af854edaf2bea89346c07549122753c07372f64d"
