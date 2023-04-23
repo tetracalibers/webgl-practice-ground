@@ -1,4 +1,4 @@
-export const hsvaToRgba = (h: number, s: number, v: number, a: number) => {
+export const hsvaToRgba = (h: number, s: number, v: number, a: number): [number, number, number, number] => {
   let colors = []
   const th = h % 360
   // 整数部分と小数部分
@@ -18,5 +18,5 @@ export const hsvaToRgba = (h: number, s: number, v: number, a: number) => {
     colors.push(r, g, b, a)
   }
 
-  return colors
+  return [colors[0], colors[1], colors[2], colors[3]]
 }
