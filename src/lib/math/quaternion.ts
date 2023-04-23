@@ -23,6 +23,10 @@ export class Quaternion {
     this._values = new Float32Array([x, y, z, w])
   }
 
+  static identity() {
+    return new Quaternion(0.0, 0.0, 0.0, 1.0)
+  }
+
   /**
    * Create a rotation quaternion around `normalizedAxis`.
    * `normalizedAxis` must be normalized.
