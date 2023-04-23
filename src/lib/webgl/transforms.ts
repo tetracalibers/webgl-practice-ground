@@ -49,7 +49,7 @@ export class Transforms {
     return newModel ? this.calcView().multiply(newModel) : this.calcView()
   }
 
-  updateNormal() {
+  private updateNormal() {
     this._matrixNormal = this.calcNormal()
   }
 
