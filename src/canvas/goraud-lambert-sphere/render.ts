@@ -67,7 +67,7 @@ export const onload = () => {
   }
 
   const registerGeometry = () => {
-    const sphereGeometry = sphere(4.0, 64, 64, [...sphereColor, 1.0])
+    const sphereGeometry = sphere(5.0, 64, 64, [...sphereColor, 1.0])
     scene.add({ alias: "sphere", ...sphereGeometry })
   }
 
