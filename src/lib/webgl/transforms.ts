@@ -78,5 +78,7 @@ export class Transforms {
   reset() {
     this._stack = []
     this._matrixMV = this.calcView()
+    this._matrixP = this.calcPerspective()
+    this._matrixNormal = this.calcNormal()
   }
 }
