@@ -78,7 +78,7 @@ export const onload = () => {
     count++
     const rad = ((count % 180) * Math.PI) / 90
 
-    const model = Matrix4.identity().multiply(mouse.quaternion()).rotateY(rad)
+    const model = Matrix4.identity().multiply(mouse.quaternion().toRotationMatrix4()).rotateY(rad)
     transforms.push(model)
 
     light.model = model

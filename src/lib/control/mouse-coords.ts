@@ -62,6 +62,6 @@ export class MouseCoords {
     const mouseNorm = Math.sqrt(x * x + y * y)
     const angle = (mouseNorm * 2.0 * Math.PI) / cvsNorm
     const axis = new Vector3(y, x, 0.0).normalize()
-    return Quaternion.rotationAround(axis, angle).toRotationMatrix4()
+    return Quaternion.rotationAround(axis, angle)
   }
 }
