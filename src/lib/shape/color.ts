@@ -20,3 +20,11 @@ export const hsvaToRgba = (h: number, s: number, v: number, a: number): [number,
 
   return [colors[0], colors[1], colors[2], colors[3]]
 }
+
+export const denormalizeColor = (color: [number, number, number, number]) => {
+  return color.map((c) => c * 255)
+}
+
+export const normalizeColor = (color: [number, number, number, number]) => {
+  return color.map((c) => c / 255)
+}
