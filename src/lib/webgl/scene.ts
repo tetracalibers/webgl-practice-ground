@@ -42,10 +42,7 @@ export class Scene {
     const cleanUp = this.bindVertexArray(obj.vao)
 
     // attributes
-    this.registerPositions(obj.vertices)
-    obj.normals && this.registerNormals(obj.normals)
-    obj.colors && this.registerColors(obj.colors)
-    obj.texCoords && this.registerTexCoords(obj.texCoords)
+    this.bindAttributes(obj)
 
     // add
     this._objects.push(obj)
@@ -76,6 +73,13 @@ export class Scene {
 
       callback({ ...obj, bind, cleanup }, i)
     }
+  }
+
+  private bindAttributes(obj: RenderObject) {
+    this.registerPositions(obj.vertices)
+    obj.normals && this.registerNormals(obj.normals)
+    obj.colors && this.registerColors(obj.colors)
+    obj.texCoords && this.registerTexCoords(obj.texCoords)
   }
 
   buildIBO(indices: number[]) {
