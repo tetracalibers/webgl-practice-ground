@@ -1,0 +1,13 @@
+---
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+import vertSrc from "./index.vert?raw"
+import fragSrc from "./index.frag?raw"
+---
+
+<WebglDemo canvasSize={"full-horizontal"} glSrc={glSrc} vertSrc={vertSrc} fragSrc={fragSrc} />
+
+<script>
+  import { onload } from "./render"
+  window.onload = onload
+</script>
