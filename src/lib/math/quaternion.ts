@@ -324,7 +324,7 @@ export class Quaternion {
   toRotatedVector3(x: number, y: number, z: number): Vector3 {
     const rotation = this
     const conjRotation = this.conj()
-    const target = new Quaternion(x, y, z, 0.0)
+    const target = new Quaternion(x, y, z, 1.0)
     const result = conjRotation.multiply(target).multiply(rotation)
     return new Vector3(result.x, result.y, result.z)
   }
