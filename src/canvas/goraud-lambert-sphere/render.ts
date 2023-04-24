@@ -1,3 +1,4 @@
+import type { RawVector3 } from "@/lib/math/raw-vector"
 import { Space } from "@/lib/canvas/index"
 import { Program } from "@/lib/webgl/program"
 import { Scene } from "@/lib/webgl/scene"
@@ -24,9 +25,9 @@ export const onload = () => {
   let clock: Clock
   let light: LambertModel
 
-  let lightDiffuseColor: [number, number, number] = [1, 1, 1]
-  let lightDirection: [number, number, number] = [0, -1, -1]
-  let sphereColor: [number, number, number] = [0.5, 0.8, 0.1]
+  let lightDiffuseColor: RawVector3 = [1, 1, 1]
+  let lightDirection: RawVector3 = [0, -1, -1]
+  let sphereColor: RawVector3 = [0.5, 0.8, 0.1]
 
   const initGuiControls = () => {
     const ui = new ControlUi()
