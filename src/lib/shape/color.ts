@@ -1,3 +1,5 @@
+import type { RawVector3, RawVector4 } from "../math/raw-vector"
+
 export const hsvaToRgba = (h: number, s: number, v: number, a: number): [number, number, number, number] => {
   let colors = []
   const th = h % 360
@@ -21,10 +23,22 @@ export const hsvaToRgba = (h: number, s: number, v: number, a: number): [number,
   return [colors[0], colors[1], colors[2], colors[3]]
 }
 
-export const denormalizeColor = (color: [number, number, number, number]) => {
-  return color.map((c) => c * 255)
+export const denormalizeRgb = (r: number, g: number, b: number): RawVector3 => {
+  return [r * 255, g * 255, b * 255]
 }
 
-export const normalizeColor = (color: [number, number, number, number]) => {
-  return color.map((c) => c / 255)
+export const denormalizeRgba = (r: number, g: number, b: number, a = 1.0): RawVector4 => {
+  return [r * 255, g * 255, b * 255, a * 255]
+}
+
+export const normalizeRgb = (r: number, g: number, b: number): RawVector3 => {
+  return [r / 255, g / 255, b / 255]
+}
+
+export const normalizeRgba = (r: number, g: number, b: number, a = 1.0): RawVector4 => {
+  return [r / 255, g / 255, b / 255, a / 255]
+}
+
+export const toRgba = (color: number[]): RawVector4 => {
+  return [color[0], color[1], color[2], color[3] ?? 1.0]
 }
