@@ -9,6 +9,8 @@ import { Clock } from "@/lib/event/clock"
 import { sphere } from "@/lib/shape/sphere"
 import { LambertModel } from "@/lib/light/lambert-model"
 import { ControlUi } from "@/lib/gui/control-ui"
+import { Timer } from "@/lib/control/timer"
+import { toRad } from "@/lib/math/radian"
 
 import vertexSource from "./index.vert?raw"
 import fragmentSource from "./index.frag?raw"
@@ -25,6 +27,9 @@ export const onload = () => {
   let clock: Clock
   let light: LambertModel
 
+  let timer: Timer
+  let angle = 0
+
   let lightDiffuseColor: RawVector3 = [1, 1, 1]
   let lightDirection: RawVector3 = [0, -1, -1]
   let sphereColor: RawVector3 = [0.5, 0.8, 0.1]
@@ -39,6 +44,11 @@ export const onload = () => {
   const onResize = () => {
     space.fitScreenSquare()
     render()
+  }
+
+  const startAnimate = () => {
+    timer = new Timer()
+    timer.start()
   }
 
   const configure = () => {
@@ -72,11 +82,15 @@ export const onload = () => {
     scene.add({ alias: "sphere", ...sphereGeometry })
   }
 
-  const render = () => {
+  const animate = () => {
+    angle = (90 * timer.elapsed) / 1000.0
+  }
+
+  const draw = () => {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
-    const model = Matrix4.identity().translate(0.0, 0.0, -1.5)
+    const model = Matrix4.identity().translate(0.0, 0.0, -1.5).rotateY(toRad(angle))
     transforms.push(model)
     light.updateNormalMatrixFrom(model)
 
@@ -96,9 +110,15 @@ export const onload = () => {
     })
   }
 
+  const render = () => {
+    animate()
+    draw()
+  }
+
   const init = () => {
     configure()
     registerGeometry()
+    startAnimate()
     clock.on("tick", render)
 
     initGuiControls()

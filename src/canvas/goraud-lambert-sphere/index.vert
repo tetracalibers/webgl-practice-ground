@@ -16,8 +16,11 @@ void main() {
   // 法線
   vec3 N = normalize(vec3(uNormalMatrix * vec4(aVertexNormal, 1.0)));
   
+  // 変換行列で光線の向きも変換
+  vec3 light = vec3(uModelViewMatrix * vec4(uLightDirection, 0.0));
+  
   // 光線の向き
-  vec3 L = normalize(uLightDirection);
+  vec3 L = normalize(light);
   
   // ランバート係数
   float lambertTerm = dot(N, -L);
