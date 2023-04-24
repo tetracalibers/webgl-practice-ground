@@ -1,6 +1,15 @@
+import type { RawVector4 } from "../math/raw-vector"
+import { toRgba } from "../shape/color"
 import type { Program } from "./program"
+import type { Uniform4fv } from "./shader-data.type"
 
-interface RenderObjectSetting {
+interface MaterialSettings {
+  diffuse?: number[]
+  ambient?: number[]
+  specular?: number[]
+}
+
+interface RenderObjectSetting extends MaterialSettings {
   alias?: string
   vertices: number[]
   indices: number[]
@@ -20,6 +29,8 @@ type RenderObject = RenderObjectSetting & Partial<RenderObjectBuffer>
 interface RenderObjectWithHelper extends RenderObject {
   bind: () => void
   cleanup: () => void
+  updateMaterial: (key: keyof MaterialSettings, value: number[]) => void
+  setMaterialUniforms: () => void
 }
 
 export class Scene {
@@ -32,6 +43,7 @@ export class Scene {
     this._program = program
 
     program.setAttributeLocations(["aVertexPosition", "aVertexColor", "aVertexNormal", "aVertexTextureCoords"])
+    program.setUniformLocations(["uMaterialAmbient", "uMaterialDiffuse", "uMaterialSpecular"])
   }
 
   add(obj: RenderObject) {
@@ -69,13 +81,25 @@ export class Scene {
         this._gl.bindVertexArray(obj.vao ?? null)
         this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
       }
+
+      const updateMaterial = (key: keyof MaterialSettings, value: number[]) => {
+        if (obj[key] !== value) {
+          obj[key] = value
+          this._objects.splice(i, 1, obj)
+        }
+      }
+
+      const setMaterialUniforms = () => {
+        this.setMaterialUniforms(obj)
+      }
+
       const cleanup = () => {
         this._gl.bindVertexArray(null)
         this._gl.bindBuffer(this._gl.ARRAY_BUFFER, null)
         this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, null)
       }
 
-      callback({ ...obj, bind, cleanup }, i)
+      callback({ ...obj, bind, cleanup, setMaterialUniforms, updateMaterial }, i)
     }
   }
 
@@ -84,6 +108,12 @@ export class Scene {
     obj.normals && this.registerNormals(obj.normals)
     obj.colors && this.registerColors(obj.colors)
     obj.texCoords && this.registerTexCoords(obj.texCoords)
+  }
+
+  private setMaterialUniforms(obj: RenderObject) {
+    obj.diffuse && this.setUniform4fv("uMaterialDiffuse", toRgba(obj.diffuse))
+    obj.ambient && this.setUniform4fv("uMaterialAmbient", toRgba(obj.ambient))
+    obj.specular && this.setUniform4fv("uMaterialSpecular", toRgba(obj.specular))
   }
 
   buildIBO(indices: number[]) {
@@ -107,6 +137,11 @@ export class Scene {
   private bindVertexArray(vao: WebGLVertexArrayObject | null) {
     this._gl.bindVertexArray(vao)
     return () => this._gl.bindVertexArray(null)
+  }
+
+  private setUniform4fv(name: Uniform4fv, value: RawVector4) {
+    const location = this._program.getUniformLocation(name)
+    this._gl.uniform4fv(location, value)
   }
 
   private registerAtrribute(data: Float32Array, location: number, size: number) {
