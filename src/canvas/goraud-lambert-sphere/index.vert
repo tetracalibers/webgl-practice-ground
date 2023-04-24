@@ -25,6 +25,6 @@ void main() {
   // ランバート反射モデルに基づいた拡散反射色
   vec4 Id = uMaterialDiffuse * uLightDiffuse * lambertTerm;
   
-  vVertexColor = vec4(Id.rgb, 1.0);
+  vVertexColor = vec4(vec3(Id), 1.0);
   gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertexPosition, 1.0);
 }
