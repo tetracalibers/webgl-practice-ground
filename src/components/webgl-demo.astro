@@ -5,7 +5,7 @@ interface Props {
   glSrc?: string
   vertSrc?: string
   fragSrc?: string
-  canvasSize: "full-screen" | "full-square" | [number, number]
+  canvasSize: "full-screen" | "full-square" | "full-horizontal" | [number, number]
 }
 
 const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
@@ -50,6 +50,18 @@ const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
     .full-square {
       width: 100svh;
       height: 100svh;
+    }
+  }
+
+  .full-horizontal {
+    width: 100vw;
+    height: 100svh;
+  }
+
+  @media (orientation: portrait) {
+    .full-horizontal {
+      width: 100vw;
+      height: 100vw;
     }
   }
 </style>

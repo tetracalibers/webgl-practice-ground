@@ -24,6 +24,16 @@ export class Space {
     this.setSize(size, size)
   }
 
+  fitHorizontal() {
+    const w = window.innerWidth
+    const h = window.innerHeight
+    if (w < h) {
+      this.setSize(w, w)
+    } else {
+      this.setSize(w, h)
+    }
+  }
+
   autoResize(setSizeFn: () => void) {
     setSizeFn()
     const obserber = new ResizeObserver(setSizeFn)
