@@ -9,14 +9,14 @@ import { Clock } from "@/lib/event/clock"
 import { ControlUi } from "@/lib/gui/control-ui"
 import { toRad } from "@/lib/math/radian"
 import { PointLight } from "@/lib/light/point-light"
+import { Floor } from "@/lib/shape/floor"
+import { Axis } from "@/lib/shape/axis"
+import { UniformLoader } from "@/lib/webgl/uniform-loader"
 
 import vertexSource from "./index.vert?raw"
 import fragmentSource from "./index.frag?raw"
 
 import coneModel from "@/lib/model/cone3.json" assert { type: "json" }
-import { Floor } from "@/lib/shape/floor"
-import { Axis } from "@/lib/shape/axis"
-import { UniformLoader } from "@/lib/webgl/uniform-loader"
 
 export const onload = () => {
   const space = new Space("gl-canvas")
