@@ -18,7 +18,16 @@ export class PointLight {
     this._gl = gl
     this._program = program
 
-    program.setUniformLocations(["uLightPosition", "uLightDiffuse", "uLightAmbient", "uLightSpecular", "uShininess"])
+    program.setUniformLocations([
+      "uLightPosition",
+      "uLightDiffuse",
+      "uLightAmbient",
+      "uLightSpecular",
+      "uShininess",
+      "uMaterialDiffuse",
+      "uMaterialAmbient",
+      "uMaterialSpecular"
+    ])
   }
 
   set position(position: RawVector3) {

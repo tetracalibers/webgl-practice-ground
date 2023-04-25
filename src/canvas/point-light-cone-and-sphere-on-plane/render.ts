@@ -119,16 +119,15 @@ export const onload = () => {
       transforms.push(model)
       light.updateNormalMatrixFrom(model)
 
+      if (obj.alias === "sphere" && obj.material) {
+        obj.material.diffuse = sphereColor
+      }
+      if (obj.alias === "cone" && obj.material) {
+        obj.material.diffuse = coneColor
+      }
+
       obj.bind()
-
-      if (obj.alias === "sphere") {
-        obj.updateMaterial("diffuse", sphereColor)
-      }
-      if (obj.alias === "cone") {
-        obj.updateMaterial("diffuse", coneColor)
-      }
-
-      obj.setMaterialUniforms()
+      obj.material?.setUniforms()
 
       transforms.pop()
       transforms.setMatrixUniforms()
