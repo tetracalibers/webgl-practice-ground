@@ -86,8 +86,8 @@ export class Camera {
   }
 
   // カメラを更新
-  update() {
-    this._matrix = Matrix4.lookAt(this._position, this._focusPoint, this._up)
+  update(matrix?: Matrix4) {
+    this._matrix = matrix ?? Matrix4.lookAt(this._position, this._focusPoint, this._up)
   }
 
   get viewTransform() {
