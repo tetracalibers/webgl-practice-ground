@@ -14,6 +14,7 @@ interface RenderObjectSetting extends MaterialSettings {
   colors?: number[]
   normals?: number[]
   texCoords?: number[]
+  wireframe?: boolean
   hidden?: boolean
 }
 
