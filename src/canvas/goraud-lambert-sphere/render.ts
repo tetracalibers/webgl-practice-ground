@@ -79,7 +79,7 @@ export const onload = () => {
 
   const registerGeometry = () => {
     const sphereGeometry = sphere(5.0, 64, 64, [...sphereColor, 1.0])
-    scene.add({ alias: "sphere", ...sphereGeometry })
+    scene.add({ alias: "sphere", ...sphereGeometry, diffuse: sphereColor })
   }
 
   const animate = () => {
@@ -95,15 +95,21 @@ export const onload = () => {
     light.updateNormalMatrixFrom(model)
 
     light.direction = lightDirection
-    light.diffuseColor = [...lightDiffuseColor, 1.0]
-    light.materialDiffuseColor = [...sphereColor, 1.0]
+    light.diffuse = [...lightDiffuseColor, 1.0]
 
     scene.traverseDraw((obj) => {
       obj.bind()
 
+      if (obj.material) {
+        obj.material.diffuse = sphereColor
+        obj.material.setUniforms()
+      }
+
       transforms.pop()
       transforms.setMatrixUniforms()
+
       light.setUniforms()
+
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
 
       obj.cleanup()
