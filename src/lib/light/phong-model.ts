@@ -10,10 +10,6 @@ export class PhongModel {
   private _lightDiffuseColor: RawVector4 | null = null
   private _lightAmbientColor: RawVector4 | null = null
   private _lightSpecularColor: RawVector4 | null = null
-  // material
-  private _materialDiffuseColor: RawVector4 | null = null
-  private _materialAmbientColor: RawVector4 | null = null
-  private _materialSpecularColor: RawVector4 | null = null
   // other
   private _normalMatrix: Matrix4 = Matrix4.identity()
   private _shininess: number | null = null
@@ -39,28 +35,16 @@ export class PhongModel {
     this._lightDirection = direction
   }
 
-  set diffuseColor(color: RawVector4) {
+  set diffuse(color: RawVector4) {
     this._lightDiffuseColor = color
   }
 
-  set ambientColor(color: RawVector4) {
+  set ambient(color: RawVector4) {
     this._lightAmbientColor = color
   }
 
-  set specularColor(color: RawVector4) {
+  set specular(color: RawVector4) {
     this._lightSpecularColor = color
-  }
-
-  set materialDiffuseColor(color: RawVector4) {
-    this._materialDiffuseColor = color
-  }
-
-  set materialAmbientColor(color: RawVector4) {
-    this._materialAmbientColor = color
-  }
-
-  set materialSpecularColor(color: RawVector4) {
-    this._materialSpecularColor = color
   }
 
   set shininess(value: number) {
@@ -93,21 +77,6 @@ export class PhongModel {
     if (this._lightSpecularColor) {
       const uLightSpecular = program.getUniformLocation("uLightSpecular")
       gl.uniform4fv(uLightSpecular, this._lightSpecularColor)
-    }
-
-    if (this._materialDiffuseColor) {
-      const uMaterialDiffuse = program.getUniformLocation("uMaterialDiffuse")
-      gl.uniform4fv(uMaterialDiffuse, this._materialDiffuseColor)
-    }
-
-    if (this._materialAmbientColor) {
-      const uMaterialAmbient = program.getUniformLocation("uMaterialAmbient")
-      gl.uniform4fv(uMaterialAmbient, this._materialAmbientColor)
-    }
-
-    if (this._materialSpecularColor) {
-      const uMaterialSpecular = program.getUniformLocation("uMaterialSpecular")
-      gl.uniform4fv(uMaterialSpecular, this._materialSpecularColor)
     }
 
     if (this._shininess) {

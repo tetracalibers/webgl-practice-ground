@@ -1,3 +1,5 @@
+import type { RawVector3, RawVector4 } from "@/lib/math/raw-vector"
+import type { RawMaterial } from "@/lib/webgl/material"
 import { Space } from "@/lib/canvas/index"
 import { Program } from "@/lib/webgl/program"
 import { Scene } from "@/lib/webgl/scene"
@@ -10,7 +12,6 @@ import { ControlUi } from "@/lib/gui/control-ui"
 import { PhongModel } from "@/lib/light/phong-model"
 import { Timer } from "@/lib/control/timer"
 import { toRad } from "@/lib/math/radian"
-import type { RawVector3, RawVector4 } from "@/lib/math/raw-vector"
 
 import vertexSource from "./index.vert?raw"
 import fragmentSource from "./index.frag?raw"
@@ -36,9 +37,12 @@ export const onload = () => {
   let lightAmbient: RawVector4 = [0.03, 0.03, 0.03, 1.0]
   let lightSpecular: RawVector4 = [1.0, 1.0, 1.0, 1.0]
   let lightDirection: RawVector3 = [-0.25, -0.25, -0.25]
-  let materialDiffuse: RawVector4 = [46.0 / 256.0, 99.0 / 256.0, 191.0 / 256.0, 1.0]
-  let materialAmbient: RawVector4 = [1.0, 1.0, 1.0, 1.0]
-  let materialSpecular: RawVector4 = [1.0, 1.0, 1.0, 1.0]
+
+  let material: RawMaterial = {
+    diffuse: [46.0 / 256.0, 99.0 / 256.0, 191.0 / 256.0, 1.0],
+    ambient: [1.0, 1.0, 1.0, 1.0],
+    specular: [1.0, 1.0, 1.0, 1.0]
+  }
 
   const initGuiControls = () => {
     const ui = new ControlUi()
@@ -46,9 +50,9 @@ export const onload = () => {
     ui.number("Light Ambient", lightAmbient[0], 0, 1, 0.01, (v) => (lightAmbient = [v, v, v, 1.0]))
     ui.number("Light Specular", lightSpecular[0], 0, 1, 0.01, (v) => (lightSpecular = [v, v, v, 1.0]))
     ui.xyz("Light Direction", lightDirection, -10, 10, -0.1, (v) => (lightDirection = [-v[0], -v[1], v[2]]))
-    ui.rgba("Material Diffuse", materialDiffuse, (v) => (materialDiffuse = v))
-    ui.number("Material Ambient", materialAmbient[0], 0, 1, 0.01, (v) => (materialAmbient = [v, v, v, 1.0]))
-    ui.number("Material Specular", materialSpecular[0], 0, 1, 0.01, (v) => (materialSpecular = [v, v, v, 1.0]))
+    ui.rgba("Material Diffuse", material.diffuse, (v) => (material.diffuse = v))
+    ui.number("Material Ambient", material.ambient[0], 0, 1, 0.01, (v) => (material.ambient = [v, v, v, 1.0]))
+    ui.number("Material Specular", material.specular[0], 0, 1, 0.01, (v) => (material.specular = [v, v, v, 1.0]))
     ui.number("Shininess", shininess, 0, 50, 0.1, (v) => (shininess = v))
     ui.rgba("Clear Color", clearColor, (v) => (clearColor = v))
     ui.boolean("Wireframe", wireframe, (v) => (wireframe = v))
@@ -92,7 +96,7 @@ export const onload = () => {
 
   const registerGeometry = () => {
     const sphereGeometry = sphere(5.0, 64, 64, [1.0, 1.0, 1.0, 1.0])
-    scene.add({ alias: "sphere", ...sphereGeometry })
+    scene.add({ alias: "sphere", ...sphereGeometry, ...material })
   }
 
   const animate = () => {
@@ -110,12 +114,9 @@ export const onload = () => {
     light.updateNormalMatrixFrom(model)
 
     light.direction = lightDirection
-    light.diffuseColor = lightDiffuse
-    light.ambientColor = lightAmbient
-    light.specularColor = lightSpecular
-    light.materialDiffuseColor = materialDiffuse
-    light.materialAmbientColor = materialAmbient
-    light.materialSpecularColor = materialSpecular
+    light.diffuse = lightDiffuse
+    light.ambient = lightAmbient
+    light.specular = lightSpecular
     light.shininess = shininess
 
     const renderMode = wireframe ? gl.LINES : gl.TRIANGLES
@@ -123,9 +124,14 @@ export const onload = () => {
     scene.traverseDraw((obj) => {
       obj.bind()
 
+      obj.setMaterial(material)
+      obj.material?.setUniforms()
+
       transforms.pop()
       transforms.setMatrixUniforms()
+
       light.setUniforms()
+
       gl.drawElements(renderMode, obj.indices.length, gl.UNSIGNED_SHORT, 0)
 
       obj.cleanup()
