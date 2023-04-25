@@ -1,7 +1,5 @@
-import type { RawVector4 } from "../math/raw-vector"
-import { toRgba } from "../shape/color"
+import { Material, RawMaterial } from "./material"
 import type { Program } from "./program"
-import type { Uniform4fv } from "./shader-data.type"
 
 interface MaterialSettings {
   diffuse?: number[]
@@ -22,33 +20,47 @@ interface RenderObjectSetting extends MaterialSettings {
 interface RenderObjectBuffer {
   ibo: WebGLBuffer | null
   vao: WebGLVertexArrayObject | null
+  material: Material | null
 }
 
 type RenderObject = RenderObjectSetting & Partial<RenderObjectBuffer>
 
 interface RenderObjectWithHelper extends RenderObject {
   bind: () => void
+  update: () => void
   cleanup: () => void
-  updateMaterial: (key: keyof MaterialSettings, value: number[]) => void
-  setMaterialUniforms: () => void
+  setMaterial: (material: RawMaterial) => void
 }
 
 export class Scene {
   private _gl: WebGL2RenderingContext
   private _program: Program
-  private _objects: RenderObject[] = []
+  private _objects = new Map<string, RenderObject>()
 
   constructor(gl: WebGL2RenderingContext, program: Program) {
     this._gl = gl
     this._program = program
 
     program.setAttributeLocations(["aVertexPosition", "aVertexColor", "aVertexNormal", "aVertexTextureCoords"])
-    program.setUniformLocations(["uMaterialAmbient", "uMaterialDiffuse", "uMaterialSpecular"])
   }
 
-  add(obj: RenderObject) {
+  add(_obj: RenderObjectSetting) {
+    let obj: RenderObject = _obj
+
     obj.ibo = this.buildIBO(obj.indices)
     obj.vao = this.buildVAO()
+
+    if (obj.diffuse || obj.specular || obj.ambient) {
+      const material = new Material(this._gl, this._program)
+
+      if (obj.diffuse) material.diffuse = obj.diffuse
+      if (obj.specular) material.specular = obj.specular
+      if (obj.ambient) material.ambient = obj.ambient
+
+      obj.material = material
+    } else {
+      obj.material = null
+    }
 
     if (!obj.normals) {
       obj.normals = this.calcNormals(obj.vertices, obj.indices)
@@ -61,20 +73,20 @@ export class Scene {
     this.bindAttributes(obj)
 
     // add
-    this._objects.push(obj)
+    this._objects.set(obj.alias ?? Date.now().toString(), obj)
 
     // clean up
     cleanUp()
   }
 
-  tranverse(callback: (obj: RenderObject, idx: number) => void) {
-    for (const [i, obj] of this._objects.entries()) {
-      callback(obj, i)
+  tranverse(callback: (obj: RenderObject, key: string) => void) {
+    for (const [key, obj] of this._objects.entries()) {
+      callback(obj, key)
     }
   }
 
-  traverseDraw(callback: (obj: RenderObjectWithHelper, idx: number) => void) {
-    for (const [i, obj] of this._objects.entries()) {
+  traverseDraw(callback: (obj: RenderObjectWithHelper, key: string) => void) {
+    for (const [key, obj] of this._objects.entries()) {
       if (obj.hidden) continue
 
       const bind = () => {
@@ -82,15 +94,15 @@ export class Scene {
         this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
       }
 
-      const updateMaterial = (key: keyof MaterialSettings, value: number[]) => {
-        if (obj[key] !== value) {
-          obj[key] = value
-          this._objects.splice(i, 1, obj)
-        }
+      const setMaterial = (material: RawMaterial) => {
+        if (!obj.material) return
+        obj.material.diffuse = material.diffuse
+        obj.material.ambient = material.ambient
+        obj.material.specular = material.specular
       }
 
-      const setMaterialUniforms = () => {
-        this.setMaterialUniforms(obj)
+      const update = () => {
+        this._objects.set(key, obj)
       }
 
       const cleanup = () => {
@@ -99,7 +111,7 @@ export class Scene {
         this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, null)
       }
 
-      callback({ ...obj, bind, cleanup, setMaterialUniforms, updateMaterial }, i)
+      callback({ ...obj, bind, cleanup, update, setMaterial }, key)
     }
   }
 
@@ -108,12 +120,6 @@ export class Scene {
     obj.normals && this.registerNormals(obj.normals)
     obj.colors && this.registerColors(obj.colors)
     obj.texCoords && this.registerTexCoords(obj.texCoords)
-  }
-
-  private setMaterialUniforms(obj: RenderObject) {
-    obj.diffuse && this.setUniform4fv("uMaterialDiffuse", toRgba(obj.diffuse))
-    obj.ambient && this.setUniform4fv("uMaterialAmbient", toRgba(obj.ambient))
-    obj.specular && this.setUniform4fv("uMaterialSpecular", toRgba(obj.specular))
   }
 
   buildIBO(indices: number[]) {
@@ -137,11 +143,6 @@ export class Scene {
   private bindVertexArray(vao: WebGLVertexArrayObject | null) {
     this._gl.bindVertexArray(vao)
     return () => this._gl.bindVertexArray(null)
-  }
-
-  private setUniform4fv(name: Uniform4fv, value: RawVector4) {
-    const location = this._program.getUniformLocation(name)
-    this._gl.uniform4fv(location, value)
   }
 
   private registerAtrribute(data: Float32Array, location: number, size: number) {
