@@ -73,4 +73,9 @@ export class ControlUi {
       )
       .onChange((v: number) => onChangeCallback([value[0], value[1], v]))
   }
+
+  select<T extends string>(label: string, value: T, options: T[], onChangeCallback: (value: T) => void) {
+    const controller = this._gui.add({ [label]: value }, label, options)
+    controller.onChange(onChangeCallback)
+  }
 }
