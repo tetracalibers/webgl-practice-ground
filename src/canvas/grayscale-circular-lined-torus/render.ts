@@ -93,8 +93,8 @@ export const onload = () => {
     program.use()
 
     const quaternion = mouse.quaternion()
-    camera.position = [0.0, 0.0, 0.0]
-    camera.eyeVector = quaternion.toRotatedVector3(0.0, 20.0, 0.0)
+    camera.eye = [0.0, 0.0, 0.0]
+    camera.positionVector = quaternion.toRotatedVector3(0.0, 20.0, 0.0)
     camera.upVector = quaternion.toRotatedVector3(0.0, 0.0, -1.0)
     camera.update()
 
@@ -113,7 +113,7 @@ export const onload = () => {
         light.ambientColor = hsvaToRgba(i * 40, 1, 1, 1)
         light.direction = [-0.577, 0.577, 0.577]
         light.model = model
-        light.eye = camera.eye
+        light.eye = camera.position
 
         transforms.pop()
         transforms.setMatrixUniforms()
