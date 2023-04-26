@@ -11,6 +11,7 @@ import { PointLight } from "@/lib/light/point-light"
 import { Floor } from "@/lib/shape/floor"
 import { Axis } from "@/lib/shape/axis"
 import { UniformLoader } from "@/lib/webgl/uniform-loader"
+import { Vector3 } from "@/lib/math/vector"
 
 import vertexSource from "./index.vert?raw"
 import fragmentSource from "./index.frag?raw"
@@ -40,7 +41,7 @@ export const onload = () => {
     const ui = new ControlUi()
     ui.select("coordinates", coordinates, ["WORLD", "CAMERA"], (v) => {
       coordinates = v
-      position = home
+      position = v === "WORLD" ? home : Vector3.negate(...home).rawValues
     })
     ui.xyz("position", position, -100, 100, -0.1, ({ idx, value }) => (position[idx] = value))
   }
@@ -74,7 +75,7 @@ export const onload = () => {
     camera.fov = 45
     camera.near = 0.1
     camera.far = 1000
-    camera.update()
+    camera.update(modelMatrix)
 
     transforms = new Transforms(gl, program, camera, canvas)
 
@@ -94,19 +95,22 @@ export const onload = () => {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
+    const transform = Matrix4.identity().translate(...position)
+
     if (coordinates === "WORLD") {
-      modelMatrix = Matrix4.identity().translate(...position)
-      light.updateNormalMatrixFrom(modelMatrix)
+      modelMatrix = transform
+      camera.update(transform.inverse())
     }
     if (coordinates === "CAMERA") {
-      camera.update(Matrix4.identity().translate(...position))
+      camera.update(transform)
+      modelMatrix = transform.inverse()
     }
 
-    transforms.push(modelMatrix)
-    transforms.pop()
-    transforms.setMatrixUniforms()
-
+    light.updateNormalMatrixFrom(modelMatrix)
     light.setUniforms()
+
+    transforms.ModelView = modelMatrix
+    transforms.setMatrixUniforms()
 
     scene.traverseDraw((obj) => {
       uniforms.boolean("uWireframe", !!obj.wireframe)
