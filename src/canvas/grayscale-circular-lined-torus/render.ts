@@ -98,13 +98,15 @@ export const onload = () => {
     camera.upVector = quaternion.toRotatedVector3(0.0, 0.0, -1.0)
     camera.update()
 
+    const torusCount = 9
+
     // トーラスをレンダリング
     scene.traverseDraw((obj) => {
       obj.bind()
 
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < torusCount; i++) {
         const model = Matrix4.identity()
-          .rotateY((i * 2 * Math.PI) / 9)
+          .rotateY((i * 2 * Math.PI) / torusCount)
           .translate(0.0, 0.0, 10.0)
           .rotateAround(new Vector3(1.0, 1.0, 0.0).normalize(), rad)
 
