@@ -43,7 +43,7 @@ export const onload = () => {
       coordinates = v
       position = home
     })
-    ui.xyz("position", position, -100, 100, -0.1, (v) => (position = v))
+    ui.xyz("position", position, -100, 100, -0.1, ({ idx, value }) => (position[idx] = value))
   }
 
   const onResize = () => {

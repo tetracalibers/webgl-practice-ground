@@ -47,7 +47,7 @@ export const onload = () => {
     ui.rgb("Sphere Color", sphereColor, (v) => (sphereColor = v))
     ui.rgb("Cone Color", coneColor, (v) => (coneColor = v))
     ui.number("Shininess", shininess, 1, 50, 0.1, (v) => (shininess = v))
-    ui.xyz("Light Position", lightPosition, -50, 50, -0.1, (v) => (lightPosition = [v[0], v[1], v[2]]))
+    ui.xyz("Light Position", lightPosition, -50, 50, -0.1, ({ idx, value }) => (lightPosition[idx] = value))
     ui.number("Distance", distance, -200, -50, 0.1, (v) => (distance = v))
   }
 

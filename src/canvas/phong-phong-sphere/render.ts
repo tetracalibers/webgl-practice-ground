@@ -51,7 +51,9 @@ export const onload = () => {
     ui.rgba("Light Diffuse", lightDiffuse, (v) => (lightDiffuse = v))
     ui.number("Light Ambient", lightAmbient[0], 0, 1, 0.01, (v) => (lightAmbient = [v, v, v, 1.0]))
     ui.number("Light Specular", lightSpecular[0], 0, 1, 0.01, (v) => (lightSpecular = [v, v, v, 1.0]))
-    ui.xyz("Light Direction", lightDirection, -10, 10, -0.1, (v) => (lightDirection = [-v[0], -v[1], v[2]]))
+    ui.xyz("Light Direction", lightDirection, -10, 10, -0.1, ({ idx, value }) => {
+      lightDirection[idx] = idx < 2 ? -value : value
+    })
     ui.rgba("Material Diffuse", material.diffuse, (v) => (material.diffuse = v))
     ui.number("Material Ambient", material.ambient[0], 0, 1, 0.01, (v) => (material.ambient = [v, v, v, 1.0]))
     ui.number("Material Specular", material.specular[0], 0, 1, 0.01, (v) => (material.specular = [v, v, v, 1.0]))
