@@ -208,6 +208,21 @@ export class Matrix4 implements Matrix {
     const yAxis: Vector3 = zAxis.crossV(xAxis).normalize()
 
     return new Matrix4(
+      xAxis.x, xAxis.y, xAxis.z, cameraPosition.dotV(xAxis),
+      yAxis.x, yAxis.y, yAxis.z, cameraPosition.dotV(yAxis),
+      zAxis.x, zAxis.y, zAxis.z, cameraPosition.dotV(zAxis),
+      0.0, 0.0, 0.0, 1.0
+    )
+  }
+
+  // lookAt行列の逆（注意：回転の逆は転置）
+  static view(cameraPosition: Vector3, lookAtPosition: Vector3, cameraUp: Vector3): Matrix4 {
+    const zAxis: Vector3 = cameraPosition.sub(lookAtPosition).normalize()
+    const xAxis: Vector3 = cameraUp.crossV(zAxis).normalize()
+    const yAxis: Vector3 = zAxis.crossV(xAxis).normalize()
+
+    // prettier-ignore
+    return new Matrix4(
       xAxis.x, yAxis.x, zAxis.x, 0.0,
       xAxis.y, yAxis.y, zAxis.y, 0.0,
       xAxis.z, yAxis.z, zAxis.z, 0.0,
