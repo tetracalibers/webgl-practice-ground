@@ -196,6 +196,14 @@ export class Vector3 extends Vector3Base {
     return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar)
   }
 
+  static negate(x: number, y: number, z: number): Vector3 {
+    return new Vector3(-x, -y, -z)
+  }
+
+  negate() {
+    return new Vector3(-this.x, -this.y, -this.z)
+  }
+
   /**
    * Calculate dot product.
    *
