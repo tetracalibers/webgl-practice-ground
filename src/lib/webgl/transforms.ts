@@ -64,6 +64,10 @@ export class Transforms {
     this.setUniformMatrix4fv("uNormalMatrix", this._matrixNormal)
   }
 
+  set ModelView(matrix: Matrix4) {
+    this._matrixMV = matrix
+  }
+
   push(model?: Matrix4) {
     this._stack.push(this.calcModelView(model))
   }
