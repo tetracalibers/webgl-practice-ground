@@ -7,7 +7,6 @@ import { Transforms } from "@/lib/webgl/transforms"
 import { Matrix4 } from "@/lib/math/matrix"
 import { Clock } from "@/lib/event/clock"
 import { ControlUi } from "@/lib/gui/control-ui"
-import { toRad } from "@/lib/math/radian"
 import { PointLight } from "@/lib/light/point-light"
 import { Floor } from "@/lib/shape/floor"
 import { Axis } from "@/lib/shape/axis"
@@ -72,8 +71,7 @@ export const onload = () => {
     light.ambient = [0.2, 0.2, 0.2, 1]
 
     camera = new Camera()
-    camera.position = [0.0, 0.0, 20.0]
-    camera.fov = toRad(45)
+    camera.fov = 45
     camera.near = 0.1
     camera.far = 1000
     camera.update()

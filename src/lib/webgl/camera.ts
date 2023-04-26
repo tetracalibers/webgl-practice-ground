@@ -1,4 +1,5 @@
 import { Matrix4 } from "../math/matrix"
+import { toRad } from "../math/radian"
 import { Vector3 } from "../math/vector"
 
 export class Camera {
@@ -24,7 +25,7 @@ export class Camera {
 
     this._matrix = new Matrix4()
 
-    this._fov = 45
+    this._fov = toRad(45)
     this._near = 0.1
     this._far = 10000
   }
@@ -46,7 +47,7 @@ export class Camera {
   }
 
   set fov(angle: number) {
-    this._fov = angle
+    this._fov = toRad(angle)
   }
 
   set near(val: number) {

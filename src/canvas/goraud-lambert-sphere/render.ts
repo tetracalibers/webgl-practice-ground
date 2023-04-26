@@ -68,7 +68,7 @@ export const onload = () => {
 
     camera = new Camera()
     camera.position = [0.0, 0.0, 20.0]
-    camera.fov = 45 * (Math.PI / 180)
+    camera.fov = 45
     camera.near = 0.1
     camera.far = 10000
     camera.update()
