@@ -7,6 +7,7 @@
 // @see https://github.com/kotofurumiya/matrixgl/blob/master/src/matrix.ts
 
 import { Quaternion } from "./quaternion.js"
+import type { RawVector3 } from "./raw-vector.js"
 import type { Vector3 } from "./vector.js"
 
 /**
@@ -590,6 +591,10 @@ export class Matrix4 implements Matrix {
   rotateZ(radian: number): Matrix4 {
     const rz = Matrix4.rotationZ(radian)
     return this.mulByMatrix4(rz)
+  }
+
+  rotateXYZ(radians: RawVector3): Matrix4 {
+    return this.rotateX(radians[0]).rotateY(radians[1]).rotateZ(radians[2])
   }
 
   /**
