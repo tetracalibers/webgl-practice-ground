@@ -10,6 +10,7 @@ import { Floor } from "@/lib/shape/floor"
 import { Axis } from "@/lib/shape/axis"
 import { UniformLoader } from "@/lib/webgl/uniform-loader"
 import { AngleCamera } from "@/lib/camera/angle-camera"
+import { AngleCameraController } from "@/lib/control/angle-camera-controller"
 
 import vertexSource from "./index.vert?raw"
 import fragmentSource from "./index.frag?raw"
@@ -88,7 +89,7 @@ export const onload = () => {
     camera.home = [0, 2, 50]
     camera.goHome()
 
-    // TODO: new Controls(camera, canvas)
+    new AngleCameraController(canvas, camera)
 
     transforms = new Transforms(gl, program, camera, canvas)
 
