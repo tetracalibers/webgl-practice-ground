@@ -1,3 +1,4 @@
+import type { AngleCamera } from "../camera/angle-camera"
 import { Matrix4 } from "../math/matrix"
 import type { Camera } from "./camera"
 import type { Program } from "./program"
@@ -6,7 +7,7 @@ import type { UniformMatrix4fv } from "./shader-data.type"
 export class Transforms {
   private _gl: WebGL2RenderingContext
   private _program: Program
-  private _camera: Camera
+  private _camera: Camera | AngleCamera
   private _canvas: HTMLCanvasElement
 
   private _matrixMV: Matrix4
@@ -15,7 +16,7 @@ export class Transforms {
 
   private _stack: Matrix4[]
 
-  constructor(gl: WebGL2RenderingContext, program: Program, camera: Camera, canvas: HTMLCanvasElement) {
+  constructor(gl: WebGL2RenderingContext, program: Program, camera: Camera | AngleCamera, canvas: HTMLCanvasElement) {
     this._gl = gl
     this._program = program
     this._camera = camera
