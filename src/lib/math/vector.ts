@@ -73,6 +73,10 @@ abstract class VectorBase implements Vector {
     return Math.sqrt(sumSq)
   }
 
+  get length() {
+    return this.magnitude
+  }
+
   toString(): string {
     const dimension = this._values.length
     return `Vector${dimension}(${this._values.join(", ")})`
