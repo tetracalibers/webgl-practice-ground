@@ -1,12 +1,12 @@
 import { Quaternion } from "../math/quaternion"
 import { Vector3 } from "../math/vector"
+import { Pointer } from "./pointer"
 
-export class MouseCoords {
-  private _rect: DOMRect
+export class MouseCoords extends Pointer {
   private _coords: [number, number]
 
   constructor(canvas: HTMLCanvasElement, flagX?: number, flagY?: number) {
-    this._rect = canvas.getBoundingClientRect()
+    super(canvas)
 
     const { width, left, top, height } = this._rect
     const x = left + width * (flagX !== undefined ? this.clampToFragCoord(flagX) : 0.5)
@@ -21,22 +21,12 @@ export class MouseCoords {
     return Math.min(Math.max(v, 0), 1)
   }
 
-  private innerPos = (x: number, y: number): [number, number] => {
-    return [x - this._rect.left, y - this._rect.top]
-  }
-
   private saveTouchPos = (e: TouchEvent) => {
-    if (e.changedTouches.length !== 1) return
-    const finger = e.changedTouches[0]
-    this._coords = this.innerPos(finger.clientX, finger.clientY)
+    this._coords = this.innerPos(...this.touchPos(e))
   }
 
   private saveMousePos = (e: MouseEvent) => {
-    this._coords = this.innerPos(e.clientX, e.clientY)
-  }
-
-  private isTouchEvent = (e: MouseEvent | TouchEvent): e is TouchEvent => {
-    return e.type.startsWith("touch")
+    this._coords = this.innerPos(...this.mousePos(e))
   }
 
   private onMove = (e: MouseEvent | TouchEvent) => {
