@@ -148,11 +148,11 @@ export class AngleCamera {
   }
 
   set azimuth(azimuth: number) {
-    this.updateAzimuth(azimuth - this._azimuth)
+    this.addAzimuth(azimuth - this._azimuth)
   }
 
   set elevation(elevation: number) {
-    this.updateElevation(elevation - this._elevation)
+    this.addElevation(elevation - this._elevation)
   }
 
   set fov(angle: number) {
@@ -167,7 +167,7 @@ export class AngleCamera {
     this._far = val
   }
 
-  private updateAzimuth(azimuth: number) {
+  addAzimuth(azimuth: number) {
     this._azimuth += azimuth
 
     if (this._azimuth > 360 || this._azimuth < -360) {
@@ -175,7 +175,7 @@ export class AngleCamera {
     }
   }
 
-  private updateElevation(elevation: number) {
+  addElevation(elevation: number) {
     this._elevation += elevation
 
     if (this._elevation > 360 || this._elevation < -360) {
