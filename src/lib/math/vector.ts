@@ -257,20 +257,25 @@ export class Vector3 extends Vector3Base {
     return new Vector3(this.x / mag, this.y / mag, this.z / mag)
   }
 
-  translateByMat4(matrix: Matrix4): Vector3 {
+  translateByMat4(matrix: Matrix4, w = 0): Vector3 {
     const m11: number = matrix.values[0]
     const m12: number = matrix.values[4]
     const m13: number = matrix.values[8]
+    const m14: number = matrix.values[12]
     const m21: number = matrix.values[1]
     const m22: number = matrix.values[5]
     const m23: number = matrix.values[9]
+    const m24: number = matrix.values[13]
     const m31: number = matrix.values[2]
     const m32: number = matrix.values[6]
     const m33: number = matrix.values[10]
+    const m34: number = matrix.values[14]
 
-    const outX = this.dot(m11, m12, m13)
-    const outY = this.dot(m21, m22, m23)
-    const outZ = this.dot(m31, m32, m33)
+    const { x, y, z } = this
+
+    const outX = m11 * x + m12 * y + m13 * z + m14 * w
+    const outY = m21 * x + m22 * y + m23 * z + m24 * w
+    const outZ = m31 * x + m32 * y + m33 * z + m34 * w
 
     return new Vector3(outX, outY, outZ)
   }
