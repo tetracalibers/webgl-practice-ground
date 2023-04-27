@@ -78,4 +78,8 @@ export class ControlUi {
     const controller = this._gui.add({ [label]: value }, label, options)
     controller.onChange(onChangeCallback)
   }
+
+  action(label: string, func: () => void) {
+    this._gui.add({ [label]: func }, label)
+  }
 }
