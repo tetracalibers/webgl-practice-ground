@@ -32,9 +32,9 @@ export class AngleCamera {
     this._focusTo = new Vector3(0, 0, 0)
     this._home = new Vector3(0, 0, 0)
 
-    this._right = new Vector3(1, 0, 0)
-    this._up = new Vector3(0, 1, 0)
-    this._normal = new Vector3(0, 0, 1)
+    this._right = new Vector3(0, 0, 0)
+    this._up = new Vector3(0, 0, 0)
+    this._normal = new Vector3(0, 0, 0)
 
     this._matrix = Matrix4.identity()
 
@@ -112,11 +112,11 @@ export class AngleCamera {
   }
 
   get viewTransform() {
-    return this._matrix //.inverse()
+    return this._matrix.inverse()
   }
 
   get View() {
-    return this._matrix //.inverse()
+    return this._matrix.inverse()
   }
 
   set mode(mode: CameraMode) {
@@ -156,7 +156,7 @@ export class AngleCamera {
   }
 
   set fov(angle: number) {
-    this._fov = toRad(angle)
+    this._fov = angle
   }
 
   set near(val: number) {
