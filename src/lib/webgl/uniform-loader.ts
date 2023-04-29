@@ -53,4 +53,9 @@ export class UniformLoader<T extends CustomUniform> {
     const loc = this.location(name)
     loc && this._gl.uniform1i(loc, value ? 1 : 0)
   }
+
+  float(name: T, value: number) {
+    const loc = this.location(name)
+    loc && this._gl.uniform1f(loc, value)
+  }
 }
