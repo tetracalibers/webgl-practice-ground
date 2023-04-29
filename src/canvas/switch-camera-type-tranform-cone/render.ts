@@ -29,9 +29,10 @@ export const onload = () => {
   let transforms: Transforms
   let clock: Clock
   let light: PointLight
-  let uniforms: UniformLoader<"uWireframe">
 
   let matModel = Matrix4.identity()
+
+  const uniforms = new UniformLoader(gl, ["uWireframe"])
 
   const initGuiControls = () => {
     const ui = new ControlUi()
@@ -75,7 +76,7 @@ export const onload = () => {
 
     scene = new Scene(gl, program)
     clock = new Clock()
-    uniforms = new UniformLoader(gl, program, ["uWireframe"])
+    uniforms.init(program)
 
     light = new PointLight(gl, program)
     light.position = [0, 120, 120]
@@ -90,7 +91,6 @@ export const onload = () => {
     camera.goHome()
 
     new AngleCameraController(canvas, camera)
-
     transforms = new Transforms(gl, program, camera, canvas)
 
     space.onResize = onResize

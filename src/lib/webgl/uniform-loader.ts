@@ -32,19 +32,25 @@ type CustomUniform = `u${UpperABC}${string}`
 
 export class UniformLoader<T extends CustomUniform> {
   private _gl: WebGL2RenderingContext
-  private _program: Program<Attribute, T>
+  private _program: Program<Attribute, T> | null = null
+  private _uniforms: T[]
 
-  constructor(gl: WebGL2RenderingContext, program: Program<any, any>, uniforms: T[]) {
+  constructor(gl: WebGL2RenderingContext, uniforms: T[]) {
     this._gl = gl
+    this._uniforms = uniforms
+  }
+
+  init(program: Program<any, any>) {
     this._program = program
-    this._program.setUniformLocations(uniforms)
+    this._program.setUniformLocations(this._uniforms)
   }
 
   location(name: T) {
-    return this._program.getUniformLocation(name)
+    return this._program?.getUniformLocation(name)
   }
 
   boolean(name: T, value: boolean) {
-    this._gl.uniform1i(this.location(name), value ? 1 : 0)
+    const loc = this.location(name)
+    loc && this._gl.uniform1i(loc, value ? 1 : 0)
   }
 }

@@ -30,7 +30,8 @@ export const onload = () => {
   let transforms: Transforms
   let clock: Clock
   let light: PointLight
-  let uniforms: UniformLoader<"uWireframe">
+
+  const uniforms = new UniformLoader(gl, ["uWireframe"])
 
   let coordinates: "WORLD" | "CAMERA" = "WORLD"
   let home: RawVector3 = [0, -2, -50]
@@ -64,7 +65,7 @@ export const onload = () => {
 
     scene = new Scene(gl, program)
     clock = new Clock()
-    uniforms = new UniformLoader(gl, program, ["uWireframe"])
+    uniforms.init(program)
 
     light = new PointLight(gl, program)
     light.position = [0, 120, 120]
