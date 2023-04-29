@@ -48,7 +48,8 @@ export class AngleCamera {
     this._mode = mode
   }
 
-  goHome() {
+  goHome(home?: RawVector3) {
+    if (home) this._home = new Vector3(...home)
     this.positionV = this._home
     this.azimuth = 0
     this.elevation = 0
