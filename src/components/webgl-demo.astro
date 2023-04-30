@@ -1,5 +1,6 @@
 ---
 import CodeBlock from "./code-block.astro"
+import { Icon } from "astro-icon"
 
 interface Props {
   glSrc?: string
@@ -19,10 +20,28 @@ const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
       <canvas id="gl-canvas" width={canvasSize[0]} height={canvasSize[1]} />
     )
   }
-  {vertSrc && <CodeBlock title="Vertex Shader" src={vertSrc} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />}
-  {fragSrc && <CodeBlock title="Fragment Shader" src={fragSrc} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />}
-  {glSrc && <CodeBlock title="WebGL Script" src={glSrc} lang="ts" bgcolor="rgba(247, 200, 224, 0.3)" />}
+  <button id="ToggleCanvasOrSrc" class="ToggleCanvasOrSrc">
+    <Icon name="vuesax-linear-code-1" class="ToCodeIcon" />
+    <Icon name="vuesax-linear-image" class="ToCanvasIcon" />
+  </button>
+  <div class="CodeBlockContainer" id="CodeBlockContainer">
+    {vertSrc && <CodeBlock title="Vertex Shader" src={vertSrc} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />}
+    {fragSrc && <CodeBlock title="Fragment Shader" src={fragSrc} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />}
+    {glSrc && <CodeBlock title="WebGL Script" src={glSrc} lang="ts" bgcolor="rgba(247, 200, 224, 0.3)" />}
+  </div>
 </div>
+
+<script>
+  const $button = document.getElementById("ToggleCanvasOrSrc")!
+  const $canvas = document.getElementById("gl-canvas")!
+  const $code = document.getElementById("CodeBlockContainer")!
+
+  $button.addEventListener("click", () => {
+    $canvas.classList.toggle("--deactive")
+    $code.classList.toggle("--active")
+    $button.classList.toggle("--active-code")
+  })
+</script>
 
 <style>
   .container {
@@ -30,6 +49,64 @@ const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
     flex-direction: column;
     padding: 0;
     gap: 2em;
+  }
+
+  .CodeBlockContainer {
+    display: none;
+  }
+
+  .CodeBlockContainer.--active {
+    display: flex;
+    flex-direction: column;
+    padding: 4em 0;
+    gap: 2em;
+  }
+
+  .--deactive {
+    display: none;
+  }
+
+  .ToggleCanvasOrSrc {
+    position: fixed;
+    bottom: 0.5rem;
+    left: 0.5rem;
+
+    display: grid;
+    place-items: center;
+
+    appearance: none;
+    border: none;
+    padding: 0;
+
+    background-color: #97b7e9;
+    color: #354259;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    aspect-ratio: 1;
+
+    border-radius: 50%;
+  }
+
+  :global([astro-icon]) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .ToCanvasIcon {
+    display: none;
+  }
+
+  .ToCodeIcon {
+    display: block;
+  }
+
+  .--active-code .ToCanvasIcon {
+    display: block;
+  }
+
+  .--active-code .ToCodeIcon {
+    display: none;
   }
 
   canvas {
@@ -66,6 +143,7 @@ const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
     .full-horizontal {
       width: 100vw;
       height: 100vw;
+      translate: 0 50%;
     }
   }
 </style>
