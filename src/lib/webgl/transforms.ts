@@ -69,6 +69,10 @@ export class Transforms {
     this._matrixMV = matrix
   }
 
+  set Model(model: Matrix4) {
+    this._matrixMV = this.calcModelView(model)
+  }
+
   push(model?: Matrix4) {
     this._stack.push(this.calcModelView(model))
   }
