@@ -64,17 +64,12 @@ export const onload = () => {
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
-    scene.tranverse((obj) => {
-      if (obj.hidden) return
-
-      gl.bindVertexArray(obj.vao ?? null)
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
+    scene.traverseDraw((obj) => {
+      obj.bind()
 
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
 
-      gl.bindVertexArray(null)
-      gl.bindBuffer(gl.ARRAY_BUFFER, null)
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
+      obj.cleanup()
     })
   }
 
