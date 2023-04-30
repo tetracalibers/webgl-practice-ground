@@ -143,7 +143,17 @@ const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
     .full-horizontal {
       width: 100vw;
       height: 100vw;
-      translate: 0 50%;
+      position: absolute;
+      top: 50%;
+      translate: 0 -50%;
+    }
+
+    :global(body:has(.full-horizontal)) {
+      overflow: hidden;
+    }
+
+    :global(body:has(.full-horizontal.--deactive)) {
+      overflow-y: auto;
     }
   }
 </style>
