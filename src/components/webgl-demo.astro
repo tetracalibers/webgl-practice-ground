@@ -6,10 +6,11 @@ interface Props {
   glSrc?: string
   vertSrc?: string
   fragSrc?: string
+  shaders?: { vert: { title: string; src: string }; frag: { title: string; src: string } }[]
   canvasSize: "full-screen" | "full-square" | "full-horizontal" | [number, number]
 }
 
-const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
+const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
 ---
 
 <div class="container">
@@ -25,9 +26,20 @@ const { fragSrc, canvasSize, vertSrc, glSrc } = Astro.props
     <Icon name="vuesax-linear-image" class="ToCanvasIcon" />
   </button>
   <div class="CodeBlockContainer" id="CodeBlockContainer">
-    {vertSrc && <CodeBlock title="Vertex Shader" src={vertSrc} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />}
-    {fragSrc && <CodeBlock title="Fragment Shader" src={fragSrc} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />}
-    {glSrc && <CodeBlock title="WebGL Script" src={glSrc} lang="ts" bgcolor="rgba(247, 200, 224, 0.3)" />}
+    {vertSrc && <CodeBlock title="index.vert" src={vertSrc} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />}
+    {fragSrc && <CodeBlock title="index.frag" src={fragSrc} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />}
+    {
+      shaders &&
+        shaders.map(({ vert, frag }) => {
+          return (
+            <>
+              <CodeBlock title={vert.title} src={vert.src} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />
+              <CodeBlock title={frag.title} src={frag.src} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />
+            </>
+          )
+        })
+    }
+    {glSrc && <CodeBlock title="render.ts" src={glSrc} lang="ts" bgcolor="rgba(247, 200, 224, 0.3)" />}
   </div>
 </div>
 
