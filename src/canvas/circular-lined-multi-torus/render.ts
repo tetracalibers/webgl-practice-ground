@@ -7,7 +7,6 @@ import { Matrix4 } from "@/lib/math/matrix"
 import { torus } from "@/lib/shape/torus"
 import { Clock } from "@/lib/event/clock"
 import { Light } from "@/lib/webgl/light"
-import { MouseCoords } from "@/lib/control/mouse-coords"
 import { hsvaToRgba } from "@/lib/shape/color"
 import { Vector3 } from "@/lib/math/vector"
 
@@ -25,7 +24,6 @@ export const onload = () => {
   let transforms: Transforms
   let clock: Clock
   let light: Light
-  let mouse: MouseCoords
   let count = 0
   let count2 = 0
 
@@ -55,7 +53,6 @@ export const onload = () => {
 
     transforms = new Transforms(gl, program, camera, canvas)
     light = new Light(gl, program)
-    mouse = new MouseCoords(canvas, 0.0, 0.0)
 
     space.onResize = onResize
   }
@@ -78,10 +75,9 @@ export const onload = () => {
     gl.clearDepth(1.0)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
-    const quaternion = mouse.quaternion()
     camera.eye = [0.0, 0.0, 0.0]
-    camera.positionVector = quaternion.toRotatedVector3(0.0, 20.0, 0.0)
-    camera.upVector = quaternion.toRotatedVector3(0.0, 0.0, -1.0)
+    camera.position = [0, 20, 0]
+    camera.up = [0, 0, -1]
     camera.update()
 
     const torusCount = 9

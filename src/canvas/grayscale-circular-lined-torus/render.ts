@@ -9,7 +9,6 @@ import { Vector3 } from "@/lib/math/vector"
 import { Clock } from "@/lib/event/clock"
 import { Light } from "@/lib/webgl/light"
 import { hsvaToRgba } from "@/lib/shape/color"
-import { MouseCoords } from "@/lib/control/mouse-coords"
 import { Frame } from "@/lib/webgl/frame"
 
 import mainVertSrc from "./index.vert?raw"
@@ -29,7 +28,6 @@ export const onload = () => {
   let camera: Camera
   let transforms: Transforms
   let clock: Clock
-  let mouse: MouseCoords
   let light: Light
   let offscreen: Frame
 
@@ -62,7 +60,6 @@ export const onload = () => {
     transforms = new Transforms(gl, program, camera, canvas)
     light = new Light(gl, program)
     clock = new Clock()
-    mouse = new MouseCoords(canvas)
 
     space.onResize = onResize
   }
@@ -92,10 +89,9 @@ export const onload = () => {
 
     program.use()
 
-    const quaternion = mouse.quaternion()
     camera.eye = [0.0, 0.0, 0.0]
-    camera.positionVector = quaternion.toRotatedVector3(0.0, 20.0, 0.0)
-    camera.upVector = quaternion.toRotatedVector3(0.0, 0.0, -1.0)
+    camera.position = [0.0, 20.0, 0.0]
+    camera.up = [0.0, 0.0, -1.0]
     camera.update()
 
     const torusCount = 9
