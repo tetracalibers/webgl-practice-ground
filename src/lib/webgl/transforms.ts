@@ -41,7 +41,9 @@ export class Transforms {
 
   private calcPerspective() {
     const { fov, near, far } = this._camera
-    const aspectRatio = this._canvas.width / this._canvas.height
+    // Bad: Using canvas.width and canvas.height for aspect ratio
+    // @see: https://webgl2fundamentals.org/webgl/lessons/webgl-anti-patterns.html
+    const aspectRatio = this._canvas.clientWidth / this._canvas.clientHeight
 
     return Matrix4.perspective(fov, aspectRatio, near, far)
   }
