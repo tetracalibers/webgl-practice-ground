@@ -58,4 +58,14 @@ export class UniformLoader<T extends CustomUniform> {
     const loc = this.location(name)
     loc && this._gl.uniform1f(loc, value)
   }
+
+  int(name: T, value: number) {
+    const loc = this.location(name)
+    loc && this._gl.uniform1i(loc, value)
+  }
+
+  fvector1(name: T, value: number[]) {
+    const loc = this.location(name)
+    loc && this._gl.uniform1fv(loc, value)
+  }
 }
