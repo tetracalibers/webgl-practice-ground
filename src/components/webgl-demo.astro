@@ -7,7 +7,7 @@ interface Props {
   vertSrc?: string
   fragSrc?: string
   shaders?: { vert: { title: string; src: string }; frag: { title: string; src: string } }[]
-  canvasSize: "full-screen" | "full-square" | "full-horizontal" | [number, number]
+  canvasSize: "js-fit" | "full-screen" | "full-square" | "full-horizontal" | [number, number]
 }
 
 const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
@@ -127,6 +127,11 @@ const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
 
   canvas:focus {
     outline: none;
+  }
+
+  .js-fit {
+    width: 100%;
+    height: 100%;
   }
 
   .full-screen {
