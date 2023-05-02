@@ -8,7 +8,8 @@ export const webglCategories = [
   "texture",
   "transform",
   "camera",
-  "post-processing"
+  "post-processing",
+  "image-processing"
 ] as const
 
 export const webglCategoryDetail: Record<(typeof webglCategories)[number], { title: string }> = {
@@ -35,6 +36,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   "post-processing": {
     title: "Post Processing"
+  },
+  "image-processing": {
+    title: "Image Processing"
   }
 }
 
