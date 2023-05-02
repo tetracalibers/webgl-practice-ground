@@ -18,8 +18,6 @@ in vec2 vTextureCoords;
 
 out vec4 fragColor;
 
-const int mode = 1;
-
 void main() {
   vec2 offset[9];
   offset[0] = vec2(-1.0, -1.0);
