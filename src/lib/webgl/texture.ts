@@ -56,6 +56,10 @@ export class Texture {
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
+  get image() {
+    return this._image
+  }
+
   get() {
     return this._texture
   }
