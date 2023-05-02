@@ -129,9 +129,16 @@ const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
     outline: none;
   }
 
-  .js-fit {
-    width: 100%;
-    height: 100%;
+  @media (orientation: landscape) {
+    .js-fit {
+      max-height: 100svh;
+    }
+  }
+
+  @media (orientation: portrait) {
+    .js-fit {
+      max-height: 100vw;
+    }
   }
 
   .full-screen {
