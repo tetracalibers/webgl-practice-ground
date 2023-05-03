@@ -10,8 +10,8 @@ import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
 
 // foreground
-import imageTomixy from "@/assets/542x542/darken-purple-tomixy.png"
-import imagePatternRock from "@/assets/542x542/usg-pattern.png"
+import imageTomixy from "@/assets/542x542/darken-purple-tomixy_opacity.png"
+import imagePatternRock from "@/assets/542x542/usg-pattern_opacity.png"
 import imagePatternClassic from "@/assets/542x542/trianglify-lowres.png"
 import imagePatternPop from "@/assets/542x542/layered-steps-haikei.png"
 // background
