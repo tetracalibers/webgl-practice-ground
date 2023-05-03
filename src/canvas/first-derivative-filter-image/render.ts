@@ -9,7 +9,7 @@ import { Texture } from "@/lib/webgl/texture"
 import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
 
-import image from "@/assets/original/pastel-tomixy.png"
+import image from "@/assets/original/autumn-leaves_00037.jpg"
 
 type FilterType = "Prewitt" | "Sobel" | "Roberts"
 
@@ -54,7 +54,7 @@ export const onload = () => {
   }
 
   const onResize = () => {
-    space.setSize(texture.image.width, texture.image.height)
+    space.fitImage(texture.image)
     render()
   }
 
@@ -72,7 +72,7 @@ export const onload = () => {
     texture = new Texture(gl, program, image)
     await texture.load()
 
-    space.setSize(texture.image.width, texture.image.height)
+    space.fitImage(texture.image)
     space.onResize = onResize
   }
 
