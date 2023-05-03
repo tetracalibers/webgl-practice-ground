@@ -77,7 +77,7 @@ export const onload = () => {
   }
 
   const registerGeometry = () => {
-    // 板ポリゴン
+    // 画面を覆う板ポリゴン
     const vertices = [-1.0, 1.0, 0.0, 1.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]
     const texCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
     const indices = [0, 2, 1, 2, 3, 1]
