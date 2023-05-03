@@ -28,10 +28,10 @@ void main() {
     // difference
     finalColor = abs(background - foreground);
   } else if (uBlendMode == 3) {
-    // max
+    // lighten
     finalColor = max(background, foreground);
   } else if (uBlendMode == 4) {
-    // min
+    // darken
     finalColor = min(background, foreground);
   } else if (uBlendMode == 5) {
     // multiply

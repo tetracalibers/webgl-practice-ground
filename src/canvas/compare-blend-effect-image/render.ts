@@ -23,8 +23,8 @@ type BlendMode =
   | "add"
   | "subtract"
   | "difference"
-  | "max"
-  | "min"
+  | "lighten"
+  | "darken"
   | "multiply"
   | "screen"
   | "overlay"
@@ -35,8 +35,8 @@ const blendModes: BlendMode[] = [
   "add",
   "subtract",
   "difference",
-  "max",
-  "min",
+  "lighten",
+  "darken",
   "multiply",
   "screen",
   "overlay",
