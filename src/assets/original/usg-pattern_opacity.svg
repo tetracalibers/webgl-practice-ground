@@ -1,0 +1,220 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 500 500" preserveAspectRatio="xMaxYMax slice">
+  <g transform="scale(1.2106537530266344)">
+    <rect x="0" y="0" width="413" height="413" fill="#fefefe00" />
+    <rect x="247.79999999999998" y="82.6" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="268.45,82.6 289.09999999999997,82.6 268.45,103.25" fill="#01a2e3" />
+    <rect x="330.4" y="82.6" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="351.05" y="103.25" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="371.7" y="82.6" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="413,82.6 413,103.25 392.35,103.25" fill="#01a2e3" />
+    <rect x="0" y="123.89999999999999" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="41.3,123.9 41.3,144.55 20.65,144.55" fill="#010101" />
+    <rect x="20.65" y="144.55" width="20.65" height="20.65" fill="#010101" />
+    <rect x="41.3" y="123.89999999999999" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="206.5" y="123.89999999999999" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="227.15" y="123.9" width="20.65" height="20.65" fill="#010101" />
+    <rect x="330.4" y="123.89999999999999" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="330.4,123.9 351.04999999999995,144.55 330.4,144.55" fill="#01a2e3" />
+    <polygon points="351.05,123.9 371.7,144.55 351.05,144.55" fill="#01a2e3" />
+    <rect x="330.4" y="144.55" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="165.2" y="165.2" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="165.2" y="165.2" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="165.2" y="185.85" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="185.85" y="185.85" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="247.79999999999998" y="165.2" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="247.8" y="165.2" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="247.8,185.85 268.45,185.85 247.8,206.5" fill="#010101" />
+    <polygon points="289.09999999999997,185.85 289.09999999999997,206.5 268.45,206.5" fill="#591d81" />
+    <rect x="289.09999999999997" y="165.2" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="289.1" y="185.85" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="330.4" y="165.2" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="330.4" y="165.2" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="351.05" y="165.2" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="330.4" y="185.85" width="20.65" height="20.65" fill="#010101" />
+    <rect x="351.05" y="185.85" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="82.6" y="206.5" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="82.6,206.5 103.25,206.5 82.6,227.15" fill="#591d81" />
+    <polygon points="103.25,227.15 103.25,247.8 82.6,247.8" fill="#010101" />
+    <rect x="206.5" y="206.5" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="206.5" y="206.5" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="227.15" y="206.5" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="247.79999999999998" y="206.5" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="247.8" y="206.5" width="20.65" height="20.65" fill="#591d81" />
+    <polygon points="268.45,206.5 289.09999999999997,206.5 268.45,227.15" fill="#591d81" />
+    <rect x="247.8" y="227.15" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="268.45,227.15 289.09999999999997,247.8 268.45,247.8" fill="#010101" />
+    <rect x="289.09999999999997" y="206.5" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="289.1,206.5 309.75,206.5 289.1,227.15" fill="#591d81" />
+    <polygon points="330.4,227.15 330.4,247.8 309.75,247.8" fill="#591d81" />
+    <rect x="330.4" y="206.5" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="330.4" y="206.5" width="20.65" height="20.65" fill="#591d81" />
+    <polygon points="371.7,206.5 371.7,227.15 351.05,227.15" fill="#01a2e3" />
+    <polygon points="330.4,227.15 351.04999999999995,227.15 351.04999999999995,247.8" fill="#01a2e3" />
+    <rect x="41.3" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="61.95" y="268.45" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="82.6" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="82.6,247.8 103.25,247.8 103.25,268.45" fill="#01a2e3" />
+    <rect x="103.25" y="247.8" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="82.6,268.45 103.25,289.09999999999997 82.6,289.09999999999997" fill="#591d81" />
+    <rect x="103.25" y="268.45" width="20.65" height="20.65" fill="#010101" />
+    <rect x="123.89999999999999" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="123.9,247.8 144.55,268.45 123.9,268.45" fill="#01a2e3" />
+    <rect x="144.55" y="247.8" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="123.9,268.45 144.55,289.09999999999997 123.9,289.09999999999997" fill="#01a2e3" />
+    <polygon points="144.55,268.45 165.20000000000002,268.45 144.55,289.09999999999997" fill="#01a2e3" />
+    <rect x="165.2" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="165.2" y="247.8" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="185.85,247.8 206.5,247.8 185.85,268.45" fill="#010101" />
+    <polygon points="165.2,268.45 185.85,268.45 185.85,289.09999999999997" fill="#591d81" />
+    <rect x="206.5" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="227.15" y="247.8" width="20.65" height="20.65" fill="#010101" />
+    <rect x="227.15" y="268.45" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="247.79999999999998" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="247.8,247.8 268.45,247.8 247.8,268.45" fill="#010101" />
+    <rect x="268.45" y="247.8" width="20.65" height="20.65" fill="#010101" />
+    <rect x="289.09999999999997" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="289.1" y="247.8" width="20.65" height="20.65" fill="#591d81" />
+    <polygon points="309.75,247.8 330.4,247.8 309.75,268.45" fill="#591d81" />
+    <rect x="309.75" y="268.45" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="330.4" y="247.79999999999998" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="330.4,247.8 351.04999999999995,247.8 351.04999999999995,268.45" fill="#010101" />
+    <polygon points="351.05,247.8 371.7,268.45 351.05,268.45" fill="#01a2e3" />
+    <rect x="330.4" y="268.45" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="0" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="20.65,289.1 20.65,309.75 0,309.75" fill="#591d81" />
+    <polygon points="20.65,289.1 41.3,309.75 20.65,309.75" fill="#01a2e3" />
+    <rect x="0" y="309.75" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="20.65,309.75 41.3,309.75 20.65,330.4" fill="#01a2e3" />
+    <rect x="41.3" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="41.3" y="289.1" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="82.6,289.1 82.6,309.75 61.95,309.75" fill="#591d81" />
+    <rect x="41.3" y="309.75" width="20.65" height="20.65" fill="#010101" />
+    <rect x="82.6" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="82.6" y="289.1" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="103.25,309.75 103.25,330.4 82.6,330.4" fill="#591d81" />
+    <rect x="165.2" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="165.2" y="289.1" width="20.65" height="20.65" fill="#010101" />
+    <rect x="185.85" y="289.1" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="165.2" y="309.75" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="206.5" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="206.5" y="289.1" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="227.15,289.1 247.8,289.1 227.15,309.75" fill="#010101" />
+    <rect x="206.5" y="309.75" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="227.15,309.75 247.8,309.75 227.15,330.4" fill="#01a2e3" />
+    <rect x="247.79999999999998" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="247.8,289.1 268.45,289.1 247.8,309.75" fill="#591d81" />
+    <rect x="268.45" y="289.1" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="247.8" y="309.75" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="289.09999999999997,309.75 289.09999999999997,330.4 268.45,330.4" fill="#01a2e3" />
+    <rect x="289.09999999999997" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="289.1,289.1 309.75,289.1 289.1,309.75" fill="#01a2e3" />
+    <polygon points="309.75,289.1 330.4,309.75 309.75,309.75" fill="#01a2e3" />
+    <polygon points="289.1,309.75 309.75,309.75 289.1,330.4" fill="#010101" />
+    <rect x="309.75" y="309.75" width="20.65" height="20.65" fill="#010101" />
+    <rect x="330.4" y="289.09999999999997" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="351.05" y="289.1" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="330.4,309.75 351.04999999999995,330.4 330.4,330.4" fill="#01a2e3" />
+    <polygon points="351.05,309.75 371.7,309.75 351.05,330.4" fill="#010101" />
+    <rect x="0" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="20.65,330.4 20.65,351.04999999999995 0,351.04999999999995" fill="#01a2e3" />
+    <rect x="20.65" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="0,351.05 20.65,351.05 0,371.7" fill="#01a2e3" />
+    <rect x="20.65" y="351.05" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="41.3" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="41.3" y="330.4" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="61.95" y="330.4" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="41.3" y="351.05" width="20.65" height="20.65" fill="#010101" />
+    <rect x="61.95" y="351.05" width="20.65" height="20.65" fill="#010101" />
+    <rect x="82.6" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="82.6" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="103.25" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="82.6" y="351.05" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="103.25" y="351.05" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="123.89999999999999" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="123.9,330.4 144.55,330.4 144.55,351.04999999999995" fill="#591d81" />
+    <rect x="144.55" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="123.9,351.05 144.55,351.05 123.9,371.7" fill="#591d81" />
+    <rect x="165.2" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="165.2" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="185.85" y="330.4" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="165.2,351.05 185.85,371.7 165.2,371.7" fill="#010101" />
+    <rect x="185.85" y="351.05" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="206.5" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="206.5,330.4 227.15,330.4 206.5,351.04999999999995" fill="#591d81" />
+    <rect x="227.15" y="330.4" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="206.5" y="351.05" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="227.15,351.05 247.8,351.05 227.15,371.7" fill="#591d81" />
+    <rect x="247.79999999999998" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="247.8,330.4 268.45,330.4 247.8,351.04999999999995" fill="#010101" />
+    <rect x="268.45" y="330.4" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="247.8" y="351.05" width="20.65" height="20.65" fill="#010101" />
+    <rect x="289.09999999999997" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="289.1" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="309.75,330.4 330.4,330.4 330.4,351.04999999999995" fill="#010101" />
+    <rect x="289.1" y="351.05" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="309.75" y="351.05" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="330.4" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="330.4,330.4 351.04999999999995,330.4 351.04999999999995,351.04999999999995" fill="#010101" />
+    <polygon points="351.05,330.4 371.7,330.4 351.05,351.04999999999995" fill="#010101" />
+    <rect x="330.4" y="351.05" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="351.05,351.05 371.7,351.05 351.05,371.7" fill="#010101" />
+    <rect x="371.7" y="330.4" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="371.7" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="392.35" y="330.4" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="371.7" y="351.05" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="392.35" y="351.05" width="20.65" height="20.65" fill="#010101" />
+    <rect x="0" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="0,371.7 20.65,392.34999999999997 0,392.34999999999997" fill="#01a2e3" />
+    <rect x="20.65" y="371.7" width="20.65" height="20.65" fill="#010101" />
+    <polygon points="20.65,392.35 20.65,413 0,413" fill="#010101" />
+    <rect x="20.65" y="392.35" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="41.3" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="41.3" y="371.7" width="20.65" height="20.65" fill="#591d81" />
+    <polygon points="82.6,371.7 82.6,392.34999999999997 61.95,392.34999999999997" fill="#01a2e3" />
+    <polygon points="41.3,392.35 61.949999999999996,413 41.3,413" fill="#591d81" />
+    <rect x="61.95" y="392.35" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="82.6" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="82.6" y="371.7" width="20.65" height="20.65" fill="#591d81" />
+    <polygon points="103.25,371.7 123.9,371.7 103.25,392.34999999999997" fill="#591d81" />
+    <polygon points="103.25,392.35 103.25,413 82.6,413" fill="#591d81" />
+    <polygon points="123.9,392.35 123.9,413 103.25,413" fill="#010101" />
+    <rect x="123.89999999999999" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="123.9,371.7 144.55,371.7 123.9,392.34999999999997" fill="#591d81" />
+    <rect x="144.55" y="371.7" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="123.9" y="392.35" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="144.55" y="392.35" width="20.65" height="20.65" fill="#010101" />
+    <rect x="165.2" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="165.2,371.7 185.85,371.7 165.2,392.34999999999997" fill="#01a2e3" />
+    <polygon points="206.5,371.7 206.5,392.34999999999997 185.85,392.34999999999997" fill="#591d81" />
+    <rect x="165.2" y="392.35" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="185.85" y="392.35" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="206.5" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="206.5" y="371.7" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="227.15" y="371.7" width="20.65" height="20.65" fill="#01a2e3" />
+    <polygon points="206.5,392.35 227.15,392.35 206.5,413" fill="#01a2e3" />
+    <polygon points="247.8,392.35 247.8,413 227.15,413" fill="#591d81" />
+    <rect x="247.79999999999998" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="247.8,371.7 268.45,392.34999999999997 247.8,392.34999999999997" fill="#591d81" />
+    <rect x="268.45" y="371.7" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="247.8" y="392.35" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="268.45" y="392.35" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="289.09999999999997" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <rect x="289.1" y="371.7" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="309.75" y="371.7" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="289.1" y="392.35" width="20.65" height="20.65" fill="#01a2e3" />
+    <rect x="309.75" y="392.35" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="330.4" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="351.04999999999995,371.7 351.04999999999995,392.34999999999997 330.4,392.34999999999997"
+      fill="#010101" />
+    <polygon points="351.05,371.7 371.7,371.7 371.7,392.34999999999997" fill="#591d81" />
+    <rect x="330.4" y="392.35" width="20.65" height="20.65" fill="#010101" />
+    <rect x="351.05" y="392.35" width="20.65" height="20.65" fill="#591d81" />
+    <rect x="371.7" y="371.7" width="41.3" height="41.3" fill="#fefefe00" />
+    <polygon points="371.7,371.7 392.34999999999997,371.7 371.7,392.34999999999997" fill="#591d81" />
+    <polygon points="392.35,371.7 413,371.7 413,392.34999999999997" fill="#01a2e3" />
+    <polygon points="371.7,392.35 392.34999999999997,392.35 371.7,413" fill="#591d81" />
+    <polygon points="392.35,392.35 413,392.35 392.35,413" fill="#591d81" />
+  </g>
+</svg>
