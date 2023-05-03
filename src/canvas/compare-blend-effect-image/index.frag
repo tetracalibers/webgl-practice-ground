@@ -15,8 +15,14 @@ void main() {
   
   vec2 texCoord = vec2(vTextureCoords.x, 1.0 - vTextureCoords.y);
   
-  vec3 background = texture(uTexture0, texCoord).rgb;
-  vec3 foreground = texture(uTexture1, texCoord).rgb;
+  vec4 texture0 = texture(uTexture0, texCoord);
+  vec4 texture1 = texture(uTexture1, texCoord);
+  
+  vec3 background = texture0.rgb;
+  vec3 foreground = texture1.rgb;
+  
+  float bgAlpha = texture0.a;
+  float fgAlpha = texture1.a;
   
   if (uBlendMode == 0) {
     // add
@@ -56,5 +62,5 @@ void main() {
     finalColor = 1.0 - (1.0 - background) / foreground;
   }
   
-  fragColor = vec4(finalColor, 1.0);
+  fragColor = vec4(mix(background, finalColor, fgAlpha), bgAlpha);
 }
