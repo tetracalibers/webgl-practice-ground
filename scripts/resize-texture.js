@@ -11,8 +11,8 @@ import fs from "node:fs"
 const basename = (src) => path.basename(src, path.extname(src))
 
 ;(async () => {
-  const images = await glob("./src/assets/original/*.{png,jpg,jpeg}")
-  const exists = (await glob("./src/assets/542x542/*.{png,jpg,jpeg}")).map((src) => basename(src))
+  const images = await glob("./src/assets/original/*.{png,jpg,jpeg,svg}")
+  const exists = (await glob("./src/assets/542x542/*.{png,jpg,jpeg,svg}")).map((src) => basename(src))
 
   const newImages = images.filter((image) => !exists.includes(basename(image)))
   const sizes = [542]
