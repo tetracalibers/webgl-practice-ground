@@ -12,10 +12,10 @@ const basename = (src) => path.basename(src, path.extname(src))
 
 ;(async () => {
   const images = await glob("./src/assets/original/*.{png,jpg,jpeg}")
-  const exists = (await glob("./src/assets/64x64/*.{png,jpg,jpeg}")).map((src) => basename(src))
+  const exists = (await glob("./src/assets/542x542/*.{png,jpg,jpeg}")).map((src) => basename(src))
 
   const newImages = images.filter((image) => !exists.includes(basename(image)))
-  const sizes = [64, 128, 256]
+  const sizes = [542]
 
   for (const image of newImages) {
     const sharpStream = sharp({ failOn: "none" })
