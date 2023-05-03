@@ -9,7 +9,10 @@ import { Texture } from "@/lib/webgl/texture"
 import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
 
-import image from "@/assets/original/autumn-leaves_00037.jpg"
+import imageAutumnLeaves from "@/assets/original/autumn-leaves_00037.jpg"
+import imageGoldfishBowl from "@/assets/original/japanese-style_00011.jpg"
+import imageFireWorks from "@/assets/original/fireworks_00018.jpg"
+import imageTomixy from "@/assets/original/pastel-tomixy.png"
 
 type FilterType = "Prewitt" | "Sobel" | "Roberts"
 
@@ -22,9 +25,17 @@ export const onload = () => {
   let scene: Scene
   let program: Program
   let clock: Clock
-  let texture: Texture
+  let textures: Texture[] = []
 
   const uniforms = new UniformLoader(gl, ["uKernelX", "uKernelY", "uUseFilter", "uMonoChrome"])
+
+  const images = [
+    { name: "tomixyロゴ", image: imageTomixy },
+    { name: "紅葉", image: imageAutumnLeaves },
+    { name: "金魚鉢", image: imageGoldfishBowl },
+    { name: "花火", image: imageFireWorks }
+  ]
+  const imageNames = images.map((obj) => obj.name)
 
   const filterTypes: FilterType[] = ["Prewitt", "Sobel", "Roberts"]
   const kernels = {
@@ -42,19 +53,26 @@ export const onload = () => {
     }
   }
 
+  let activeImage = 0
   let filterType: FilterType = "Prewitt"
   let useFilter = false
   let monochrome = false
 
   const initGuiControls = () => {
     const ui = new ControlUi()
+    ui.select("Image", "tomixyロゴ", imageNames, (name) => {
+      const idx = imageNames.indexOf(name)
+      if (idx < 0) return
+      activeImage = idx
+      space.fitImage(textures[activeImage].image)
+    })
     ui.boolean("Edge detection", false, (isActive) => (useFilter = isActive))
     ui.select<FilterType>("Operator", "Prewitt", filterTypes, (mode) => (filterType = mode))
     ui.boolean("Monochrome", false, (isActive) => (monochrome = isActive))
   }
 
   const onResize = () => {
-    space.fitImage(texture.image)
+    space.fitImage(textures[activeImage].image)
     render()
   }
 
@@ -69,10 +87,15 @@ export const onload = () => {
 
     uniforms.init(program)
 
-    texture = new Texture(gl, program, image)
-    await texture.load()
+    await Promise.all(
+      images.map(async (obj) => {
+        const texture = new Texture(gl, program, obj.image)
+        textures.push(texture)
+        await texture.load()
+      })
+    )
 
-    space.fitImage(texture.image)
+    space.fitImage(textures[activeImage].image)
     space.onResize = onResize
   }
 
@@ -96,7 +119,7 @@ export const onload = () => {
     scene.traverseDraw((obj) => {
       obj.bind()
 
-      texture.use()
+      textures[activeImage].use()
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
 
       obj.cleanup()
