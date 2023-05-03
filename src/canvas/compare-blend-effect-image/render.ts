@@ -10,14 +10,16 @@ import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
 
 // foreground
-import imageTomixy from "@/assets/542x542/pastel-tomixy.png"
-import imageTomixyDarken from "@/assets/542x542/darken-purple-tomixy.png"
+import imageTomixy from "@/assets/542x542/darken-purple-tomixy.png"
+import imagePatternRock from "@/assets/542x542/usg-pattern.png"
+import imagePatternClassic from "@/assets/542x542/trianglify-lowres.png"
+import imagePatternPop from "@/assets/542x542/layered-steps-haikei.png"
 // background
 import imageWater from "@/assets/542x542/water_00032.png"
 import imageTwinklePink from "@/assets/542x542/twinkle_00029.png"
-import imageTwinkleDark from "@/assets/542x542/twinkle_00037.png"
 import imageLightDark from "@/assets/542x542/light_00034.png"
 import imageTreeWoods from "@/assets/542x542/tree-woods_00123.png"
+import imageFogBridge from "@/assets/542x542/fog-bridge.png"
 
 type BlendMode =
   | "add"
@@ -59,24 +61,26 @@ export const onload = () => {
   const uniforms = new UniformLoader(gl, ["uBlendMode"])
 
   const foregrounds = [
-    { name: "明るめのロゴ", image: imageTomixy },
-    { name: "暗めのロゴ", image: imageTomixyDarken }
+    { name: "ロゴ", image: imageTomixy },
+    { name: "黒青系", image: imagePatternRock },
+    { name: "鮮やか", image: imagePatternPop },
+    { name: "グレー", image: imagePatternClassic }
   ]
   const foregroundNames = foregrounds.map((obj) => obj.name)
 
   const backgrounds = [
     { name: "水", image: imageWater },
     { name: "明るいキラキラ", image: imageTwinklePink },
-    { name: "暗いキラキラ", image: imageTwinkleDark },
     { name: "暗いモヤモヤ", image: imageLightDark },
+    { name: "霧", image: imageFogBridge },
     { name: "木々", image: imageTreeWoods }
   ]
   const backgroundNames = backgrounds.map((obj) => obj.name)
 
   let activeForeground = 1
-  let activeBackground = 0
+  let activeBackground = 4
 
-  const initBlendMode = 5
+  const initBlendMode = 3
 
   const initGuiControls = () => {
     const ui = new ControlUi()
