@@ -77,10 +77,10 @@ export const onload = () => {
   ]
   const backgroundNames = backgrounds.map((obj) => obj.name)
 
-  let activeForeground = 1
-  let activeBackground = 4
+  let activeForeground = 3
+  let activeBackground = 0
 
-  const initBlendMode = 3
+  const initBlendMode = 7
 
   const initGuiControls = () => {
     const ui = new ControlUi()
