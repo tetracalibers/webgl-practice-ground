@@ -14,6 +14,25 @@ export class Space {
     this._canvas.height = height
   }
 
+  fitImage(img: HTMLImageElement) {
+    const imgAspect = img.width / img.height
+    // 正方形画像なら、品質を落とさない
+    if (imgAspect === 1) {
+      this.setSize(img.width, img.height)
+      return
+    }
+    const fullW = window.innerWidth
+    const fullH = window.innerHeight
+    const windowAspect = fullW / fullH
+    // 長方形画像は、スクリーンからはみ出ないようにする
+    // 品質はやむなく落ちる
+    if (imgAspect > windowAspect) {
+      this.setSize(fullW, fullW / imgAspect)
+    } else {
+      this.setSize(fullH * imgAspect, fullH)
+    }
+  }
+
   fitScreen() {
     this._canvas.width = window.innerWidth
     this._canvas.height = window.innerHeight
