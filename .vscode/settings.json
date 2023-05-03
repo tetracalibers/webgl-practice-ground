@@ -2,5 +2,5 @@
   "files.associations": {
     "*.mdx": "mdx"
   },
-  "svg.preview.background": "white"
+  "svg.preview.background": "transparent"
 }
