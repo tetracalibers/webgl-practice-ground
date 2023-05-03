@@ -25,7 +25,7 @@ export class Light extends LightBase {
     })
   }
 
-  initUniforms() {
+  setUniformLocations() {
     this._program.setUniformLocations([
       ...this._colors.keys(),
       ...this._vectors.keys(),
