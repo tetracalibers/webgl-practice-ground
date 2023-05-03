@@ -1,5 +1,22 @@
 import { z, defineCollection } from "astro:content"
 
+export const imageProcessingCategories = ["edge-detection", "composite"] as const
+
+export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCategories)[number], { title: string }> = {
+  composite: {
+    title: "合成"
+  },
+  "edge-detection": {
+    title: "エッジ検出"
+  }
+}
+
+const zImageProcessingStudy = z.object({
+  title: z.string(),
+  category: z.literal("image-processing"),
+  subcategory: z.enum(imageProcessingCategories)
+})
+
 export const webglCategories = [
   "basic",
   "lighting",
@@ -8,8 +25,7 @@ export const webglCategories = [
   "texture",
   "transform",
   "camera",
-  "post-processing",
-  "image-processing"
+  "post-processing"
 ] as const
 
 export const webglCategoryDetail: Record<(typeof webglCategories)[number], { title: string }> = {
@@ -36,9 +52,6 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   "post-processing": {
     title: "Post Processing"
-  },
-  "image-processing": {
-    title: "Image Processing"
   }
 }
 
@@ -129,7 +142,7 @@ const zGlslStudy = z.object({
 })
 
 const studyCollection = defineCollection({
-  schema: z.discriminatedUnion("category", [zWebglStudy, zGlslStudy])
+  schema: z.discriminatedUnion("category", [zWebglStudy, zGlslStudy, zImageProcessingStudy])
 })
 
 export const collections = {
