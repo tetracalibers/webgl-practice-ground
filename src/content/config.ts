@@ -1,10 +1,13 @@
 import { z, defineCollection } from "astro:content"
 
-export const imageProcessingCategories = ["edge-detection", "composite"] as const
+export const imageProcessingCategories = ["edge-detection", "composite", "smoothing"] as const
 
 export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCategories)[number], { title: string }> = {
   composite: {
     title: "合成"
+  },
+  smoothing: {
+    title: "平滑化"
   },
   "edge-detection": {
     title: "エッジ検出"
