@@ -144,6 +144,10 @@ export class Frame {
     return this._frameBuffer
   }
 
+  get framebuffer() {
+    return this._frameBuffer
+  }
+
   get texture() {
     return this._texture
   }
