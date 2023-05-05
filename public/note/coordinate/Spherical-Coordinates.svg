@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="360" height="360"
+  version="1.1">
+
+  <g id="Spherical_Coordinates_(Colatitude,_Longitude)" transform="translate(159.5, 195.5) scale(1,-1)">
+    <path d="M -143,0 A 143,62 0 1 0 143,0" style="stroke:#808080;stroke-width:1;stroke-dasharray:6,6;fill:none;" />
+    <path d="M 0,143 A 143,60 -90 1 1 0,-143" transform="rotate(13)"
+      style="stroke:#808080;stroke-dasharray:6,6;stroke-width:1;fill:none;" />
+
+    <path d="M -125,0 H 186" transform="rotate(-135)" style="stroke:#000000;stroke-width:1;fill:none;" />
+    <path d="M 0,-2.5 L 4,-3 L 2,4 L 0,12 L -2,4 L -4,-3 L 0,-2.5 Z" transform="rotate(-225) translate(0,186)"
+      style="stroke:none;fill:#000000;" />
+
+    <path d="M -155,0 H 188" transform="rotate(-10.6)" style="stroke:#000000;stroke-width:1;fill:none;" />
+    <path d="M 0,-2.5 L 4,-3 L 2,4 L 0,12 L -2,4 L -4,-3 L 0,-2.5 Z"
+      transform="rotate(-10.6) translate(188,0) rotate(270)" style="stroke:none;fill:#000000;" />
+
+    <path d="M 0,-163 V 177" style="stroke:#000000;stroke-width:1;fill:none;" />
+    <path d="M 0,-2.5 L 4,-3 L 2,4 L 0,12 L -2,4 L -4,-3 L 0,-2.5 Z" transform="translate(0,177)"
+      style="stroke:none;fill:#000000;" />
+
+    <circle cx="0" cy="0" r="143" style="stroke:#000000;stroke-width:2;fill:none;" />
+
+    <path d="M 0,-143 A 143,60 -90 1 1 0,143" transform="rotate(13)" style="stroke:#000000;stroke-width:1;fill:none;" />
+    <path d="M -143,0 A 143,62 0 1 1 143,0" style="stroke:#000000;stroke-width:1;fill:none;" />
+
+    <path d="M 0,0 L -56.88,-56.88 A 143,62 0 0 1 66.73,-54.84 L 0,0 Z" style="stroke:none;fill:#204a87;opacity:0.2;" />
+    <path d="M 0,0 L 29,125.5 A 143,60 -90 0 0 53.71,63.72 L 0,0 Z" transform="rotate(13)"
+      style="stroke:none;fill:#cc0000;opacity:0.2;" />
+
+    <path d="M 0,0 L 38,74.17" style="stroke:#4e9a06;stroke-width:2;fill:none;" />
+    <path d="M 0,0 L -10,3 L -10,-3 L 0,0 Z" transform="translate(38, 74.17) rotate(63)"
+      style="stroke:#4e9a06;stroke-width:2;fill:#4e9a06;" />
+
+    <path d="M 29,125.5 A 143,60 -90 0 0 53.71,63.72" transform="rotate(13)"
+      style="stroke:#cc0000;stroke-width:2;fill:none;" />
+    <path d="M 0,0 L -10,3 L -10,-3 L 0,0 Z" transform="translate(38, 74.17) rotate(292)"
+      style="stroke:#cc0000;stroke-width:2;fill:#cc0000;" />
+
+    <path d="M -56.88,-56.88 A 143,62 0 0 1 62,-55.87" style="stroke:#204a87;stroke-width:2;fill:none;" />
+    <path d="M 0,0 L -10,3 L -10,-3 L 0,0 Z" transform="translate(66.73,-54.84) rotate(11)"
+      style="stroke:#204a87;stroke-width:2;fill:#204a87;" />
+
+    <circle cx="38" cy="74.17" r="4" style="stroke:none;fill:#5c3566;" />
+    <circle cx="0" cy="0" r="2" style="stroke:none;fill:#000000;" />
+
+    <text transform="scale(1,-1)" x="6" y="-44" xml:space="preserve"
+      style="font-size:28px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+      <tspan x="6" y="-44">r</tspan>
+    </text>
+
+    <text transform="scale(1,-1)" x="22" y="-110" xml:space="preserve"
+      style="font-size:28px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+      <tspan x="22" y="-110">φ</tspan>
+    </text>
+
+    <text transform="scale(1,-1)" x="-22" y="90" xml:space="preserve"
+      style="font-size:28px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+      <tspan x="-22" y="90">θ</tspan>
+    </text>
+
+    <text transform="scale(1,-1)" x="45" y="-70" xml:space="preserve"
+      style="font-size:28px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+      <tspan x="45" y="-70">P</tspan>
+    </text>
+
+    <g transform="translate(-127,-154) scale(1,-1)">
+      <text x="0" y="0" xml:space="preserve"
+        style="font-size:32px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+        <tspan x="0" y="0">x</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(167,-65) scale(1,-1)">
+      <text x="0" y="0" xml:space="preserve"
+        style="font-size:32px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+        <tspan x="0" y="0">y</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(10,170) scale(1,-1)">
+      <text x="0" y="0" xml:space="preserve"
+        style="font-size:32px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif Italic">
+        <tspan x="0" y="0">z</tspan>
+      </text>
+    </g>
+
+  </g>
+</svg>
