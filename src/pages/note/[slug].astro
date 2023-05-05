@@ -1,0 +1,34 @@
+---
+import BaseHtml from "@/layout/base-html.astro"
+import { CollectionEntry, getCollection } from "astro:content"
+
+export async function getStaticPaths() {
+  const pages = await getCollection("note")
+  return pages.map((page) => {
+    return {
+      params: { slug: page.slug },
+      props: { page }
+    }
+  })
+}
+
+interface Props {
+  page: CollectionEntry<"note">
+}
+
+const { page } = Astro.props
+const { Content } = await page.render()
+const { title } = page.data
+---
+
+<BaseHtml title={title}>
+  <h1>{title}</h1>
+  <Content />
+</BaseHtml>
+
+<style>
+  body {
+    max-width: 60rem;
+    margin: 0 auto;
+  }
+</style>

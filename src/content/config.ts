@@ -1,5 +1,24 @@
 import { z, defineCollection } from "astro:content"
 
+export const noteCategories = ["math", "image", "CG"] as const
+
+export const noteCategoryDetail: Record<(typeof noteCategories)[number], { title: string }> = {
+  math: {
+    title: "数学"
+  },
+  CG: {
+    title: "グラフィックス"
+  },
+  image: {
+    title: "画像処理"
+  }
+}
+
+const zNote = z.object({
+  title: z.string(),
+  category: z.enum(noteCategories)
+})
+
 export const imageProcessingCategories = ["edge-detection", "composite", "smoothing"] as const
 
 export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCategories)[number], { title: string }> = {
@@ -149,5 +168,6 @@ const studyCollection = defineCollection({
 })
 
 export const collections = {
-  study: studyCollection
+  study: studyCollection,
+  note: zNote
 }

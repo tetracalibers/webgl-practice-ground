@@ -1,12 +1,21 @@
 ---
-import { glslCategoryDetail, imageProcessingCategoryDetail, webglCategoryDetail } from "@/content/config"
+import {
+  glslCategoryDetail,
+  imageProcessingCategoryDetail,
+  noteCategoryDetail,
+  webglCategoryDetail
+} from "@/content/config"
 import BaseHtml from "@/layout/base-html.astro"
 import { getCollection } from "astro:content"
 
 const studyPages = await getCollection("study")
+const notePages = await getCollection("note")
 
 const slugs = [...studyPages.map((page) => page.slug)] as const
 type Slug = (typeof slugs)[number]
+
+const noteSlugs = [...notePages.map((page) => page.slug)] as const
+type NoteSlug = (typeof noteSlugs)[number]
 
 const order: Slug[] = [
   "white-triangle", // https://wgld.org/d/webgl/w014.html
@@ -105,7 +114,20 @@ const order: Slug[] = [
   "afterimage-circle-on-mouse" // original
 ]
 
+const noteOrder: NoteSlug[] = [
+  // math
+  "vector",
+  "matrix",
+  "coordinate-system",
+  // CG
+  "alpha",
+  "mesh",
+  // image-processing
+  "mix-blend-mode"
+]
+
 const orderedStudyPages = order.map((slug) => studyPages.find((page) => page.slug === slug)!!)
+const orderedNotePages = noteOrder.map((slug) => notePages.find((page) => page.slug === slug)!!)
 
 const webglStudyPages = orderedStudyPages.filter((page) => page.data.category === "webgl")
 const glslStudyPages = orderedStudyPages.filter((page) => page.data.category === "glsl")
@@ -163,6 +185,25 @@ const imageProcessingStudyPages = orderedStudyPages.filter((page) => page.data.c
             {pages.map((page) => (
               <li>
                 <a href={`/webgl-practice-ground/${page.slug}`}>{page.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    })
+  }
+  <h2>Note</h2>
+  {
+    Object.entries(noteCategoryDetail).map(([ckey, cdetail]) => {
+      const pages = orderedNotePages.filter((page) => page.data.category === ckey)
+      if (pages.length < 1) return null
+      return (
+        <>
+          <h3>{cdetail.title}</h3>
+          <ul>
+            {pages.map((page) => (
+              <li>
+                <a href={`/webgl-practice-ground/note/${page.slug}`}>{page.data.title}</a>
               </li>
             ))}
           </ul>
