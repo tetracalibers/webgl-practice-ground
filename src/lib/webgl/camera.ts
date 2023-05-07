@@ -1,4 +1,5 @@
 import { Matrix4 } from "../math/matrix"
+import type { Quaternion } from "../math/quaternion"
 import { toRad } from "../math/radian"
 import { Vector3 } from "../math/vector"
 
