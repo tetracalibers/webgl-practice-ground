@@ -47,7 +47,8 @@ export const webglCategories = [
   "texture",
   "transform",
   "camera",
-  "post-processing"
+  "post-processing",
+  "stencil"
 ] as const
 
 export const webglCategoryDetail: Record<(typeof webglCategories)[number], { title: string }> = {
@@ -68,6 +69,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   texture: {
     title: "Texture Mapping"
+  },
+  stencil: {
+    title: "Stencil"
   },
   framebuffer: {
     title: "Framebuffer"
