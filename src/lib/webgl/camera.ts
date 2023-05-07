@@ -99,4 +99,8 @@ export class Camera {
   get viewTransform() {
     return this._matrix
   }
+
+  get View() {
+    return this._matrix
+  }
 }
