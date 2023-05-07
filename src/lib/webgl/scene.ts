@@ -86,34 +86,54 @@ export class Scene {
     }
   }
 
+  private drawHelpers(key: string, obj: RenderObject) {
+    const bind = () => {
+      this._gl.bindVertexArray(obj.vao ?? null)
+      this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
+    }
+
+    const setMaterial = (material: RawMaterial) => {
+      if (!obj.material) return
+      obj.material.diffuse = material.diffuse
+      obj.material.ambient = material.ambient
+      obj.material.specular = material.specular
+    }
+
+    const update = () => {
+      this._objects.set(key, obj)
+    }
+
+    const cleanup = () => {
+      this._gl.bindVertexArray(null)
+      this._gl.bindBuffer(this._gl.ARRAY_BUFFER, null)
+      this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, null)
+    }
+
+    return {
+      bind,
+      setMaterial,
+      update,
+      cleanup
+    }
+  }
+
   traverseDraw(callback: (obj: RenderObjectWithHelper, key: string) => void) {
     for (const [key, obj] of this._objects.entries()) {
       if (obj.hidden) continue
 
-      const bind = () => {
-        this._gl.bindVertexArray(obj.vao ?? null)
-        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, obj.ibo ?? null)
-      }
+      const helpers = this.drawHelpers(key, obj)
 
-      const setMaterial = (material: RawMaterial) => {
-        if (!obj.material) return
-        obj.material.diffuse = material.diffuse
-        obj.material.ambient = material.ambient
-        obj.material.specular = material.specular
-      }
-
-      const update = () => {
-        this._objects.set(key, obj)
-      }
-
-      const cleanup = () => {
-        this._gl.bindVertexArray(null)
-        this._gl.bindBuffer(this._gl.ARRAY_BUFFER, null)
-        this._gl.bindBuffer(this._gl.ELEMENT_ARRAY_BUFFER, null)
-      }
-
-      callback({ ...obj, bind, cleanup, update, setMaterial }, key)
+      callback({ ...obj, ...helpers }, key)
     }
+  }
+
+  draw(alias: string, callback: (obj: RenderObjectWithHelper, key: string) => void) {
+    const obj = this._objects.get(alias)
+    if (!obj) return
+
+    const helpers = this.drawHelpers(alias, obj)
+
+    callback({ ...obj, ...helpers }, alias)
   }
 
   private bindAttributes(obj: RenderObject) {
