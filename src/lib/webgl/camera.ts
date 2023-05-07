@@ -91,6 +91,11 @@ export class Camera {
     this._matrix = matrix ?? Matrix4.view(this._position, this._focusPoint, this._up)
   }
 
+  // カメラをクォータニオンで回転
+  rotateQ(quaternion: Quaternion) {
+    this._matrix = Matrix4.view(this._position, this._focusPoint, this._up).multiply(quaternion.toRotationMatrix4())
+  }
+
   get viewTransform() {
     return this._matrix
   }
