@@ -12,11 +12,13 @@ export class ControlUi {
   rgb(label: string, value: RawVector3, onChangeCallback: (color: RawVector3) => void) {
     const controller = this._gui.addColor({ [label]: value }, label)
     controller.onChange(onChangeCallback)
+    return controller
   }
 
   rgba(label: string, value: RawVector4, onChangeCallback: (color: RawVector4) => void) {
     const controller = this._gui.addColor({ [label]: value }, label)
     controller.onChange(onChangeCallback)
+    return controller
   }
 
   number(
@@ -29,11 +31,13 @@ export class ControlUi {
   ) {
     const controller = this._gui.add({ [label]: value }, label, min, max, step)
     controller.onChange(onChangeCallback)
+    return controller
   }
 
   boolean(label: string, value: boolean, onChangeCallback: (value: boolean) => void) {
     const controller = this._gui.add({ [label]: value }, label)
     controller.onChange(onChangeCallback)
+    return controller
   }
 
   xyz(
@@ -77,6 +81,7 @@ export class ControlUi {
   select<T extends string>(label: string, value: T, options: T[], onChangeCallback: (value: T) => void) {
     const controller = this._gui.add({ [label]: value }, label, options)
     controller.onChange(onChangeCallback)
+    return controller
   }
 
   action(label: string, func: () => void) {
