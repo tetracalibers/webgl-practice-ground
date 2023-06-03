@@ -25,7 +25,7 @@ export const onload = () => {
   let clock: Clock
   let textures: Texture[] = []
 
-  const uniforms = new UniformLoader(gl, ["uBlockCount"])
+  const uniforms = new UniformLoader(gl, ["uMosaicScale"])
 
   const images = [
     { name: "花火", image: imageFireworks },
@@ -36,7 +36,7 @@ export const onload = () => {
   const imageNames = images.map((obj) => obj.name)
   let activeImage = 1
 
-  const defaultBlockCount = 20
+  const defaultMosaicScale = 10
 
   const initGuiControls = () => {
     const ui = new ControlUi()
@@ -46,8 +46,8 @@ export const onload = () => {
       activeImage = idx
       space.fitImage(textures[activeImage].image)
     })
-    ui.number("BlockCount", defaultBlockCount, 10, 100, 1, (value) => {
-      uniforms.int("uBlockCount", value)
+    ui.number("MosaicScale", defaultMosaicScale, 1, 50, 2, (value) => {
+      uniforms.int("uMosaicScale", value)
     })
   }
 
@@ -74,7 +74,7 @@ export const onload = () => {
     )
 
     uniforms.init(program)
-    uniforms.int("uBlockCount", defaultBlockCount)
+    uniforms.int("uMosaicScale", defaultMosaicScale)
 
     space.fitImage(textures[activeImage].image)
     space.onResize = onResize
