@@ -19,7 +19,7 @@ const zNote = z.object({
   category: z.enum(noteCategories)
 })
 
-export const imageProcessingCategories = ["edge-detection", "composite", "smoothing"] as const
+export const imageProcessingCategories = ["edge-detection", "composite", "smoothing", "color"] as const
 
 export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCategories)[number], { title: string }> = {
   composite: {
@@ -30,6 +30,9 @@ export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCatego
   },
   "edge-detection": {
     title: "エッジ検出"
+  },
+  color: {
+    title: "色の操作"
   }
 }
 
