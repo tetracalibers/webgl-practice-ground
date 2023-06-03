@@ -25,7 +25,7 @@ export const onload = () => {
   let clock: Clock
   let textures: Texture[] = []
 
-  const uniforms = new UniformLoader(gl, ["uMosaicScale"])
+  const uniforms = new UniformLoader(gl, ["uMosaicScale", "uCalcBy"])
 
   const images = [
     { name: "花火", image: imageFireworks },
@@ -36,6 +36,8 @@ export const onload = () => {
   const imageNames = images.map((obj) => obj.name)
   let activeImage = 1
 
+  const calcBy = ["平均値", "中央点"]
+  const defaultCalcByIdx = 0
   const defaultMosaicScale = 10
 
   const initGuiControls = () => {
@@ -45,6 +47,11 @@ export const onload = () => {
       if (idx < 0) return
       activeImage = idx
       space.fitImage(textures[activeImage].image)
+    })
+    ui.select("CalcBy", calcBy[defaultCalcByIdx], calcBy, (name) => {
+      const idx = calcBy.indexOf(name)
+      if (idx < 0) return
+      uniforms.int("uCalcBy", idx)
     })
     ui.number("MosaicScale", defaultMosaicScale, 1, 50, 2, (value) => {
       uniforms.int("uMosaicScale", value)
@@ -74,6 +81,7 @@ export const onload = () => {
     )
 
     uniforms.init(program)
+    uniforms.int("uCalcBy", defaultCalcByIdx)
     uniforms.int("uMosaicScale", defaultMosaicScale)
 
     space.fitImage(textures[activeImage].image)
