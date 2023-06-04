@@ -88,29 +88,18 @@ export const onload = () => {
   }
 
   const render = () => {
-    reducedScreen.drawShrink()
-    gl.bindFramebuffer(gl.FRAMEBUFFER, reducedScreen.framebuffer)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-
+    reducedScreen.switchToOffcanvas()
     program.use()
-
     scene.traverseDraw((obj) => {
       obj.bind()
-
       textures[activeImage].use()
-
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
-
       obj.cleanup()
     })
 
-    // ---
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-    //
+    reducedScreen.switchToCanvas()
     reducedScreen.bind()
-    reducedScreen.drawExpand()
+    reducedScreen.draw()
   }
 
   const init = async () => {

@@ -15,12 +15,11 @@ export class ReduceFrame {
 
   constructor(gl: WebGL2RenderingContext, rate: number, textureUnit = 0) {
     this._gl = gl
-    const size = Math.min(gl.canvas.width, gl.canvas.height)
-    const step = Math.ceil(size / rate)
-    const step5 = Math.round(step / 5) * 5
-    this._width = step5
-    this._height = step5
     this._textureUnit = textureUnit
+
+    const size = this.calcOffcanvasSize(rate)
+    this._width = size
+    this._height = size
 
     const { texture, framebuffer } = this.createFramebuffer(gl)
     const { vertexBuffer, textureBuffer } = this.createGeometry(gl)
@@ -40,18 +39,12 @@ export class ReduceFrame {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl[mode])
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._width, this._height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
 
-    //const renderBuffer = gl.createRenderbuffer()
-    //gl.bindRenderbuffer(gl.RENDERBUFFER, renderBuffer)
-    //gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this._width, this._height)
-
     const framebuffer = gl.createFramebuffer()
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer)
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0)
-    //gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderBuffer)
 
     gl.bindTexture(gl.TEXTURE_2D, null)
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-    //gl.bindRenderbuffer(gl.RENDERBUFFER, null)
 
     return { texture, framebuffer }
   }
@@ -76,9 +69,17 @@ export class ReduceFrame {
   private createProgram(gl: WebGL2RenderingContext) {
     const program = new Program(gl, vertShaderSource, fragShaderSource, false)
     program.setAttributeLocations(["aVertexTextureCoords", "aVertexPosition"])
-    program.setUniformLocations([`uTexture${this._textureUnit}`])
+    program.setUniformLocations(["uTexture"])
 
     return program
+  }
+
+  private calcOffcanvasSize(rate: number) {
+    const canvas = this._gl.canvas
+    const size = Math.min(canvas.width, canvas.height)
+    const step = Math.ceil(size / rate)
+    const step5multipl = Math.round(step / 5) * 5 // 最も近い5の倍数
+    return step5multipl
   }
 
   bind() {
@@ -88,7 +89,7 @@ export class ReduceFrame {
 
     const aVertexPosition = this._program.getAttributeLocation("aVertexPosition")
     const aVertexTexCoord = this._program.getAttributeLocation("aVertexTextureCoords")
-    const uTexture = this._program.getUniformLocation(`uTexture${this._textureUnit}`)
+    const uTexture = this._program.getUniformLocation("uTexture")
 
     gl.enableVertexAttribArray(aVertexPosition)
     gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer)
@@ -103,42 +104,35 @@ export class ReduceFrame {
     gl.uniform1i(uTexture, this._textureUnit)
   }
 
-  drawShrink() {
+  switchToOffcanvas() {
     const gl = this._gl
     gl.viewport(0, 0, this._width, this._height)
-    //gl.drawArrays(gl.TRIANGLES, 0, 6)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this._framebuffer)
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
   }
 
-  drawExpand() {
+  switchToCanvas() {
     const gl = this._gl
-
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+  }
+
+  draw() {
+    const gl = this._gl
     gl.drawArrays(gl.TRIANGLES, 0, 6)
   }
 
   changeRate(rate: number) {
     const gl = this._gl
-    const size = Math.min(gl.canvas.width, gl.canvas.height)
-    const step = Math.ceil(size / rate)
-    const step5 = Math.round(step / 5) * 5
-    this._width = step5
-    this._height = step5
+
+    const size = this.calcOffcanvasSize(rate)
+    this._width = size
+    this._height = size
 
     gl.bindTexture(gl.TEXTURE_2D, this._texture)
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._width, this._height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
 
     gl.bindTexture(gl.TEXTURE_2D, null)
-  }
-
-  get program() {
-    return this._program
-  }
-
-  get shaderSource() {
-    return { vert: vertShaderSource, frag: fragShaderSource }
-  }
-
-  get framebuffer() {
-    return this._framebuffer
   }
 }
