@@ -4,7 +4,7 @@ import { Scene } from "@/lib/webgl/scene"
 import { Clock } from "@/lib/event/clock"
 import { ControlUi } from "@/lib/gui/control-ui"
 import { Texture } from "@/lib/webgl/texture"
-import { UniformLoader } from "@/lib/webgl/uniform-loader"
+import { ReduceFrame } from "@/lib/feature/reduce-frame"
 
 import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
@@ -24,8 +24,7 @@ export const onload = () => {
   let program: Program
   let clock: Clock
   let textures: Texture[] = []
-
-  const uniforms = new UniformLoader(gl, ["uCellSize", "uMethod"])
+  let reducedScreen: ReduceFrame
 
   const images = [
     { name: "岩", image: imageStone },
@@ -36,9 +35,7 @@ export const onload = () => {
   const imageNames = images.map((obj) => obj.name)
   let activeImage = 1
 
-  const methods = ["平均値", "代表点"]
-  const defaultMethodIdx = 0
-  const defaultCellSize = 5
+  const defaultCellSize = 12
 
   const initGuiControls = () => {
     const ui = new ControlUi()
@@ -48,13 +45,8 @@ export const onload = () => {
       activeImage = idx
       space.fitImage(textures[activeImage].image)
     })
-    ui.select("CalcBy", methods[defaultMethodIdx], methods, (name) => {
-      const idx = imageNames.indexOf(name)
-      if (idx < 0) return
-      uniforms.int("uMethod", idx)
-    })
-    ui.number("CellSize", defaultCellSize, 1, 10, 1, (value) => {
-      uniforms.int("uCellSize", value)
+    ui.number("CellSize", defaultCellSize, 6, 50, 2, (value) => {
+      reducedScreen.changeRate(value)
     })
   }
 
@@ -67,10 +59,7 @@ export const onload = () => {
     gl.clearColor(1.0, 0.0, 0.0, 1.0)
     gl.clearDepth(1.0)
 
-    program = new Program(gl, mainVertSrc, mainFragSrc)
-
-    scene = new Scene(gl, program)
-    clock = new Clock()
+    program = new Program(gl, mainVertSrc, mainFragSrc, false)
 
     await Promise.all(
       images.map(async (obj) => {
@@ -80,11 +69,13 @@ export const onload = () => {
       })
     )
 
-    uniforms.init(program)
-    uniforms.int("uCellSize", defaultCellSize)
-    uniforms.int("uMethod", defaultMethodIdx)
-
     space.fitImage(textures[activeImage].image)
+
+    reducedScreen = new ReduceFrame(gl, defaultCellSize, 1)
+
+    scene = new Scene(gl, program)
+    clock = new Clock()
+
     space.onResize = onResize
   }
 
@@ -97,17 +88,29 @@ export const onload = () => {
   }
 
   const render = () => {
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+    reducedScreen.drawShrink()
+    gl.bindFramebuffer(gl.FRAMEBUFFER, reducedScreen.framebuffer)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
+    program.use()
 
     scene.traverseDraw((obj) => {
       obj.bind()
 
       textures[activeImage].use()
+
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
 
       obj.cleanup()
     })
+
+    // ---
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+    //
+    reducedScreen.bind()
+    reducedScreen.drawExpand()
   }
 
   const init = async () => {
