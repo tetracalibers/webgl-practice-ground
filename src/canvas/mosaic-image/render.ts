@@ -88,14 +88,19 @@ export const onload = () => {
   }
 
   const render = () => {
+    /* 縮小してフレームバッファに描画 ---------------------------- */
+
     offcanvas.switchToSmallOffcanvas()
     program.use()
+
     scene.traverseDraw((obj) => {
       obj.bind()
       textures[activeImage].use()
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
       obj.cleanup()
     })
+
+    /* 最近傍補間で拡大してキャンバスに描画 ------------------------- */
 
     offcanvas.switchToCanvas()
     offcanvas.bind()
