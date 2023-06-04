@@ -104,7 +104,7 @@ export class ReduceFrame {
     gl.uniform1i(uTexture, this._textureUnit)
   }
 
-  switchToOffcanvas() {
+  switchToSmallOffcanvas() {
     const gl = this._gl
     gl.viewport(0, 0, this._width, this._height)
     gl.bindFramebuffer(gl.FRAMEBUFFER, this._framebuffer)
@@ -118,12 +118,12 @@ export class ReduceFrame {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
   }
 
-  draw() {
+  drawContent() {
     const gl = this._gl
     gl.drawArrays(gl.TRIANGLES, 0, 6)
   }
 
-  changeRate(rate: number) {
+  changeReduceRate(rate: number) {
     const gl = this._gl
 
     const size = this.calcOffcanvasSize(rate)

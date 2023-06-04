@@ -24,7 +24,7 @@ export const onload = () => {
   let program: Program
   let clock: Clock
   let textures: Texture[] = []
-  let reducedScreen: ReduceFrame
+  let offcanvas: ReduceFrame
 
   const images = [
     { name: "岩", image: imageStone },
@@ -46,7 +46,7 @@ export const onload = () => {
       space.fitImage(textures[activeImage].image)
     })
     ui.number("MosaicScale", defaultMosaicScale, 6, 50, 2, (value) => {
-      reducedScreen.changeRate(value)
+      offcanvas.changeReduceRate(value)
     })
   }
 
@@ -71,7 +71,7 @@ export const onload = () => {
 
     space.fitImage(textures[activeImage].image)
 
-    reducedScreen = new ReduceFrame(gl, defaultMosaicScale, 1)
+    offcanvas = new ReduceFrame(gl, defaultMosaicScale, 1)
 
     scene = new Scene(gl, program)
     clock = new Clock()
@@ -88,7 +88,7 @@ export const onload = () => {
   }
 
   const render = () => {
-    reducedScreen.switchToOffcanvas()
+    offcanvas.switchToSmallOffcanvas()
     program.use()
     scene.traverseDraw((obj) => {
       obj.bind()
@@ -97,9 +97,9 @@ export const onload = () => {
       obj.cleanup()
     })
 
-    reducedScreen.switchToCanvas()
-    reducedScreen.bind()
-    reducedScreen.draw()
+    offcanvas.switchToCanvas()
+    offcanvas.bind()
+    offcanvas.drawContent()
   }
 
   const init = async () => {
