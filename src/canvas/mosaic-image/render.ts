@@ -35,7 +35,7 @@ export const onload = () => {
   const imageNames = images.map((obj) => obj.name)
   let activeImage = 1
 
-  const defaultCellSize = 12
+  const defaultMosaicScale = 12
 
   const initGuiControls = () => {
     const ui = new ControlUi()
@@ -45,7 +45,7 @@ export const onload = () => {
       activeImage = idx
       space.fitImage(textures[activeImage].image)
     })
-    ui.number("CellSize", defaultCellSize, 6, 50, 2, (value) => {
+    ui.number("MosaicScale", defaultMosaicScale, 6, 50, 2, (value) => {
       reducedScreen.changeRate(value)
     })
   }
@@ -71,7 +71,7 @@ export const onload = () => {
 
     space.fitImage(textures[activeImage].image)
 
-    reducedScreen = new ReduceFrame(gl, defaultCellSize, 1)
+    reducedScreen = new ReduceFrame(gl, defaultMosaicScale, 1)
 
     scene = new Scene(gl, program)
     clock = new Clock()
