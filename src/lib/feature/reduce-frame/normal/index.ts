@@ -2,6 +2,24 @@ import { Program } from "@/lib/webgl/program"
 import fragShaderSource from "./scale.frag?raw"
 import vertShaderSource from "./scale.vert?raw"
 
+/* Usage
+
+  offcanvas.switchToSmallOffcanvas()
+  program.use()
+  
+  scene.traverseDraw((obj) => {
+    obj.bind()
+    textures[activeImage].use()
+    gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
+    obj.cleanup()
+  })
+  
+  offcanvas.switchToCanvas()
+  offcanvas.bind()
+  offcanvas.drawContent()
+
+*/
+
 export class ReduceFrame {
   private _gl: WebGL2RenderingContext
   private _texture: WebGLTexture | null

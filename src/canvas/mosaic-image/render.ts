@@ -4,7 +4,7 @@ import { Scene } from "@/lib/webgl/scene"
 import { Clock } from "@/lib/event/clock"
 import { ControlUi } from "@/lib/gui/control-ui"
 import { Texture } from "@/lib/webgl/texture"
-import { ReduceFrame } from "@/lib/feature/reduce-frame"
+import { ReduceFrameSimple } from "@/lib/feature/reduce-frame/simple"
 
 import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
@@ -15,7 +15,7 @@ import imageSketch from "@/assets/original/vector3d.jpg"
 import imageStone from "@/assets/256x256/stone_00006.png"
 
 export const onload = () => {
-  const space = new Space("gl-canvas")
+  const space = new Space("gl-canvas", { antialias: false })
   const canvas = space.canvas
   const gl = space.gl
   if (!canvas || !gl) return
@@ -24,7 +24,7 @@ export const onload = () => {
   let program: Program
   let clock: Clock
   let textures: Texture[] = []
-  let offcanvas: ReduceFrame
+  let offcanvas: ReduceFrameSimple
 
   const images = [
     { name: "岩", image: imageStone },
@@ -71,7 +71,7 @@ export const onload = () => {
 
     space.fitImage(textures[activeImage].image)
 
-    offcanvas = new ReduceFrame(gl, defaultMosaicScale, 1)
+    offcanvas = new ReduceFrameSimple(gl, defaultMosaicScale)
 
     scene = new Scene(gl, program)
     clock = new Clock()
@@ -90,7 +90,7 @@ export const onload = () => {
   const render = () => {
     /* 縮小してフレームバッファに描画 ---------------------------- */
 
-    offcanvas.switchToSmallOffcanvas()
+    offcanvas.initSmallOffcanvas()
     program.use()
 
     scene.traverseDraw((obj) => {
@@ -102,9 +102,7 @@ export const onload = () => {
 
     /* 最近傍補間で拡大してキャンバスに描画 ------------------------- */
 
-    offcanvas.switchToCanvas()
-    offcanvas.bind()
-    offcanvas.drawContent()
+    offcanvas.drawToCanvas()
   }
 
   const init = async () => {
