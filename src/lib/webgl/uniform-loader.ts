@@ -74,6 +74,11 @@ export class UniformLoader<T extends CustomUniform> {
     loc && this._gl.uniform2fv(loc, value)
   }
 
+  fvector3(name: T, value: number[]) {
+    const loc = this.location(name)
+    loc && this._gl.uniform3fv(loc, value)
+  }
+
   fmatrix4v(name: T, value: Float32Array) {
     const loc = this.location(name)
     loc && this._gl.uniformMatrix4fv(loc, false, value)
