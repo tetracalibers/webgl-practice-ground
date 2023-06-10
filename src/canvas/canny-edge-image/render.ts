@@ -45,7 +45,7 @@ export const onload = () => {
   const imageNames = images.map((obj) => obj.name)
   let activeImage = 2
 
-  let sigma = 0.1
+  let sigma = 5.0
   let filterSize = 3
   let threshould = 0.04
 
@@ -57,9 +57,9 @@ export const onload = () => {
       activeImage = idx
       space.fitImage(textures[activeImage].image)
     })
-    ui.number("標準偏差", sigma, 0.01, 1.0, 0.01, (v) => (sigma = v))
-    ui.select("フィルタサイズ", "3x3", ["1x1（原画像）", "3x3"], (v) => (filterSize = ~~v[0]))
-    ui.number("閾値", threshould, 0.01, 0.3, 0.01, (v) => (threshould = v))
+    ui.number("標準偏差", sigma, 0.01, 5.0, 0.01, (v) => (sigma = v))
+    ui.select("フィルタサイズ", "3x3", ["1x1", "3x3", "5x5"], (v) => (filterSize = ~~v[0]))
+    ui.number("閾値", threshould, 0.01, 0.1, 0.001, (v) => (threshould = v))
   }
 
   const onResize = () => {
