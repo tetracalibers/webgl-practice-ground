@@ -1,0 +1,30 @@
+---
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+import vert from "./index.vert?raw"
+import fragForGauss from "./gauss.frag?raw"
+import fragForGrad from "./grad.frag?raw"
+import fragForCanny from "./canny.frag?raw"
+
+const shaders = [
+  {
+    vert: { title: "common.vert", src: vert },
+    frag: { title: "gauss.frag", src: fragForGauss }
+  },
+  {
+    vert: { title: "common.vert", src: vert },
+    frag: { title: "grad.frag", src: fragForGrad }
+  },
+  {
+    vert: { title: "common.vert", src: vert },
+    frag: { title: "canny.frag", src: fragForCanny }
+  }
+]
+---
+
+<WebglDemo canvasSize={"js-fit"} glSrc={glSrc} shaders={shaders} />
+
+<script>
+  import { onload } from "./render"
+  window.onload = onload
+</script>
