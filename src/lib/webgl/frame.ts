@@ -135,6 +135,15 @@ export class Frame {
     gl.uniform1i(uTexture, this._textureUnit)
   }
 
+  useTextureOn(unit: number, program: Program) {
+    const gl = this._gl
+    const location = program.getUniformLocation(`uTexture${unit}`)
+
+    gl.activeTexture(gl.TEXTURE0 + unit)
+    gl.bindTexture(gl.TEXTURE_2D, this._texture)
+    gl.uniform1i(location, unit)
+  }
+
   draw() {
     const gl = this._gl
     gl.drawArrays(gl.TRIANGLES, 0, 6)
