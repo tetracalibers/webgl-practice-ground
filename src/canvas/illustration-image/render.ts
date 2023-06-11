@@ -9,9 +9,9 @@ import { Texture } from "@/lib/webgl/texture"
 import mainVertSrc from "./index.vert?raw"
 import mainFragSrc from "./index.frag?raw"
 
-import imageCrochet from "@/assets/original/handmade-blue-cat.jpg"
+import imageCubeLogo from "@/assets/original/pastel-tomixy.png"
 import imageGoldfishBowl from "@/assets/original/japanese-style_00011.jpg"
-import imageTwinkle from "@/assets/original/twinkle_00029.jpg"
+import imageUnicorn from "@/assets/original/pair-fantasy-unicorns.jpg"
 import imageTree from "@/assets/original/tree-woods_00123.jpg"
 
 export const onload = () => {
@@ -39,21 +39,21 @@ export const onload = () => {
 
   const images = [
     { name: "木", image: imageTree },
-    { name: "編みぐるみ", image: imageCrochet },
+    { name: "立方体ロゴ", image: imageCubeLogo },
     { name: "金魚鉢", image: imageGoldfishBowl },
-    { name: "キラキラ", image: imageTwinkle }
+    { name: "編みぐるみ", image: imageUnicorn }
   ]
   const imageNames = images.map((obj) => obj.name)
-  let activeImage = 2
+  let activeImage = 0
 
   const defaultThreshEdge = 0.5
   const defaultGamma = 1.0
   const defaultHue = 0.0
   const defaultSaturation = 1.0
   const defaultBrightness = 1.0
-  const defaultLevelH = 1
-  const defaultLevelS = 1
-  const defaultLevelB = 1
+  const defaultLevelH = 256
+  const defaultLevelS = 16
+  const defaultLevelB = 128
   const defaultGrayScaleOn = false
 
   const initGuiControls = () => {
@@ -70,7 +70,7 @@ export const onload = () => {
     ui.number("Gamma", defaultGamma, 0.0, 2.0, 0.01, (value) => {
       uniforms.float("uGamma", value)
     })
-    ui.number("HSV.h", defaultHue, 0, 360, 0.1, (value) => {
+    ui.number("HSV.h", defaultHue, 0, 360, 1, (value) => {
       uniforms.float("uHue", value)
     })
     ui.number("HSV.s", defaultSaturation, 0.0, 1.0, 0.01, (value) => {
@@ -99,7 +99,7 @@ export const onload = () => {
   }
 
   const configure = async () => {
-    gl.clearColor(1.0, 0.0, 0.0, 1.0)
+    gl.clearColor(1.0, 1.0, 1.0, 1.0)
     gl.clearDepth(1.0)
 
     program = new Program(gl, mainVertSrc, mainFragSrc)

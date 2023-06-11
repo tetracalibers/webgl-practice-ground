@@ -38,14 +38,10 @@ vec3 hsv2rgb(vec3 color) {
 float posterizeHue(float hue, int level) {
   float hueStep = 255.0 / float(level - 1);
   
-  // [0, 1]範囲へスケール
-  float newHue = hue / 360.0;
+  float newHue = hue * 360.0;
   
   newHue = floor(newHue / hueStep + 0.5) * hueStep;
-  newHue *= 360.0 / 255.0;
-  
-  newHue = newHue >= 360.0 ? newHue - 360.0 : newHue;
-  newHue = newHue < 0.0 ? newHue + 360.0 : newHue;
+  newHue /= 360.0;
   
   return newHue;
 }
@@ -53,7 +49,8 @@ float posterizeHue(float hue, int level) {
 float posterizeColorRatio(float ratio, int level) {
   float ratioStep = 255.0 / float(level - 1);
   
-  float newRatio = floor(ratio / ratioStep + 0.5) * ratioStep;
+  float unclamp = ratio * 255.0;
+  float newRatio = floor(unclamp / ratioStep + 0.5) * ratioStep;
   newRatio /= 255.0;
   
   return newRatio;
@@ -130,14 +127,14 @@ void main() {
   // 輝度調整
   vec3 layer1 = pow(inputColor, vec3(uGamma));
   
-  vec3 hsv = rgb2hsv(layer1) * 255.0;
+  vec3 hsv = rgb2hsv(layer1);
   
   // HSVによる階調数低減
-  hsv.r = uLevelH == 1 ? uHue : posterizeHue(hsv.r, uLevelH);
+  hsv.r = uLevelH == 1 ? uHue / 360.0 : posterizeHue(hsv.r, uLevelH);
   hsv.g = uLevelS == 1 ? uSaturation : posterizeColorRatio(hsv.g, uLevelS);
   hsv.b = uLevelB == 1 ? uBrightness : posterizeColorRatio(hsv.b, uLevelB);
   
-  layer1 = hsv2rgb(hsv / 255.0);
+  layer1 = hsv2rgb(hsv);
   layer1 = mix(layer1, vec3(1.0), minDensity);
   
   /* Layer. 2 ----------------------------------- */
