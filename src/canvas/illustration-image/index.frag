@@ -108,8 +108,7 @@ uniform int uLevelH;
 uniform int uLevelS;
 uniform int uLevelB;
 uniform bool uGrayScaleOn;
-
-const vec3 minDensity = vec3(0.5, 0.3, 0.3);
+uniform vec3 uMinDensity;
 
 in vec2 vTextureCoords;
 
@@ -135,7 +134,7 @@ void main() {
   hsv.b = uLevelB == 1 ? uBrightness : posterizeColorRatio(hsv.b, uLevelB);
   
   layer1 = hsv2rgb(hsv);
-  layer1 = mix(layer1, vec3(1.0), minDensity);
+  layer1 = mix(layer1, vec3(1.0), uMinDensity);
   
   /* Layer. 2 ----------------------------------- */
   
@@ -159,7 +158,7 @@ void main() {
   
   // 二値化
   layer2 = step(uThreshEdge, layer2);
-  layer2 = max(layer2, minDensity);
+  layer2 = max(layer2, uMinDensity);
   
   /* Composite ---------------------------------- */
   

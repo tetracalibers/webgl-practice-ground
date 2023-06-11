@@ -1,3 +1,4 @@
+import type { RawVector3 } from "@/lib/math/raw-vector"
 import { Space } from "@/lib/canvas/index"
 import { Program } from "@/lib/webgl/program"
 import { Scene } from "@/lib/webgl/scene"
@@ -34,7 +35,8 @@ export const onload = () => {
     "uBrightness",
     "uLevelH",
     "uLevelS",
-    "uLevelB"
+    "uLevelB",
+    "uMinDensity"
   ])
 
   const images = [
@@ -54,6 +56,7 @@ export const onload = () => {
   const defaultLevelH = 256
   const defaultLevelS = 16
   const defaultLevelB = 128
+  const defaultMinDensity: RawVector3 = [0.5, 0.3, 0.3]
   const defaultGrayScaleOn = false
 
   const initGuiControls = () => {
@@ -88,6 +91,9 @@ export const onload = () => {
     ui.number("Level HSV.v", defaultLevelB, 1, 256, 1, (value) => {
       uniforms.int("uLevelB", value)
     })
+    ui.rgb("Min Density", defaultMinDensity, (color) => {
+      uniforms.fvector3("uMinDensity", color)
+    })
     ui.boolean("GrayScale", defaultGrayScaleOn, (isActive) => {
       uniforms.boolean("uGrayScaleOn", isActive)
     })
@@ -116,6 +122,7 @@ export const onload = () => {
     uniforms.int("uLevelH", defaultLevelH)
     uniforms.int("uLevelS", defaultLevelS)
     uniforms.int("uLevelB", defaultLevelB)
+    uniforms.fvector3("uMinDensity", defaultMinDensity)
     uniforms.boolean("uGrayScaleOn", defaultGrayScaleOn)
 
     await Promise.all(
