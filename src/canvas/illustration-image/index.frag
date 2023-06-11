@@ -138,7 +138,7 @@ void main() {
   hsv.b = uLevelB == 1 ? uBrightness : posterizeColorRatio(hsv.b, uLevelB);
   
   layer1 = hsv2rgb(hsv / 255.0);
-  layer1 = mix(layer1, minDensity, vec3(1.0));
+  layer1 = mix(layer1, vec3(1.0), minDensity);
   
   /* Layer. 2 ----------------------------------- */
   
