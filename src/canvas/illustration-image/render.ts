@@ -56,7 +56,7 @@ export const onload = () => {
   const defaultLevelH = 256
   const defaultLevelS = 16
   const defaultLevelB = 128
-  const defaultMinDensity: RawVector3 = [0.5, 0.3, 0.3]
+  const defaultMinDensity: RawVector3 = [0.3, 0.3, 0.3]
   const defaultGrayScaleOn = false
 
   const initGuiControls = () => {
