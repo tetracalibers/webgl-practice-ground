@@ -42,7 +42,7 @@ void main() {
   vec2 scale = gl_FragCoord.xy * uDotScale;
   float wave = (sin(scale.x) * 0.5 + radius) + (sin(scale.y) * 0.5 + radius);
   
-  float intensity = mix(0.0, 1.0, diffuse);
+  float intensity = diffuse > 0.6 ? 1.0 : diffuse > 0.2 ? 0.6 : 0.4;
   
   fragColor = vec4(inputColor * (diffuseColor + vec3(wave)) * intensity, original.a);
 }
