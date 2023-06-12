@@ -51,7 +51,8 @@ export const onload = () => {
     "uTexture2",
     "uTexture3",
     "uColored",
-    "uDepthStroke"
+    "uDepthStroke",
+    "uBlendMode"
   ])
 
   const images = [
@@ -62,6 +63,9 @@ export const onload = () => {
   ]
   const imageNames = images.map((obj) => obj.name)
   let activeImage = 2
+
+  const blendModes = ["multiply", "lighten", "overlay", "screen", "colorburn"]
+  let blendModeIdx = 0
 
   let gamma = 1.0
   let hue = 0.0
@@ -92,6 +96,11 @@ export const onload = () => {
     ui.rgb("Min Density", minDensity, (color) => (minDensity = color))
     ui.number("線の濃さ", depthStroke, 0.0, 2.0, 0.01, (value) => (depthStroke = value))
     ui.boolean("Color", colored, (isActive) => (colored = isActive))
+    ui.select("Blend Mode", "multiply", blendModes, (name) => {
+      const idx = blendModes.indexOf(name)
+      if (idx < 0) return
+      blendModeIdx = idx
+    })
   }
 
   const onResize = () => {
@@ -189,6 +198,7 @@ export const onload = () => {
 
     uniformsForDrawStroke.boolean("uColored", colored)
     uniformsForDrawStroke.float("uDepthStroke", depthStroke)
+    uniformsForDrawStroke.int("uBlendMode", blendModeIdx)
 
     scene.traverseDraw((obj) => {
       obj.bind()
