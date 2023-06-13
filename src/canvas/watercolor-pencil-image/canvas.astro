@@ -3,17 +3,12 @@ import WebglDemo from "@/components/webgl-demo.astro"
 import glSrc from "./render?raw"
 import vert from "./common.vert?raw"
 import fragForEdge from "./edge.frag?raw"
-import fragForStrokeMap from "./stroke-map.frag?raw"
 import fragForDrawStroke from "./draw-stroke.frag?raw"
 
 const shaders = [
   {
     vert: { title: "common.vert", src: vert },
     frag: { title: "edge.frag", src: fragForEdge }
-  },
-  {
-    vert: { title: "common.vert", src: vert },
-    frag: { title: "stroke-map.frag", src: fragForStrokeMap }
   },
   {
     vert: { title: "common.vert", src: vert },

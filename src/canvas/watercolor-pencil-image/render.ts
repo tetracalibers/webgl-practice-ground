@@ -6,12 +6,10 @@ import { Clock } from "@/lib/event/clock"
 import { ControlUi } from "@/lib/gui/control-ui"
 import { UniformLoader } from "@/lib/webgl/uniform-loader"
 import { Texture } from "@/lib/webgl/texture"
-import { Frame } from "@/lib/webgl/frame"
 import { FrameMRT } from "@/lib/webgl/frame-MRT"
 
 import vertSrc from "./common.vert?raw"
 import fragSrcForEdge from "./edge.frag?raw"
-import fragSrcForStrokeMap from "./stroke-map.frag?raw"
 import fragSrcForDrawStroke from "./draw-stroke.frag?raw"
 
 import imageCubeLogo from "@/assets/original/pastel-tomixy.png"
@@ -31,9 +29,7 @@ export const onload = () => {
   let textures: Texture[] = []
   // in: 原画像(0)、out1: エッジ抽出画像(1), out2: 輝度調整、階調数低減画像(2)
   let offscreen1: FrameMRT
-  // in1: エッジ抽出画像(1)、in2: 輝度調整、階調数低減画像(2)、out: ストロークデータマップ(3)
-  let offscreen2: Frame
-  // in1: エッジ抽出画像(1)、in2: ストロークデータマップ(3)、out: ストローク描画画像(canvas)
+  // in1: エッジ抽出画像(1)、in2: 輝度調整、階調数低減画像(2)、out: ストローク描画画像(canvas)
 
   const uniformsForLevel = new UniformLoader(gl, [
     "uGamma",
@@ -45,7 +41,6 @@ export const onload = () => {
     "uLevelB",
     "uMinDensity"
   ])
-  const uniformsForStrokeMap = new UniformLoader(gl, ["uTexture1"])
   const uniformsForDrawStroke = new UniformLoader(gl, [
     "uTexture1",
     "uTexture2",
@@ -106,7 +101,6 @@ export const onload = () => {
   const onResize = () => {
     space.fitImage(textures[activeImage].image)
     offscreen1.resize()
-    offscreen2.resize()
     render()
   }
 
@@ -115,14 +109,12 @@ export const onload = () => {
     gl.clearDepth(1.0)
 
     offscreen1 = new FrameMRT(gl, canvas, vertSrc, fragSrcForEdge, 2, 0)
-    offscreen2 = new Frame(gl, canvas, vertSrc, fragSrcForStrokeMap, 3)
     program = new Program(gl, vertSrc, fragSrcForDrawStroke, false)
 
     scene = new Scene(gl, program)
     clock = new Clock()
 
     uniformsForLevel.init(offscreen1.program)
-    uniformsForStrokeMap.init(offscreen2.program)
     uniformsForDrawStroke.init(program)
 
     await Promise.all(
@@ -173,22 +165,6 @@ export const onload = () => {
       obj.cleanup()
     })
 
-    /* to Offscreen（ストロークマップ生成） ----------------- */
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, offscreen2.framebuffer)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-
-    offscreen2.program.use()
-
-    scene.traverseDraw((obj) => {
-      obj.bind()
-
-      offscreen1.useTextureOn(1, "uTexture1", offscreen2.program)
-      gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
-
-      obj.cleanup()
-    })
-
     /* to Canvas（ストローク描画） ----------------------- */
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null)
@@ -205,7 +181,6 @@ export const onload = () => {
 
       offscreen1.useTextureOn(0, "uTexture3", program)
       offscreen1.useTextureOn(1, "uTexture1", program)
-      offscreen2.useTextureOn(2, program)
       gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
 
       obj.cleanup()

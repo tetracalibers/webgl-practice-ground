@@ -54,7 +54,6 @@ vec3 colorburn(vec3 b, vec3 f) {
 }
 
 uniform sampler2D uTexture1; // edge
-uniform sampler2D uTexture2; // stroke map
 uniform sampler2D uTexture3; // posterized
 uniform float uDepthStroke;
 uniform int uBlendMode;
@@ -69,7 +68,6 @@ void main() {
   
   vec3 posterized = texture(uTexture3, texCoord).rgb;
   vec4 edge = texture(uTexture1, texCoord);
-  vec4 strokeMap = texture(uTexture2, texCoord);
   
   float lineColor = edge.r + hash21Clamp(texCoord, -uDepthStroke, uDepthStroke);
   
