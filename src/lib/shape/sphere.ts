@@ -1,15 +1,12 @@
+import { hsvaToRgba } from "./color"
+
 /**
  * @param {number} radius 球の半径
  * @param {number} segments 断面円をいくつの頂点で表現するのか
  * @param {number} rings 球をいくつの円で分割するのか
  * @param {number[]} rgbas RGBA色
  */
-export const sphere = (
-  radius: number,
-  segments: number,
-  rings: number,
-  rgbas: [number, number, number, number] = [1.0, 1.0, 1.0, 1.0]
-) => {
+export const sphere = (radius: number, segments: number, rings: number, rgbas?: [number, number, number, number]) => {
   const vertices = []
   const indices = []
   const normals = []
@@ -33,7 +30,9 @@ export const sphere = (
       vertices.push(radius * x, radius * y, radius * z)
       normals.push(x, y, z)
       texCoords.push(uCoord, vCoord)
-      colors.push(...rgbas)
+
+      const c = rgbas ?? hsvaToRgba((360 / segments) * j, 1, 1, 1)
+      colors.push(...c)
 
       if (i < rings && j < segments) {
         const a = i * (segments + 1) + j
