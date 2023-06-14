@@ -8,6 +8,9 @@ export class ImageCanvas {
   constructor(src: string, width: number, height: number) {
     this._canvas = document.createElement("canvas")
 
+    this._canvas.width = width
+    this._canvas.height = height
+
     this._width = width
     this._height = height
 
