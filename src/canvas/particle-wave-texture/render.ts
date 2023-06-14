@@ -5,7 +5,7 @@ import { TransformFeedback } from "@/lib/webgl/transform-feedback"
 import { ImageCanvas } from "@/lib/canvas/image"
 import { UniformManager } from "@/lib/webgl/uniform-manager"
 import { Timer } from "@/lib/control/timer"
-import { InteractionCamera } from "@/lib/control/interaction-camera"
+import { WaveParticleCamera } from "@/lib/control/wave-particle-camera"
 
 import vertForOut from "./out.vert?raw"
 import fragForOut from "./out.frag?raw"
@@ -21,7 +21,7 @@ export const onload = () => {
   const gl = space.gl
   if (!canvas || !gl) return
 
-  let camera: InteractionCamera
+  let camera: WaveParticleCamera
   let clock: Clock
   let tf: TransformFeedback
   let programOut: WebGLProgram
@@ -122,7 +122,7 @@ export const onload = () => {
     gl.disable(gl.RASTERIZER_DISCARD)
 
     clock = new Clock()
-    camera = new InteractionCamera(canvas, 3.0)
+    camera = new WaveParticleCamera(canvas, 3.0)
 
     timer.start()
     space.onResize = onResize

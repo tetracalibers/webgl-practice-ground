@@ -3,7 +3,7 @@ import { Quaternion } from "../math/quaternion"
 import type { RawVector3 } from "../math/raw-vector"
 import { Vector3 } from "../math/vector"
 
-export class InteractionCamera {
+export class WaveParticleCamera {
   private _canvas: HTMLCanvasElement
   private _distance: number
   private _clickStart = false
