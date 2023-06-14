@@ -1,5 +1,4 @@
 import { ShaderCompiler } from "../shader/compile"
-import { Program } from "./program"
 
 interface BufferData {
   buffer: WebGLBuffer | null
