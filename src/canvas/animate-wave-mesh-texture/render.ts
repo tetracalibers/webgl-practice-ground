@@ -30,18 +30,6 @@ export const onload = () => {
   let uniformsIn: UniformManager
   let imgCvs: ImageCanvas
   let timer: Timer
-  let mouse: [number, number] = [0, 0]
-
-  canvas.addEventListener(
-    "mousemove",
-    (e) => {
-      const box = canvas.getBoundingClientRect()
-      const x = e.clientX - box.left
-      const y = e.clientY - box.top
-      mouse = [(x / box.width) * 2 - 1, -((y / box.height) * 2 - 1)]
-    },
-    { passive: false }
-  )
 
   const generateImgVertices = (imgCvs: ImageCanvas) => {
     const { data, width, height } = imgCvs
@@ -129,13 +117,15 @@ export const onload = () => {
   }
 
   const render = () => {
+    camera.update()
+
     gl.useProgram(programOut)
 
     tf.updateOutVBO()
     tf.beginTransformFeedback()
 
     uniformsOut.float("uTime", timer.elapsed * 0.001)
-    uniformsOut.fvector2("uMouse", mouse)
+    uniformsOut.fvector2("uMouse", camera.mouseCoords)
 
     gl.drawArrays(gl.POINTS, 0, imgCvs.width * imgCvs.height)
 
@@ -148,7 +138,6 @@ export const onload = () => {
 
     tf.updateInVBO()
 
-    camera.update()
     uniformsIn.fmatrix4v("uMatrix", camera.matrix.values)
 
     gl.drawArrays(gl.POINTS, 0, imgCvs.width * imgCvs.height)
