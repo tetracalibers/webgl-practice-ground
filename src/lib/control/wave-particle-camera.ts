@@ -19,6 +19,7 @@ export class WaveParticleCamera {
   private _dUp: [number, number, number] = [0, 1, 0]
 
   private _matrix: Matrix4 = Matrix4.identity()
+  private _mouseCoords: [number, number] = [0, 0]
 
   constructor(canvas: HTMLCanvasElement, distance: number) {
     this._canvas = canvas
@@ -59,6 +60,13 @@ export class WaveParticleCamera {
     return this.isTouchEvent(e) ? this.touchFinger(e) : e
   }
 
+  private updateCoords(e: MouseEvent | Touch) {
+    const box = this._canvas.getBoundingClientRect()
+    const x = e.clientX - box.left
+    const y = e.clientY - box.top
+    this._mouseCoords = [(x / box.width) * 2 - 1, -((y / box.height) * 2 - 1)]
+  }
+
   private onMouseInteractionStart(e: MouseEvent | TouchEvent) {
     const evt = this.normalizeEvent(e)
     if (!evt) return
@@ -70,10 +78,12 @@ export class WaveParticleCamera {
   }
 
   private onMouseInteractionMove(e: MouseEvent | TouchEvent) {
-    if (!this._clickStart) return
-
     const evt = this.normalizeEvent(e)
     if (!evt) return
+
+    this.updateCoords(evt)
+
+    if (!this._clickStart) return
 
     const [x, y] = [evt.pageX, evt.pageY]
     const [dx, dy] = [x - this._prev[0], y - this._prev[1]]
@@ -130,5 +140,9 @@ export class WaveParticleCamera {
 
   get matrix() {
     return this._matrix
+  }
+
+  get mouseCoords() {
+    return this._mouseCoords
   }
 }
