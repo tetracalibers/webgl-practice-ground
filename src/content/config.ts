@@ -25,7 +25,8 @@ export const imageProcessingCategories = [
   "smoothing",
   "color",
   "sharpen",
-  "NPR"
+  "NPR",
+  "deformation"
 ] as const
 
 export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCategories)[number], { title: string }> = {
@@ -43,6 +44,9 @@ export const imageProcessingCategoryDetail: Record<(typeof imageProcessingCatego
   },
   color: {
     title: "色の操作"
+  },
+  deformation: {
+    title: "変形"
   },
   NPR: {
     title: "非写実的描画"
@@ -64,7 +68,8 @@ export const webglCategories = [
   "transform",
   "camera",
   "post-processing",
-  "stencil"
+  "stencil",
+  "GPGPU"
 ] as const
 
 export const webglCategoryDetail: Record<(typeof webglCategories)[number], { title: string }> = {
@@ -94,6 +99,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   "post-processing": {
     title: "Post Processing"
+  },
+  GPGPU: {
+    title: "GPGPU"
   }
 }
 
