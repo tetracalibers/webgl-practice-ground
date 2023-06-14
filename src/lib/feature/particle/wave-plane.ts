@@ -1,9 +1,9 @@
-import { Matrix4 } from "../math/matrix"
-import { Quaternion } from "../math/quaternion"
-import type { RawVector3 } from "../math/raw-vector"
-import { Vector3 } from "../math/vector"
+import { Matrix4 } from "../../math/matrix"
+import { Quaternion } from "../../math/quaternion"
+import type { RawVector3 } from "../../math/raw-vector"
+import { Vector3 } from "../../math/vector"
 
-export class WaveParticleCamera {
+export class WavePlaneCamera {
   private _canvas: HTMLCanvasElement
   private _distance: number
   private _clickStart = false
@@ -124,17 +124,16 @@ export class WaveParticleCamera {
 
     this._dPosition[2] = this._distance
 
-    const qtx = new Quaternion(0, 1, 0, this._rotateX * PI2)
-    vec = qtx.toRotatedVector3(...vec).rawValues
-    const qty = new Quaternion(...vec, this._rotateY * PI2)
+    const qtx = Quaternion.rotationAround(new Vector3(0, 1, 0), this._rotateX * PI2)
+    const qty = Quaternion.rotationAround(qtx.toRotatedVector3(...vec), this._rotateY * PI2)
 
     const q = qtx.multiply(qty)
 
     this._position = q.toRotatedVector3(...this._dPosition).rawValues
     this._up = q.toRotatedVector3(...this._dUp).rawValues
 
-    const matV = Matrix4.lookAt(new Vector3(...this._position), new Vector3(0, 0, 0), new Vector3(...this._up))
-    const matP = Matrix4.perspective(60, this._canvas.width / this._canvas.height, 0.1, this._distance * 5.0)
+    const matV = Matrix4.view(new Vector3(...this._position), new Vector3(0, 0, 0), new Vector3(...this._up))
+    const matP = Matrix4.perspective(45, this._canvas.width / this._canvas.height, 0.1, this._distance * 5.0)
     this._matrix = matP.multiply(matV)
   }
 

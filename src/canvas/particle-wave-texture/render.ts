@@ -5,7 +5,7 @@ import { TransformFeedback } from "@/lib/webgl/transform-feedback"
 import { ImageCanvas } from "@/lib/canvas/image"
 import { UniformManager } from "@/lib/webgl/uniform-manager"
 import { Timer } from "@/lib/control/timer"
-import { WaveParticleCamera } from "@/lib/control/wave-particle-camera"
+import { WaveParticleCamera } from "@/lib/feature/particle/wave-particle-camera"
 
 import vertForOut from "./out.vert?raw"
 import fragForOut from "./out.frag?raw"
