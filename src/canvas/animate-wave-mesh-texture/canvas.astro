@@ -1,11 +1,24 @@
 ---
 import WebglDemo from "@/components/webgl-demo.astro"
 import glSrc from "./render?raw"
-import vertSrc from "./in.vert?raw"
-import fragSrc from "./in.frag?raw"
+import vertIn from "./in.vert?raw"
+import fragIn from "./in.frag?raw"
+import vertOut from "./out.vert?raw"
+import fragOut from "./out.frag?raw"
+
+const shaders = [
+  {
+    vert: { title: "out.vert", src: vertOut },
+    frag: { title: "out.frag", src: fragOut }
+  },
+  {
+    vert: { title: "in.vert", src: vertIn },
+    frag: { title: "in.frag", src: fragIn }
+  }
+]
 ---
 
-<WebglDemo canvasSize={"full-square"} glSrc={glSrc} vertSrc={vertSrc} fragSrc={fragSrc} />
+<WebglDemo canvasSize={"full-square"} glSrc={glSrc} shaders={shaders} />
 
 <script>
   import { onload } from "./render"
