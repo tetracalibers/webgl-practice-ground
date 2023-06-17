@@ -86,7 +86,15 @@ export class AliveParticlesSystem {
     return this._minSpeed
   }
 
+  set minSpeed(speed: number) {
+    this._minSpeed = speed
+  }
+
   get maxSpeed() {
     return this._maxSpeed
+  }
+
+  set maxSpeed(speed: number) {
+    this._maxSpeed = speed
   }
 }
