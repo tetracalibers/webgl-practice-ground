@@ -42,7 +42,7 @@ export const onload = () => {
   let timer: Timer
   let particles: AliveParticlesSystem
 
-  const particlesCount = 100000
+  const particlesCount = 10000
   const particleMinAge = 1.01
   const particleMaxAge = 1.15
 
@@ -91,6 +91,8 @@ export const onload = () => {
 
     // インタリーブ配列と同じ順で
     tf.registRenderAttrib(0, 2) // aPosition
+    tf.registRenderAttrib(2, 1) // aAge
+    tf.registRenderAttrib(3, 1) // aLife
 
     const initialData = new Float32Array(initialParticleData(particlesCount, particleMinAge, particleMaxAge))
     particles = new AliveParticlesSystem(canvas, initialData.length / 6)
