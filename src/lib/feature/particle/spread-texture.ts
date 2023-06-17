@@ -49,6 +49,8 @@ export class SpreadTextureInteraction {
     if (!evt) return
 
     this.updateCoords(evt)
+
+    e.preventDefault()
   }
 
   private onMouseInteractionEnd(e: MouseEvent | TouchEvent) {

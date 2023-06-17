@@ -100,6 +100,8 @@ export class WaveParticleCamera {
       this._rotateX %= 1.0
       this._rotateY = Math.min(Math.max(this._rotateY % 1.0, -0.25), 0.25)
     }
+
+    e.preventDefault()
   }
 
   private onMouseInteractionEnd(e: MouseEvent | TouchEvent) {

@@ -49,6 +49,8 @@ export class AliveParticlesSystem {
 
     const [x, y] = this.getPointerCoords(evt)
     this._origin = [x, y]
+
+    e.preventDefault()
   }
 
   updateForNext(dt: number) {
