@@ -5,8 +5,8 @@ export class AliveParticlesSystem {
 
   private _gravity: RawVector2 = [0.0, -0.8]
   private _origin: RawVector2 = [0.0, 0.0]
-  private _minTheta = Math.PI / 2.0 - 0.5
-  private _maxTheta = Math.PI / 2.0 + 0.5
+  private _minTheta = Math.PI
+  private _maxTheta = -Math.PI
   private _minSpeed = 0.5
   private _maxSpeed = 1.0
   private _birthRate = 0.5
