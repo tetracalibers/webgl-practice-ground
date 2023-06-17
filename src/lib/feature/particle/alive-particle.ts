@@ -66,6 +66,10 @@ export class AliveParticlesSystem {
     return this._gravity
   }
 
+  set gravity([x, y]: RawVector2) {
+    this._gravity = [x, y]
+  }
+
   get origin() {
     return this._origin
   }
