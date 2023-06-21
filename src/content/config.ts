@@ -69,6 +69,7 @@ export const webglCategories = [
   "camera",
   "post-processing",
   "stencil",
+  "instancing",
   "GPGPU"
 ] as const
 
@@ -99,6 +100,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   "post-processing": {
     title: "Post Processing"
+  },
+  instancing: {
+    title: "Instancing"
   },
   GPGPU: {
     title: "GPGPU"
