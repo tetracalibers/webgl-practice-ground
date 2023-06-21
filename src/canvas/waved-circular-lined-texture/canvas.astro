@@ -1,0 +1,20 @@
+---
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+import vertRender from "./render.vert?raw"
+import fragRender from "./render.frag?raw"
+
+const shaders = [
+  {
+    vert: { title: "render.vert", src: vertRender },
+    frag: { title: "render.frag", src: fragRender }
+  }
+]
+---
+
+<WebglDemo canvasSize={"full-square"} glSrc={glSrc} shaders={shaders} />
+
+<script>
+  import { onload } from "./render"
+  window.onload = onload
+</script>
