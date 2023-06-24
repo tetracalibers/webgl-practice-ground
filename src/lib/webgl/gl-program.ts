@@ -49,4 +49,8 @@ export class Program {
   get() {
     return this._program
   }
+
+  get raw() {
+    return this._program
+  }
 }
