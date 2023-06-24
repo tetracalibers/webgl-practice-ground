@@ -1,0 +1,26 @@
+---
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+import vertCalc from "./calc.vert?raw"
+import fragCalc from "./calc.frag?raw"
+import vertPreview from "./preview.vert?raw"
+import fragPreview from "./preview.frag?raw"
+
+const shaders = [
+  {
+    vert: { title: "calc.vert", src: vertCalc },
+    frag: { title: "calc.frag", src: fragCalc }
+  },
+  {
+    vert: { title: "preview.vert", src: vertPreview },
+    frag: { title: "preview.frag", src: fragPreview }
+  }
+]
+---
+
+<WebglDemo canvasSize={"full-square"} glSrc={glSrc} shaders={shaders} />
+
+<script>
+  import { onload } from "./render"
+  window.onload = onload
+</script>
