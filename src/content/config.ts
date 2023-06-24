@@ -70,7 +70,9 @@ export const webglCategories = [
   "post-processing",
   "stencil",
   "instancing",
-  "GPGPU"
+  "GPGPU",
+  "MRT",
+  "model"
 ] as const
 
 export const webglCategoryDetail: Record<(typeof webglCategories)[number], { title: string }> = {
@@ -89,6 +91,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   camera: {
     title: "Camera"
   },
+  model: {
+    title: "Model"
+  },
   texture: {
     title: "Texture Mapping"
   },
@@ -100,6 +105,9 @@ export const webglCategoryDetail: Record<(typeof webglCategories)[number], { tit
   },
   "post-processing": {
     title: "Post Processing"
+  },
+  MRT: {
+    title: "Multiple Render Targets"
   },
   instancing: {
     title: "Instancing"
