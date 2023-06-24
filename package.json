@@ -10,7 +10,8 @@
     "astro": "astro",
     "format": "prettier . --write",
     "new:canvas": "node ./scripts/make-new-canvas.js",
-    "texture": "node ./scripts/resize-texture.js"
+    "texture": "node ./scripts/resize-texture.js",
+    "obj-to-json": "node ./scripts/obj-to-json.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^0.18.1",
