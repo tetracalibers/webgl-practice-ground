@@ -37,8 +37,8 @@ export class AngleCameraController extends Pointer {
     canvas.addEventListener("mousedown", (e) => this.onMoveStart(e), { passive: true })
     canvas.addEventListener("touchstart", (e) => this.onMoveStart(e), { passive: true })
 
-    canvas.addEventListener("mousemove", (e) => this.onMove(e), { passive: true })
-    canvas.addEventListener("touchmove", (e) => this.onMove(e), { passive: true })
+    canvas.addEventListener("mousemove", (e) => this.onMove(e), { passive: false })
+    canvas.addEventListener("touchmove", (e) => this.onMove(e), { passive: false })
 
     canvas.addEventListener("mouseup", (e) => this.onMoveEnd(e), { passive: true })
     canvas.addEventListener("touchend", (e) => this.onMoveEnd(e), { passive: true })
@@ -55,6 +55,8 @@ export class AngleCameraController extends Pointer {
   }
 
   private onMove(e: MouseEvent | TouchEvent) {
+    e.preventDefault()
+
     this._lastPos = this._pos
     this._pos = this.isTouchEvent(e) ? this.touchPos(e) : this.mousePos(e)
 
