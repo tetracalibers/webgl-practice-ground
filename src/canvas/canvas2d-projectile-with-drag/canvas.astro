@@ -1,0 +1,11 @@
+---
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+---
+
+<WebglDemo canvasSize={[700, 500]} glSrc={glSrc} />
+
+<script>
+  import { onload } from "./render"
+  window.onload = onload
+</script>
