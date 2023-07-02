@@ -167,6 +167,10 @@ export class Vector2 extends Vector2Base {
     return new Vector2(x / magnitude, y / magnitude)
   }
 
+  static distance(vec1: Vector2, vec2: Vector2): number {
+    return vec1.sub(vec2).magnitude
+  }
+
   get rawValues(): RawVector2 {
     return [this.x, this.y]
   }
