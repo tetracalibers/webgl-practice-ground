@@ -8,7 +8,7 @@ interface BallOptions {
   isGradientOn?: boolean
 }
 
-interface Xy {
+export interface Xy {
   x: number
   y: number
 }
@@ -54,6 +54,10 @@ export class Ball {
 
   get mass(): number {
     return this._mass
+  }
+
+  get radius(): number {
+    return this._radius
   }
 
   draw(context: CanvasRenderingContext2D) {
