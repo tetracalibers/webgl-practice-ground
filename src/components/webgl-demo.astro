@@ -18,7 +18,7 @@ const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
     typeof canvasSize === "string" ? (
       <canvas id="gl-canvas" class={canvasSize} />
     ) : (
-      <canvas id="gl-canvas" width={canvasSize[0]} height={canvasSize[1]} />
+      <canvas id="gl-canvas" class="fixed-size" width={canvasSize[0]} height={canvasSize[1]} />
     )
   }
   <button id="ToggleCanvasOrSrc" class="ToggleCanvasOrSrc">
@@ -128,6 +128,10 @@ const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
 
   canvas:focus {
     outline: none;
+  }
+
+  .fixed-size {
+    width: 100%;
   }
 
   @media (orientation: landscape) {
