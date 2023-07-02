@@ -5,6 +5,7 @@
  */
 
 import type { Matrix4 } from "./matrix"
+import type { RawVector2 } from "./raw-vector"
 
 // @see https://github.com/kotofurumiya/matrixgl/blob/master/src/vector_base.ts
 // @see https://github.com/kotofurumiya/matrixgl/blob/master/src/float32vector.ts
@@ -80,6 +81,94 @@ abstract class VectorBase implements Vector {
   toString(): string {
     const dimension = this._values.length
     return `Vector${dimension}(${this._values.join(", ")})`
+  }
+}
+
+abstract class Vector2Base extends VectorBase {
+  get x(): number {
+    return this._values[0]
+  }
+
+  get y(): number {
+    return this._values[1]
+  }
+
+  set x(value: number) {
+    this._values[0] = value
+  }
+
+  set y(value: number) {
+    this._values[1] = value
+  }
+}
+
+export class Vector2 extends Vector2Base {
+  constructor(x: number, y: number) {
+    super([x, y])
+  }
+
+  add(other: Vector2): Vector2 {
+    return new Vector2(this.x + other.x, this.y + other.y)
+  }
+
+  sub(other: Vector2): Vector2 {
+    return new Vector2(this.x - other.x, this.y - other.y)
+  }
+
+  // not immutable
+  incrementBy(other: Vector2): Vector2 {
+    this.x += other.x
+    this.y += other.y
+    return this
+  }
+
+  // not immutable
+  decrementBy(other: Vector2): Vector2 {
+    this.x -= other.x
+    this.y -= other.y
+    return this
+  }
+
+  mulByScalar(scalar: number): Vector2 {
+    return new Vector2(this.x * scalar, this.y * scalar)
+  }
+
+  scale(scalar: number): Vector2 {
+    return this.mulByScalar(scalar)
+  }
+
+  addScaled(vector: Vector2, k: number) {
+    return new Vector2(this.x + vector.x * k, this.y + vector.y * k)
+  }
+
+  static negate(x: number, y: number): Vector2 {
+    return new Vector2(-x, -y)
+  }
+
+  negate(): Vector2 {
+    return new Vector2(-this.x, -this.y)
+  }
+
+  dotV(other: Vector2): number {
+    return this.x * other.x + this.y * other.y
+  }
+
+  dot(x: number, y: number): number {
+    return this.x * x + this.y * y
+  }
+
+  normalize(): Vector2 {
+    const magnitude = this.magnitude
+    return new Vector2(this.x / magnitude, this.y / magnitude)
+  }
+
+  static normalize(x: number, y: number): Vector2 {
+    const magnitude = Math.sqrt(x ** 2 + y ** 2)
+    return new Vector2(x / magnitude, y / magnitude)
+  }
+
+  get rawValues(): RawVector2 {
+    return [this.x, this.y]
   }
 }
 
