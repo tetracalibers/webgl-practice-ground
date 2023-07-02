@@ -37,12 +37,15 @@ export const onload = () => {
 
   // 移動
   const moveObject = () => {
+    // v = dx / dt
+    // i.e.
+    // dx = v * dt
     ball.position2d = ball.position2d.addScaled(ball.velocity2d, dt)
     clearCanvas()
     ball.draw(context)
   }
 
-  // 力の更新
+  // 粒子に加わる合力を計算
   const updateForce = () => {
     const gravity = Forces.constantGravity(ball.mass, 10)
     const drag = Forces.linearDrag(0.1, ball.velocity2d)
@@ -51,11 +54,15 @@ export const onload = () => {
 
   // 加速度の更新
   const updateAccel = () => {
+    // F = m * a
+    // i.e.
+    // a = F / m
     acceleration = force.scale(1 / ball.mass)
   }
 
   // 速度の更新
   const updateVelocity = () => {
+    // dv = a * dt
     ball.velocity2d = ball.velocity2d.addScaled(acceleration, dt)
   }
 

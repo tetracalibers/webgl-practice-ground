@@ -13,6 +13,7 @@ export class Forces {
   // 抗力
   static linearDrag(k: number, velocity: Vector2): Vector2 {
     const mag = velocity.magnitude
+    // 低速での抗力は –k * v
     const force = mag > 0 ? velocity.scale(-k) : new Vector2(0, 0)
     return force
   }
