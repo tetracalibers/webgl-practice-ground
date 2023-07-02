@@ -3,6 +3,7 @@ import {
   glslCategoryDetail,
   imageProcessingCategoryDetail,
   noteCategoryDetail,
+  canvasCategoryDetail,
   webglCategoryDetail
 } from "@/content/config"
 import BaseHtml from "@/layout/base-html.astro"
@@ -179,6 +180,7 @@ const orderedNotePages = noteOrder.map((slug) => notePages.find((page) => page.s
 const webglStudyPages = orderedStudyPages.filter((page) => page.data.category === "webgl")
 const glslStudyPages = orderedStudyPages.filter((page) => page.data.category === "glsl")
 const imageProcessingStudyPages = orderedStudyPages.filter((page) => page.data.category === "image-processing")
+const canvasStudyPages = orderedStudyPages.filter((page) => page.data.category === "canvas2d")
 ---
 
 <BaseHtml title="WebGL Study Demo">
@@ -224,6 +226,25 @@ const imageProcessingStudyPages = orderedStudyPages.filter((page) => page.data.c
   {
     Object.entries(imageProcessingCategoryDetail).map(([ckey, cdetail]) => {
       const pages = imageProcessingStudyPages.filter((page) => page.data.subcategory === ckey)
+      if (pages.length < 1) return null
+      return (
+        <>
+          <h3>{cdetail.title}</h3>
+          <ul>
+            {pages.map((page) => (
+              <li>
+                <a href={`/webgl-practice-ground/${page.slug}`}>{page.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    })
+  }
+  <h2>Canvas 2D</h2>
+  {
+    Object.entries(canvasCategoryDetail).map(([ckey, cdetail]) => {
+      const pages = canvasStudyPages.filter((page) => page.data.subcategory === ckey)
       if (pages.length < 1) return null
       return (
         <>

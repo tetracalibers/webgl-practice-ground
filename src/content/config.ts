@@ -59,6 +59,20 @@ const zImageProcessingStudy = z.object({
   subcategory: z.enum(imageProcessingCategories)
 })
 
+export const canvasCategories = ["line"] as const
+
+export const canvasCategoryDetail: Record<(typeof canvasCategories)[number], { title: string }> = {
+  line: {
+    title: "Line"
+  }
+}
+
+const zCanvasStudy = z.object({
+  title: z.string(),
+  category: z.literal("canvas2d"),
+  subcategory: z.enum(canvasCategories)
+})
+
 export const webglCategories = [
   "basic",
   "lighting",
@@ -204,7 +218,7 @@ const zGlslStudy = z.object({
 })
 
 const studyCollection = defineCollection({
-  schema: z.discriminatedUnion("category", [zWebglStudy, zGlslStudy, zImageProcessingStudy])
+  schema: z.discriminatedUnion("category", [zWebglStudy, zGlslStudy, zImageProcessingStudy, zCanvasStudy])
 })
 
 export const collections = {
