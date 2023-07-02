@@ -59,11 +59,14 @@ const zImageProcessingStudy = z.object({
   subcategory: z.enum(imageProcessingCategories)
 })
 
-export const canvasCategories = ["line"] as const
+export const canvasCategories = ["line", "physics"] as const
 
 export const canvasCategoryDetail: Record<(typeof canvasCategories)[number], { title: string }> = {
   line: {
     title: "Line"
+  },
+  physics: {
+    title: "物理"
   }
 }
 
