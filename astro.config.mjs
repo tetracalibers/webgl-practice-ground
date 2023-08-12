@@ -5,6 +5,7 @@ import { resolve } from "node:path"
 import mdx from "@astrojs/mdx"
 import rehypeKatex from "rehype-katex"
 import remarkMath from "remark-math"
+import svelte from "@astrojs/svelte"
 const __dirname = new URL(".", import.meta.url).pathname
 
 // https://astro.build/config
@@ -23,7 +24,8 @@ export default defineConfig(
       mdx({
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex]
-      })
+      }),
+      svelte()
     ],
     site: "https://tetracalibers.github.io",
     base: "/webgl-practice-ground",
