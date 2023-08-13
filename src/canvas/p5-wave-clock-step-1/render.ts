@@ -13,7 +13,7 @@ const sketch = (p: p5) => {
   }
 
   p.draw = () => {
-    angle += 3
+    angle += 1
     if (angle > 360) angle -= 360
     if (angle < 0) angle += 360
 
