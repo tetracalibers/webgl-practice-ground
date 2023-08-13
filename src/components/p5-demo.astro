@@ -1,0 +1,107 @@
+---
+import CodeBlock from "./code-block.astro"
+import { Icon } from "astro-icon"
+
+interface Props {
+  code?: string
+}
+
+const { code } = Astro.props
+---
+
+<div class="container">
+  <button id="ToggleCanvasOrSrc" class="ToggleCanvasOrSrc">
+    <Icon name="vuesax-linear-code-1" class="ToCodeIcon" />
+    <Icon name="vuesax-linear-image" class="ToCanvasIcon" />
+  </button>
+  <div class="CodeBlockContainer" id="CodeBlockContainer">
+    {code && <CodeBlock title="render.ts" src={code} lang="ts" bgcolor="rgba(247, 200, 224, 0.3)" />}
+  </div>
+</div>
+
+<script>
+  window.onload = () => {
+    const $toggleButton = document.getElementById("ToggleCanvasOrSrc")!
+    const $canvas = document.getElementsByTagName("canvas")[0]
+    const $code = document.getElementById("CodeBlockContainer")!
+
+    $toggleButton.addEventListener("click", () => {
+      $canvas.classList.toggle("--deactive")
+      $code.classList.toggle("--active")
+      $toggleButton.classList.toggle("--active-code")
+    })
+  }
+</script>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 2em;
+  }
+
+  .CodeBlockContainer {
+    display: none;
+  }
+
+  .CodeBlockContainer.--active {
+    display: flex;
+    flex-direction: column;
+    padding: 2em 0;
+    gap: 2em;
+  }
+
+  .ToggleCanvasOrSrc {
+    position: fixed;
+    bottom: 0.5rem;
+    left: 0.5rem;
+
+    display: grid;
+    place-items: center;
+
+    appearance: none;
+    border: none;
+    padding: 0;
+
+    background-color: #97b7e9;
+    color: #354259;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    aspect-ratio: 1;
+
+    border-radius: 50%;
+  }
+
+  :global([astro-icon]) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .ToCanvasIcon {
+    display: none;
+  }
+
+  .ToCodeIcon {
+    display: block;
+  }
+
+  .--active-code .ToCanvasIcon {
+    display: block;
+  }
+
+  .--active-code .ToCodeIcon {
+    display: none;
+  }
+
+  .container ~ :global(main) {
+    padding: 0;
+    overflow: hidden;
+    max-height: 100vh;
+  }
+
+  .container ~ :global(main > canvas.--deactive) {
+    display: none;
+  }
+</style>
