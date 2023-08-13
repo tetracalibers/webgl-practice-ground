@@ -3,6 +3,8 @@ import p5 from "p5"
 const sketch = (p: p5) => {
   let angle = -p.PI / 2
   let radius = p.min(p.windowWidth, p.windowHeight) / 2 - 20
+  const centerX = p.windowWidth / 2
+  const centerY = p.windowHeight / 2
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight)
@@ -16,9 +18,6 @@ const sketch = (p: p5) => {
     angle += 1
     if (angle > 360) angle -= 360
     if (angle < 0) angle += 360
-
-    const centerX = p.windowWidth / 2
-    const centerY = p.windowHeight / 2
 
     const rad = p.radians(angle)
     const x1 = centerX + radius * p.cos(rad)
