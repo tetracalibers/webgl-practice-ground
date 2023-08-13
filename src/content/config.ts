@@ -76,6 +76,11 @@ const zCanvasStudy = z.object({
   subcategory: z.enum(canvasCategories)
 })
 
+const zP5Study = z.object({
+  title: z.string(),
+  category: z.literal("p5")
+})
+
 export const webglCategories = [
   "basic",
   "lighting",
@@ -221,7 +226,7 @@ const zGlslStudy = z.object({
 })
 
 const studyCollection = defineCollection({
-  schema: z.discriminatedUnion("category", [zWebglStudy, zGlslStudy, zImageProcessingStudy, zCanvasStudy])
+  schema: z.discriminatedUnion("category", [zWebglStudy, zGlslStudy, zImageProcessingStudy, zCanvasStudy, zP5Study])
 })
 
 export const collections = {

@@ -188,6 +188,7 @@ const webglStudyPages = orderedStudyPages.filter((page) => page.data.category ==
 const glslStudyPages = orderedStudyPages.filter((page) => page.data.category === "glsl")
 const imageProcessingStudyPages = orderedStudyPages.filter((page) => page.data.category === "image-processing")
 const canvasStudyPages = orderedStudyPages.filter((page) => page.data.category === "canvas2d")
+const p5StudyPages = orderedStudyPages.filter((page) => page.data.category === "p5")
 ---
 
 <BaseHtml title="WebGL Study Demo">
@@ -267,6 +268,16 @@ const canvasStudyPages = orderedStudyPages.filter((page) => page.data.category =
       )
     })
   }
+  <h2>p5.js</h2>
+  <ul>
+    {
+      p5StudyPages.map((page) => (
+        <li>
+          <a href={`/webgl-practice-ground/${page.slug}`}>{page.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
   <h2>Note</h2>
   {
     Object.entries(noteCategoryDetail).map(([ckey, cdetail]) => {
