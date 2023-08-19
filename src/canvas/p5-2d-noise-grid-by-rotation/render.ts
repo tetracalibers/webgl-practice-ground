@@ -4,7 +4,7 @@ const getDrawPointFn = (p: p5) => (x: number, y: number, noiseFactor: number) =>
   // 前の描画位置を保存
   p.push()
 
-  // (0, 0)のところで はなく、今描いているポイントで回転させる
+  // (0, 0)のところではなく、今描いているポイントで回転させる
   p.translate(x, y)
   p.rotate(noiseFactor * p.radians(360))
 
