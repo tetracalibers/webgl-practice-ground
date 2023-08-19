@@ -1,11 +1,18 @@
 import p5 from "p5"
 
 const getDrawPointFn = (p: p5) => (x: number, y: number, noiseFactor: number) => {
+  // 前の描画位置を保存
   p.push()
+
+  // (0, 0)のところで はなく、今描いているポイントで回転させる
   p.translate(x, y)
   p.rotate(noiseFactor * p.radians(360))
+
+  // 線の描画
   p.stroke(0, 150)
   p.line(0, 0, 20, 0)
+
+  // 前の描画位置を再び取り出す
   p.pop()
 }
 
