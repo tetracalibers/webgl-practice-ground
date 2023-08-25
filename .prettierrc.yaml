@@ -6,3 +6,10 @@ singleQuote: false
 trailingComma: none
 bracketSpacing: true
 arrowParens: always
+plugins:
+  - prettier-plugin-glsl
+overrides:
+  - files:
+      - "*.frag"
+    options:
+      parser: glsl-parser
