@@ -24,6 +24,7 @@
     "prismjs": "^1.29.0",
     "rehype-katex": "^6.0.2",
     "remark-math": "^5.1.1",
+    "sketchgl": "git+https://github.com/tetracalibers/sketchgl.git",
     "svelte": "^4.0.0"
   },
   "devDependencies": {
