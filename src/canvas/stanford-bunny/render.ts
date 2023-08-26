@@ -1,5 +1,6 @@
 import { SketchGl, type SketchConfig, type SketchFn } from "sketchgl"
-import { Uniforms, Program, Geometry } from "sketchgl/webgl"
+import { Uniforms, Program } from "sketchgl/program"
+import { Geometry } from "sketchgl/geometry"
 import { Matrix4, type RawVector3 } from "sketchgl/math"
 import { AngleCamera, AngleCameraController } from "sketchgl/camera"
 

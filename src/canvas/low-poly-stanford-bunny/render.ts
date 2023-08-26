@@ -1,6 +1,7 @@
 import { SketchGl, SketchFn, SketchConfig } from "sketchgl"
 import { Matrix4, RawVector3 } from "sketchgl/math"
-import { Geometry, Program, Uniforms } from "sketchgl/webgl"
+import { Program, Uniforms } from "sketchgl/program"
+import { Geometry } from "sketchgl/geometry"
 import { AngleCamera, AngleCameraController } from "sketchgl/camera"
 
 import vert from "./index.vert?raw"
