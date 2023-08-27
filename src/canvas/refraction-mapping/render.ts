@@ -41,13 +41,13 @@ const sketch: SketchFn = (skCanvas) => {
   const cubeMap = new ImagesCubeTexture(gl, { top, bottom, left, right, front, back })
 
   const polyhedron = new Icosahedron(gl)
-  polyhedron.create({ vertices: 0, normals: 1 })
+  polyhedron.setLocations({ vertices: 0, normals: 1 })
 
   const sphere = new Sphere(gl, { radius: 1, segments: 64, rings: 64 })
-  sphere.create({ vertices: 0, normals: 1 })
+  sphere.setLocations({ vertices: 0, normals: 1 })
 
   const cube = new Cube(gl, { size: 2 })
-  cube.create({ vertices: 0, normals: 1 })
+  cube.setLocations({ vertices: 0, normals: 1 })
 
   gl.clearColor(1.0, 1.0, 1.0, 1.0)
   gl.clearDepth(1.0)

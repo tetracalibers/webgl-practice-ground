@@ -61,7 +61,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   shape.setup()
 
   const plane = new HalfCanvasCoverPolygon(gl)
-  plane.create({ vertices: 0, uv: 1 })
+  plane.setLocations({ vertices: 0, uv: 1 })
 
   gl.clearColor(1.0, 1.0, 1.0, 1.0)
   gl.clearDepth(1.0)

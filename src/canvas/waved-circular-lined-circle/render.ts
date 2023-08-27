@@ -19,7 +19,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   uniforms.init(program.raw)
 
   const circle = new InstancedCircle(gl, { radius: 0.05, segments: 32, instanceCount: 100 })
-  circle.create({ vertices: 0, offset: 1 })
+  circle.setLocations({ vertices: 0, offset: 1 })
 
   const timer = new Timer()
   timer.start()
