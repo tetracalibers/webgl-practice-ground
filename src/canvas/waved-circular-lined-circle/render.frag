@@ -6,8 +6,6 @@ in float vTheta;
 
 out vec4 fragColor;
 
-uniform sampler2D uSprite;
-uniform vec2 uResolution;
 uniform float uTime;
 
 // @see https://iquilezles.org/articles/palettes/
