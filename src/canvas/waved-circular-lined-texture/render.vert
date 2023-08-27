@@ -7,9 +7,7 @@ layout (location = 2) in vec2 aInstanceOffset;
 out vec2 vTexCoord;
 out float vTheta;
 
-uniform float uAspect;
 uniform float uTime;
-uniform vec2 uResolution;
 
 // 円周率
 const float PI = 3.1415926;

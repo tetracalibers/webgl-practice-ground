@@ -1,113 +1,79 @@
-import { Space } from "@/lib/canvas/index"
-import { Clock } from "@/lib/event/clock"
-import { Timer } from "@/lib/control/timer"
-import { UniformManager } from "@/lib/webgl/uniform-manager"
-import { ImageTexture } from "@/lib/webgl/image-texture"
-import { Instancing } from "@/lib/webgl/instancing"
-import { Program } from "@/lib/webgl/gl-program"
+import { SketchGl, type SketchConfig, type SketchFn } from "sketchgl"
+import { InstancedSquare2D } from "sketchgl/geometry"
+import { Program, Uniforms } from "sketchgl/program"
+import { Timer } from "sketchgl/interactive"
+import { ImageTexture } from "sketchgl/texture"
 
 import vert from "./render.vert?raw"
 import frag from "./render.frag?raw"
 
 import sprite from "@/assets/for-particle/lace23.png"
 
-export const onload = () => {
-  const space = new Space("gl-canvas")
-  const canvas = space.canvas
-  const gl = space.gl
-  if (!canvas || !gl) return
+const sketch: SketchFn = ({ gl, canvas }) => {
+  const uniforms = new Uniforms(gl, ["uTime"])
 
-  let clock: Clock
-  let ist: Instancing
-  let program: Program
-  let uniforms: UniformManager
-  let timer: Timer
+  const program = new Program(gl)
+  program.attach(vert, frag)
+  program.activate()
 
-  let spriteTexture: ImageTexture
+  uniforms.init(program.get())
 
-  // 頂点座標 (x, y)
-  const vertices = [-0.05, 0.05, 0.05, -0.05, -0.05, -0.05, -0.05, 0.05, 0.05, -0.05, 0.05, 0.05]
-
-  // テクスチャ座標 (u, v)
-  const texcoords = [0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]
-
-  let instances: number
-
-  const onResize = () => {
-    space.fitScreenSquare()
-    render()
-  }
-
-  const configure = async () => {
-    space.fitScreenSquare()
-
-    instances = 70
-
-    const instance = () => {
+  const square = new InstancedSquare2D(gl, {
+    size: 0.1,
+    instanceCount: 70,
+    calcOffset: (instanceCount) => {
       const data = []
 
-      for (let i = 0; i < instances; i++) {
-        const theta = (Math.PI * 2 * i) / instances
+      for (let i = 0; i < instanceCount; i++) {
+        const theta = (Math.PI * 2 * i) / instanceCount
         data.push(Math.cos(theta), Math.sin(theta))
       }
 
-      return data
+      return {
+        components: 2,
+        buffer: new Float32Array(data),
+        divisor: 1
+      }
     }
+  })
+  square.setLocations({ vertices: 0, uv: 1, offset: 2 })
 
-    ist = new Instancing(gl)
+  const spriteTexture = new ImageTexture(gl, sprite)
+  spriteTexture.MAG_FILTER = "LINEAR"
+  spriteTexture.MIN_FILTER = "LINEAR"
 
-    program = new Program(gl)
-    program.attach(vert, frag)
+  const timer = new Timer()
+  timer.start()
 
-    ist.registAttrib({ location: 0, components: 2, buffer: new Float32Array(vertices) })
-    ist.registAttrib({ location: 1, components: 2, buffer: new Float32Array(texcoords) })
-    ist.registAttrib({ location: 2, components: 2, buffer: new Float32Array(instance()), divisor: 1 })
+  gl.clearColor(0.118, 0.235, 0.447, 1.0)
 
-    ist.setupAttribs()
+  gl.enable(gl.BLEND)
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE)
 
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE)
-    //gl.blendFunc(gl.DST_ALPHA, gl.ONE)
+  return {
+    preload: [spriteTexture.load()],
 
-    //gl.enable(gl.DEPTH_TEST)
+    drawOnFrame() {
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
 
-    gl.clearColor(0.118, 0.235, 0.447, 1.0)
+      square.bind()
 
-    uniforms = new UniformManager(gl, program.get()!)
-    uniforms.init(["uAspect", "uResolution", "uTime"])
+      spriteTexture.activate(program.get()!, "uSprite")
+      uniforms.float("uTime", timer.elapsed * 0.001)
 
-    spriteTexture = new ImageTexture(gl, sprite)
-    spriteTexture.MAG_FILTER = "LINEAR"
-    spriteTexture.MIN_FILTER = "LINEAR"
-    await spriteTexture.load()
-
-    clock = new Clock()
-
-    timer = new Timer()
-    timer.start()
-
-    space.onResize = onResize
+      square.draw({ primitive: "TRIANGLES" })
+    }
   }
+}
 
-  const render = () => {
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-
-    ist.bind()
-
-    program.activate()
-    spriteTexture.activate(program.get()!, "uSprite")
-    uniforms.float("uAspect", canvas.width / canvas.height)
-    uniforms.fvector2("uResolution", [canvas.width, canvas.height])
-    uniforms.float("uTime", timer.elapsed * 0.001)
-
-    gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, instances)
+export const onload = () => {
+  const config: SketchConfig = {
+    canvas: {
+      el: "gl-canvas",
+      fitSquare: true,
+      autoResize: true
+    }
   }
-
-  const init = async () => {
-    await configure()
-    clock.on("tick", render)
-  }
-
-  init()
+  SketchGl.init(config, sketch)
 }
