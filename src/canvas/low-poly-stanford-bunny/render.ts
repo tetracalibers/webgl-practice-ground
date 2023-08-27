@@ -30,8 +30,16 @@ const sketch: SketchFn = (skCanvas) => {
   program.activate()
 
   const rabbit = new Geometry(gl)
-  rabbit.registAttrib({ location: 0, components: 3, buffer: new Float32Array(rabbitModel.vertices.map(Number)) })
-  rabbit.registAttrib({ location: 1, components: 3, buffer: new Float32Array(rabbitModel.normals.map(Number)) })
+  rabbit.registAttrib("vertice", {
+    location: 0,
+    components: 3,
+    buffer: new Float32Array(rabbitModel.vertices.map(Number))
+  })
+  rabbit.registAttrib("normal", {
+    location: 1,
+    components: 3,
+    buffer: new Float32Array(rabbitModel.normals.map(Number))
+  })
   rabbit.registIndices(new Uint16Array(rabbitModel.indices))
   rabbit.setup()
 
