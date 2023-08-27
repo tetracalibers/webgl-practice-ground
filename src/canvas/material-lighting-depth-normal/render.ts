@@ -55,8 +55,8 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   uniforms.plane.init(program.get())
 
   const shape = new Geometry(gl)
-  shape.registAttrib({ location: 0, components: 3, buffer: new Float32Array(bunny.vertices.map(Number)) })
-  shape.registAttrib({ location: 1, components: 3, buffer: new Float32Array(bunny.normals.map(Number)) })
+  shape.registAttrib("vertice", { location: 0, components: 3, buffer: new Float32Array(bunny.vertices.map(Number)) })
+  shape.registAttrib("normal", { location: 1, components: 3, buffer: new Float32Array(bunny.normals.map(Number)) })
   shape.registIndices(new Uint16Array(bunny.indices))
   shape.setup()
 
