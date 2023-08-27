@@ -18,7 +18,25 @@ const sketch: SketchFn = ({ gl, canvas }) => {
 
   uniforms.init(program.raw)
 
-  const circle = new InstancedCircle(gl, { radius: 0.05, segments: 32, instanceCount: 100 })
+  const circle = new InstancedCircle(gl, {
+    radius: 0.05,
+    segments: 32,
+    instanceCount: 100,
+    calcOffset: (instanceCount) => {
+      const data = []
+
+      for (let i = 0; i < instanceCount; i++) {
+        const theta = (Math.PI * 2 * i) / instanceCount
+        data.push(Math.cos(theta), Math.sin(theta))
+      }
+
+      return {
+        components: 2,
+        buffer: new Float32Array(data),
+        divisor: 1
+      }
+    }
+  })
   circle.setLocations({ vertices: 0, offset: 1 })
 
   const timer = new Timer()
