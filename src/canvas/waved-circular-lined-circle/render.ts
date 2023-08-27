@@ -1,6 +1,6 @@
 import { SketchGl, type SketchConfig, SketchFn } from "sketchgl"
 import type { RawVector3 } from "sketchgl/math"
-import { InstancedCircle } from "sketchgl/geometry"
+import { InstancedCircle2D } from "sketchgl/geometry"
 import { Program, Uniforms } from "sketchgl/program"
 import { Timer } from "sketchgl/interactive"
 
@@ -18,7 +18,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
 
   uniforms.init(program.raw)
 
-  const circle = new InstancedCircle(gl, {
+  const circle = new InstancedCircle2D(gl, {
     radius: 0.05,
     segments: 32,
     instanceCount: 100,
