@@ -5,7 +5,6 @@ precision highp float;
 out vec4 fragColor;
 
 uniform vec2 uResolution;
-uniform vec2 uMouse;
 uniform float uTime;
 
 // 符号なし整数の最大値
