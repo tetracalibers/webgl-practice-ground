@@ -78,7 +78,6 @@ vec3 colordodge(vec3 b, vec3 f) {
 
 uniform sampler2D uTexture1; // edge
 uniform sampler2D uTexture3; // posterized
-uniform float uDepthStroke;
 
 in vec2 vTextureCoords;
 
