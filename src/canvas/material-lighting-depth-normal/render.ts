@@ -122,8 +122,7 @@ export const onload = () => {
   const config: SketchConfig = {
     canvas: {
       el: "gl-canvas",
-      fitSquare: true,
-      autoResize: true
+      fit: "square"
     }
   }
   SketchGl.init(config, sketch)
