@@ -32,7 +32,8 @@ export const onload = () => {
     frag,
     canvas: {
       el: "gl-canvas",
-      fit: "screen"
+      fit: "screen",
+      autoResize: true
     }
   }
   SketchFrg.init(config, sketch)
