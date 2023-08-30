@@ -37,9 +37,6 @@ float hash21(vec2 b) {
 }
 
 uniform sampler2D uTexture0;
-uniform float uLineScale;
-uniform float uLightDirectionZ;
-uniform bool uGrayScaleOn;
 
 in vec2 vTextureCoords;
 
