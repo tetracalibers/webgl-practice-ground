@@ -50,7 +50,7 @@ const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
   let activeImage = 1
 
   const renderer = new MRTRenderer(gl, canvas, vertSrc, fragSrcForEdge, { texCount: 2 })
-  uniformsFor.level.init(renderer.program.get())
+  uniformsFor.level.init(renderer.glProgramForOffscreen)
 
   const program = new Program(gl)
   program.attach(vertSrc, fragSrcForDrawStroke)
@@ -88,7 +88,7 @@ const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
       uniformsFor.level.fvector3("uMinDensity", uMinDensity)
 
       // TODO: renderer.programForOffscreen?
-      textures[activeImage].activate(renderer.program.get()!, "uTexture0")
+      textures[activeImage].activate(renderer.glProgramForOffscreen!, "uTexture0")
       plane.draw({ primitive: "TRIANGLES" })
 
       /* to Canvas（ストローク描画） ----------------------- */

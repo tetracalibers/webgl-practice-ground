@@ -51,7 +51,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   let matM: Matrix4
   let matV: Matrix4
 
-  uniforms.shape.init(renderer.program.get())
+  uniforms.shape.init(renderer.glProgramForOffscreen)
   uniforms.plane.init(program.get())
 
   const shape = new Geometry(gl)
