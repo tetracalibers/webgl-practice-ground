@@ -1,7 +1,7 @@
 #version 300 es
 
-in vec2 aVertexTextureCoords;
-in vec3 aVertexPosition;
+layout (location = 0) in vec3 aVertexPosition;
+layout (location = 1) in vec2 aVertexTextureCoords;
 
 out vec2 vTextureCoords;
 

@@ -1,12 +1,9 @@
-import type { RawVector3 } from "@/lib/math/raw-vector"
-import { Space } from "@/lib/canvas/index"
-import { Program } from "@/lib/webgl/program"
-import { Scene } from "@/lib/webgl/scene"
-import { Clock } from "@/lib/event/clock"
-import { ControlUi } from "@/lib/gui/control-ui"
-import { UniformLoader } from "@/lib/webgl/uniform-loader"
-import { Texture } from "@/lib/webgl/texture"
-import { FrameMRT } from "@/lib/webgl/frame-MRT"
+import { SketchFilter, type FilterSketchConfig, type FilterSketchFn } from "sketchgl"
+import { Uniforms, Program } from "sketchgl/program"
+import type { RawVector3 } from "sketchgl/math"
+import { ImageTexture } from "sketchgl/texture"
+import { MRTRenderer } from "sketchgl/renderer"
+import { CanvasCoverPolygon } from "sketchgl/geometry"
 
 import vertSrc from "./common.vert?raw"
 import fragSrcForEdge from "./edge.frag?raw"
@@ -17,183 +14,150 @@ import imageGoldfishBowl from "@/assets/original/japanese-style_00011.jpg"
 import imageAutumnLeaves from "@/assets/original/autumn-leaves_00037.jpg"
 import imageTree from "@/assets/original/tree-woods_00123.jpg"
 
-export const onload = () => {
-  const space = new Space("gl-canvas")
-  const canvas = space.canvas
-  const gl = space.gl
-  if (!canvas || !gl) return
-
-  let scene: Scene
-  let program: Program
-  let clock: Clock
-  let textures: Texture[] = []
-  // in: 原画像(0)、out1: エッジ抽出画像(1), out2: 輝度調整、階調数低減画像(2)
-  let offscreen1: FrameMRT
-  // in1: エッジ抽出画像(1)、in2: 輝度調整、階調数低減画像(2)、out: ストローク描画画像(canvas)
-
-  const uniformsForLevel = new UniformLoader(gl, [
-    "uGamma",
-    "uHue",
-    "uSaturation",
-    "uBrightness",
-    "uLevelH",
-    "uLevelS",
-    "uLevelB",
-    "uMinDensity"
-  ])
-  const uniformsForDrawStroke = new UniformLoader(gl, [
-    "uTexture1",
-    "uTexture2",
-    "uTexture3",
-    "uColored",
-    "uDepthStroke",
-    "uBlendMode"
-  ])
-
-  const images = [
-    { name: "木", image: imageTree },
-    { name: "立方体ロゴ", image: imageCubeLogo },
-    { name: "金魚鉢", image: imageGoldfishBowl },
-    { name: "紅葉", image: imageAutumnLeaves }
-  ]
-  const imageNames = images.map((obj) => obj.name)
-  let activeImage = 2
+const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
+  const uniformsFor = {
+    level: new Uniforms(gl, [
+      "uGamma",
+      "uHue",
+      "uSaturation",
+      "uBrightness",
+      "uLevelH",
+      "uLevelS",
+      "uLevelB",
+      "uMinDensity"
+    ]),
+    drawStroke: new Uniforms(gl, ["uTexture1", "uTexture2", "uTexture3", "uColored", "uDepthStroke", "uBlendMode"])
+  }
 
   const blendModes = ["multiply", "lighten", "overlay", "screen", "colorburn"]
-  let blendModeIdx = 0
+  let uBlendMode = 0
+  let uGamma = 1.0
+  let uHue = 0.0
+  let uSaturation = 1.0
+  let uBrightness = 1.0
+  let uLevelH = 256
+  let uLevelS = 2
+  let uLevelB = 128
+  let uMinDensity: RawVector3 = [0.3, 0.3, 0.3]
+  let uColored = true
+  let uDepthStroke = 1.0
 
-  let gamma = 1.0
-  let hue = 0.0
-  let saturation = 1.0
-  let brightness = 1.0
-  let levelH = 256
-  let levelS = 2
-  let levelB = 128
-  let minDensity: RawVector3 = [0.3, 0.3, 0.3]
-  let colored = true
-  let depthStroke = 1.0
+  const images = [
+    { name: "木", src: imageTree },
+    { name: "立方体ロゴ", src: imageCubeLogo },
+    { name: "金魚鉢", src: imageGoldfishBowl },
+    { name: "紅葉", src: imageAutumnLeaves }
+  ]
+  const imageNames = images.map((obj) => obj.name)
+  const textures = images.map((img) => new ImageTexture(gl, img.src))
+  let activeImage = 2
 
-  const initGuiControls = () => {
-    const ui = new ControlUi()
-    ui.select("Image", imageNames[activeImage], imageNames, (name) => {
-      const idx = imageNames.indexOf(name)
-      if (idx < 0) return
-      activeImage = idx
-      space.fitImage(textures[activeImage].image)
-    })
-    ui.number("Gamma", gamma, 0.0, 2.0, 0.01, (value) => (gamma = value))
-    ui.number("HSV.h", hue, 0, 360, 1, (value) => (hue = value))
-    ui.number("HSV.s", saturation, 0.0, 1.0, 0.01, (value) => (saturation = value))
-    ui.number("HSV.v", brightness, 0.0, 1.0, 0.01, (value) => (brightness = value))
-    ui.number("Level HSV.h", levelH, 1, 256, 1, (value) => (levelH = value))
-    ui.number("Level HSV.s", levelS, 1, 256, 1, (value) => (levelS = value))
-    ui.number("Level HSV.v", levelB, 1, 256, 1, (value) => (levelB = value))
-    ui.rgb("Min Density", minDensity, (color) => (minDensity = color))
-    ui.number("線の濃さ", depthStroke, 0.0, 2.0, 0.01, (value) => (depthStroke = value))
-    ui.boolean("Color", colored, (isActive) => (colored = isActive))
-    ui.select("Blend Mode", "multiply", blendModes, (name) => {
-      const idx = blendModes.indexOf(name)
-      if (idx < 0) return
-      blendModeIdx = idx
-    })
-  }
+  const renderer = new MRTRenderer(gl, canvas, vertSrc, fragSrcForEdge, { texCount: 2 })
+  uniformsFor.level.init(renderer.glProgramForOffscreen)
 
-  const onResize = () => {
-    space.fitImage(textures[activeImage].image)
-    offscreen1.resize()
-    render()
-  }
+  const program = new Program(gl)
+  program.attach(vertSrc, fragSrcForDrawStroke)
+  uniformsFor.drawStroke.init(program.glProgram)
 
-  const configure = async () => {
-    gl.clearColor(1.0, 1.0, 1.0, 1.0)
-    gl.clearDepth(1.0)
+  const plane = new CanvasCoverPolygon(gl)
+  plane.setLocations({ vertices: 0, uv: 1 })
 
-    offscreen1 = new FrameMRT(gl, canvas, vertSrc, fragSrcForEdge, 2, 0)
-    program = new Program(gl, vertSrc, fragSrcForDrawStroke, false)
+  gl.clearColor(1.0, 1.0, 1.0, 1.0)
+  gl.clearDepth(1.0)
 
-    scene = new Scene(gl, program)
-    clock = new Clock()
+  return {
+    resize: [renderer.resize],
 
-    uniformsForLevel.init(offscreen1.program)
-    uniformsForDrawStroke.init(program)
+    preload: [...textures.map((tex) => tex.load())],
+    preloaded: [() => fitImage(textures[activeImage].img)],
 
-    await Promise.all(
-      images.map(async (obj) => {
-        const texture = new Texture(gl, offscreen1.program, obj.image)
-        textures.push(texture)
-        await texture.load()
+    drawOnFrame() {
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+      plane.bind()
+
+      /* to Offscreens（エッジ抽出 / 輝度調整・階調数低減） ------------------------ */
+
+      renderer.switchToOffcanvas()
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
+      uniformsFor.level.float("uGamma", uGamma)
+      uniformsFor.level.float("uHue", uHue)
+      uniformsFor.level.float("uSaturation", uSaturation)
+      uniformsFor.level.float("uBrightness", uBrightness)
+      uniformsFor.level.int("uLevelH", uLevelH)
+      uniformsFor.level.int("uLevelS", uLevelS)
+      uniformsFor.level.int("uLevelB", uLevelB)
+      uniformsFor.level.fvector3("uMinDensity", uMinDensity)
+
+      textures[activeImage].activate(renderer.glProgramForOffscreen!, "uTexture0")
+      plane.draw({ primitive: "TRIANGLES" })
+
+      /* to Canvas（ストローク描画） ----------------------- */
+
+      renderer.switchToCanvas(program)
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
+      uniformsFor.drawStroke.bool("uColored", uColored)
+      uniformsFor.drawStroke.float("uDepthStroke", uDepthStroke)
+      uniformsFor.drawStroke.int("uBlendMode", uBlendMode)
+
+      renderer.useAsTexture(0, "uTexture3", program.glProgram)
+      renderer.useAsTexture(1, "uTexture1", program.glProgram)
+      plane.draw({ primitive: "TRIANGLES" })
+    },
+
+    control(ui) {
+      ui.select("Image", imageNames[activeImage], imageNames, (name) => {
+        const idx = imageNames.indexOf(name)
+        if (idx < 0) return
+        activeImage = idx
+        fitImage(textures[activeImage].img)
       })
-    )
-
-    space.fitImage(textures[activeImage].image)
-    space.onResize = onResize
+      ui.number("Gamma", uGamma, 0.0, 2.0, 0.01, (value) => {
+        uGamma = value
+      })
+      ui.number("HSV.h", uHue, 0, 360, 1, (value) => {
+        uHue = value
+      })
+      ui.number("HSV.s", uSaturation, 0.0, 1.0, 0.01, (value) => {
+        uSaturation = value
+      })
+      ui.number("HSV.v", uBrightness, 0.0, 1.0, 0.01, (value) => {
+        uBrightness = value
+      })
+      ui.number("Level HSV.h", uLevelH, 1, 256, 1, (value) => {
+        uLevelH = value
+      })
+      ui.number("Level HSV.s", uLevelS, 1, 256, 1, (value) => {
+        uLevelS = value
+      })
+      ui.number("Level HSV.v", uLevelB, 1, 256, 1, (value) => {
+        uLevelB = value
+      })
+      ui.rgb("Min Density", uMinDensity, (color) => {
+        uMinDensity = color
+      })
+      ui.number("線の濃さ", uDepthStroke, 0.0, 2.0, 0.01, (value) => {
+        uDepthStroke = value
+      })
+      ui.boolean("Color", uColored, (isActive) => {
+        uColored = isActive
+      })
+      ui.select("Blend Mode", blendModes[uBlendMode], blendModes, (name) => {
+        const idx = blendModes.indexOf(name)
+        if (idx < 0) return
+        uBlendMode = idx
+      })
+    }
   }
+}
 
-  const registerGeometry = () => {
-    // 画面を覆う板ポリゴン
-    const vertices = [-1.0, 1.0, 0.0, 1.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, -1.0, 0.0]
-    const texCoords = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]
-    const indices = [0, 2, 1, 2, 3, 1]
-    scene.add({ vertices, indices, texCoords })
+export const onload = () => {
+  const config: FilterSketchConfig = {
+    canvas: {
+      el: "gl-canvas",
+      autoResize: true
+    }
   }
-
-  const render = () => {
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-
-    /* to Offscreens（エッジ抽出 / 輝度調整・階調数低減） ------------------------ */
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, offscreen1.framebuffer)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-
-    offscreen1.program.use()
-
-    uniformsForLevel.float("uGamma", gamma)
-    uniformsForLevel.float("uHue", hue)
-    uniformsForLevel.float("uSaturation", saturation)
-    uniformsForLevel.float("uBrightness", brightness)
-    uniformsForLevel.int("uLevelH", levelH)
-    uniformsForLevel.int("uLevelS", levelS)
-    uniformsForLevel.int("uLevelB", levelB)
-    uniformsForLevel.fvector3("uMinDensity", minDensity)
-
-    scene.traverseDraw((obj) => {
-      obj.bind()
-
-      textures[activeImage].use()
-      gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
-
-      obj.cleanup()
-    })
-
-    /* to Canvas（ストローク描画） ----------------------- */
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-
-    program.use()
-
-    uniformsForDrawStroke.boolean("uColored", colored)
-    uniformsForDrawStroke.float("uDepthStroke", depthStroke)
-    uniformsForDrawStroke.int("uBlendMode", blendModeIdx)
-
-    scene.traverseDraw((obj) => {
-      obj.bind()
-
-      offscreen1.useTextureOn(0, "uTexture3", program)
-      offscreen1.useTextureOn(1, "uTexture1", program)
-      gl.drawElements(gl.TRIANGLES, obj.indices.length, gl.UNSIGNED_SHORT, 0)
-
-      obj.cleanup()
-    })
-  }
-
-  const init = async () => {
-    await configure()
-    registerGeometry()
-    clock.on("tick", render)
-
-    initGuiControls()
-  }
-
-  init()
+  SketchFilter.init(config, sketch)
 }
