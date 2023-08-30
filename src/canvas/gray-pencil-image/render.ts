@@ -65,11 +65,8 @@ const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
   return {
     resize: [renderer.resize],
 
-    preload: [
-      Promise.all(textures.map((tex) => tex.load())).then(() => {
-        fitImage(textures[activeImage].img)
-      })
-    ],
+    preload: [...textures.map((tex) => tex.load())],
+    preloaded: [() => fitImage(textures[activeImage].img)],
 
     drawOnFrame() {
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
