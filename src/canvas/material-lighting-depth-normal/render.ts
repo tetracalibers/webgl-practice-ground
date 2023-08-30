@@ -52,7 +52,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   let matV: Matrix4
 
   uniforms.shape.init(renderer.glProgramForOffscreen)
-  uniforms.plane.init(program.get())
+  uniforms.plane.init(program.glProgram)
 
   const shape = new Geometry(gl)
   shape.registAttrib("vertice", { location: 0, components: 3, buffer: new Float32Array(bunny.vertices.map(Number)) })
@@ -104,7 +104,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
 
       for (let i = 0; i < 4; ++i) {
         uniforms.plane.fvector3("uOffset", planeOffsets[i])
-        renderer.useAsTexture(i, "uTexture", program.get())
+        renderer.useAsTexture(i, "uTexture", program.glProgram)
         plane.bind()
         plane.draw({ primitive: "TRIANGLES" })
       }

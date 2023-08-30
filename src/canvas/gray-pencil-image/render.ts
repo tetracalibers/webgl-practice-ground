@@ -54,7 +54,7 @@ const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
 
   const program = new Program(gl)
   program.attach(vertSrc, fragSrcForDrawStroke)
-  uniformsFor.drawStroke.init(program.get())
+  uniformsFor.drawStroke.init(program.glProgram)
 
   const plane = new CanvasCoverPolygon(gl)
   plane.setLocations({ vertices: 0, uv: 1 })
@@ -96,8 +96,8 @@ const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
       renderer.switchToCanvas(program)
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
-      renderer.useAsTexture(0, "uTexture3", program.get())
-      renderer.useAsTexture(1, "uTexture1", program.get())
+      renderer.useAsTexture(0, "uTexture3", program.glProgram)
+      renderer.useAsTexture(1, "uTexture1", program.glProgram)
       plane.draw({ primitive: "TRIANGLES" })
     },
 

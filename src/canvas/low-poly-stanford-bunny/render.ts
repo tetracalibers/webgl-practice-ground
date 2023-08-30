@@ -55,7 +55,7 @@ const sketch: SketchFn = (skCanvas) => {
 
   AngleCameraController.init(canvas, camera)
 
-  uniforms.init(program.get())
+  uniforms.init(program.glProgram)
   uniforms.fmatrix4("uMatModel", matM.values)
   uniforms.fmatrix4("uMatProj", matP.values)
   uniforms.fmatrix4("uMatNormal", matM.inverse().values)

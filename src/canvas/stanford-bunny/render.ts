@@ -45,7 +45,7 @@ const sketch: SketchFn = (skCanvas) => {
   const matP = Matrix4.perspective(camera.fov, canvas.width / canvas.height, camera.near, camera.far)
   const matM = Matrix4.identity()
 
-  uniforms.init(program.get())
+  uniforms.init(program.glProgram)
   uniforms.fmatrix4("uMatModel", matM.values)
   uniforms.fmatrix4("uMatProj", matP.values)
   uniforms.fmatrix4("uMatNormal", matM.inverse().values)

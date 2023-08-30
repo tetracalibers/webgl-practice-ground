@@ -16,7 +16,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   program.attach(vert, frag)
   program.activate()
 
-  uniforms.init(program.get())
+  uniforms.init(program.glProgram)
 
   const square = new InstancedSquare2D(gl, {
     size: 0.1,
@@ -59,7 +59,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
 
       square.bind()
 
-      spriteTexture.activate(program.get()!, "uSprite")
+      spriteTexture.activate(program.glProgram!, "uSprite")
       uniforms.float("uTime", timer.elapsed * 0.001)
 
       square.draw({ primitive: "TRIANGLES" })

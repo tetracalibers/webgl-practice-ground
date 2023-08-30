@@ -23,7 +23,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   program.attach(vert, frag)
   program.activate()
 
-  uniforms.init(program.raw)
+  uniforms.init(program.glProgram)
   uniforms.fmatrix4("uMatProj", matP.values)
 
   const polyhedron = new Icosahedron(gl)
@@ -70,7 +70,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
       uniforms.fmatrix4("uMatModel", matM.values)
       uniforms.fvector3("uEyePosition", eye.rawValues)
       uniforms.bool("uReflection", false)
-      cubeMap.activate(program.raw, "uCubeMap")
+      cubeMap.activate(program.glProgram, "uCubeMap")
       cube.draw({ primitive: "TRIANGLES" })
 
       // 球

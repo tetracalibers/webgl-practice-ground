@@ -35,7 +35,7 @@ const sketch: SketchFn = (skCanvas) => {
   program.attach(vert, frag)
   program.activate()
 
-  uniforms.init(program.get())
+  uniforms.init(program.glProgram)
   uniforms.fmatrix4("uMatProj", matP.values)
 
   const cubeMap = new ImagesCubeTexture(gl, { top, bottom, left, right, front, back })
@@ -82,7 +82,7 @@ const sketch: SketchFn = (skCanvas) => {
       uniforms.fvector3("uEyePosition", eye.rawValues)
       uniforms.float("uRefractiveIndex", uRefractiveIndex)
       uniforms.bool("uRefraction", false)
-      cubeMap.activate(program.raw, "uCubeMap")
+      cubeMap.activate(program.glProgram, "uCubeMap")
       cube.draw({ primitive: "TRIANGLES" })
 
       // 球

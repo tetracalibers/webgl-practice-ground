@@ -16,7 +16,7 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   program.attach(vert, frag)
   program.activate()
 
-  uniforms.init(program.raw)
+  uniforms.init(program.glProgram)
 
   const circle = new InstancedCircle2D(gl, {
     radius: 0.05,
