@@ -87,7 +87,6 @@ const sketch: FilterSketchFn = ({ gl, canvas, fitImage }) => {
       uniformsFor.level.int("uLevelB", uLevelB)
       uniformsFor.level.fvector3("uMinDensity", uMinDensity)
 
-      // TODO: renderer.programForOffscreen?
       textures[activeImage].activate(renderer.glProgramForOffscreen!, "uTexture0")
       plane.draw({ primitive: "TRIANGLES" })
 
