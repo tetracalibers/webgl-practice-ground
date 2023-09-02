@@ -1,8 +1,8 @@
 #version 300 es
 
 layout (location = 0) in vec2 aPosition;
-layout (location = 2) in float aAge;
-layout (location = 3) in float aLife;
+layout (location = 1) in float aAge;
+layout (location = 2) in float aLife;
 
 out float vAge;
 out float vLife;

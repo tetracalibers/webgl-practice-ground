@@ -11,12 +11,12 @@
 
 // 粒子がどこにあるか
 layout (location = 0) in vec2 aPosition;
-// 粒子がどこに向かうのか、どのくらいの速さで向かうのか
-layout (location = 1) in vec2 aVelocity;
 // 粒子の年齢（秒）
-layout (location = 2) in float aAge;
+layout (location = 1) in float aAge;
 // 粒子の寿命（秒）
-layout (location = 3) in float aLife;
+layout (location = 2) in float aLife;
+// 粒子がどこに向かうのか、どのくらいの速さで向かうのか
+layout (location = 3) in vec2 aVelocity;
 
 out vec2 vPosition;
 out vec2 vVelocity;

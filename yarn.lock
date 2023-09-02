@@ -3913,7 +3913,7 @@ sisteransi@^1.0.5:
 
 "sketchgl@git+https://github.com/tetracalibers/sketchgl.git":
   version "0.0.0"
-  resolved "git+https://github.com/tetracalibers/sketchgl.git#eaa736187b8fc9632ab259cc81d574af7f286438"
+  resolved "git+https://github.com/tetracalibers/sketchgl.git#a811cb7dae04e2b8711eb65f4be7646ae5717adb"
   dependencies:
     lil-gui "^0.18.2"
 
