@@ -91,21 +91,17 @@ const sketch: SketchFn = ({ gl, canvas }) => {
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
       gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
 
-      gl.useProgram(renderer.glProgramForUpdate)
+      renderer.startUpdate()
       uniformsFor.update.float("uTime", timer.elapsed * 0.001)
       uniformsFor.update.float("uMove", camera.movePower)
       uniformsFor.update.fvector2("uMouse", camera.mouseCoords)
-
-      renderer.startUpdate()
       // TODO: ImageCanvas側でdrawメソッドを提供する？
       gl.drawArrays(gl.POINTS, 0, imgCvs.width * imgCvs.height)
       renderer.endUpdate()
 
-      gl.useProgram(renderer.glProgramForRender)
+      renderer.startRender()
       uniformsFor.render.fmatrix4("uMatrix", matVP.values)
       uniformsFor.render.float("uMove", camera.movePower)
-
-      renderer.startRender()
       gl.drawArrays(gl.POINTS, 0, imgCvs.width * imgCvs.height)
       renderer.endRender()
     }
