@@ -10,7 +10,7 @@ out vec3 vVertexPosition;
 out vec4 vVertexColor;
 
 void main(){
-  vec2 p = uMouse - aVertexPosition.xy;
+  vec2 p = uMouse + aVertexPosition.xy;
   float z = cos(length(p * 20.0) - uTime) * 0.1;
   
   vVertexPosition = aVertexPosition;
