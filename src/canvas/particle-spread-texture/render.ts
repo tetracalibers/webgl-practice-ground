@@ -52,10 +52,9 @@ const sketch: SketchFn = ({ gl, canvas }) => {
   renderer.registUpdateAttrib("vVelocity", { location: 1, components: 3 })
   renderer.registUpdateAttrib("vVertexColor", { location: 2, components: 4 })
 
-  // TODO: これ、要る？
-  renderer.registRenderAttrib({ location: 0, components: 3 })
-  renderer.registRenderAttrib({ location: 1, components: 3 })
-  renderer.registRenderAttrib({ location: 2, components: 4 })
+  renderer.registRenderAttrib("aVertexPosition", { location: 0, components: 3 })
+  renderer.registRenderAttrib("aVelocity", { location: 1, components: 3 })
+  renderer.registRenderAttrib("aVertexColor", { location: 2, components: 4 })
 
   uniformsFor.update.init(renderer.glProgramForUpdate)
   uniformsFor.render.init(renderer.glProgramForRender)
