@@ -31,16 +31,21 @@ const sketch: SketchFn = ({ gl, canvas }) => {
 
   interleave.useImageColorAs("vVertexColor")
 
-  // TODO: 第二引数は { components: 3, generator: () => [] } という形で指定したい
-  interleave.add("vVertexPosition", 3, ({ position }) => {
-    const { x, y } = position
-    return [x, -y, 0]
+  interleave.add("vVertexPosition", {
+    components: 3,
+    generate: ({ position }) => {
+      const { x, y } = position
+      return [x, -y, 0]
+    }
   })
 
-  interleave.add("vVelocity", 3, ({ position }) => {
-    const { x, y } = position
-    const m = Math.sqrt(x * x + y * y)
-    return [x / m, -y / m, 0]
+  interleave.add("vVelocity", {
+    components: 3,
+    generate: ({ position }) => {
+      const { x, y } = position
+      const m = Math.sqrt(x * x + y * y)
+      return [x / m, -y / m, 0]
+    }
   })
 
   const renderer = new SwapTFRenderer(gl, interleave.keys)
