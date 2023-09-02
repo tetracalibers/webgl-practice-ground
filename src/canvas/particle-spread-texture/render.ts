@@ -80,7 +80,6 @@ const sketch: SketchFn = ({ gl, canvas }) => {
     preloaded: [
       () => {
         const interleavedArray = interleave.generate()
-        // TODO: generateの返り値はFloat32Arrayにした方が良い？
         renderer.setup(new Float32Array(interleavedArray))
       }
     ],
@@ -95,7 +94,6 @@ const sketch: SketchFn = ({ gl, canvas }) => {
       uniformsFor.update.float("uTime", timer.elapsed * 0.001)
       uniformsFor.update.float("uMove", camera.movePower)
       uniformsFor.update.fvector2("uMouse", camera.mouseCoords)
-      // TODO: ImageCanvas側でdrawメソッドを提供する？
       gl.drawArrays(gl.POINTS, 0, imgCvs.width * imgCvs.height)
       renderer.endUpdate()
 
