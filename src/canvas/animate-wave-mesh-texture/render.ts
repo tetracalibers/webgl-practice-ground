@@ -1,3 +1,11 @@
+import { SketchGl, type SketchConfig, type SketchFn } from "sketchgl"
+import { Uniforms } from "sketchgl/program"
+import { ImageCanvas } from "sketchgl/texture"
+import { ImageInterleavedData } from "sketchgl/utility"
+import { Timer } from "sketchgl/interactive"
+import { SwapTFRenderer } from "sketchgl/renderer"
+import { WavePlaneCamera } from "@/lib/feature/particle/wave-plane"
+
 import vertForOut from "./out.vert?raw"
 import fragForOut from "./out.frag?raw"
 
@@ -5,15 +13,6 @@ import vertForIn from "./in.vert?raw"
 import fragForIn from "./in.frag?raw"
 
 import image from "@/assets/542x542/autumn-leaves_00037.png"
-
-import { SketchGl, type SketchConfig, type SketchFn } from "sketchgl"
-import { Uniforms } from "sketchgl/program"
-import { ImageCanvas } from "sketchgl/texture"
-import { ImageInterleavedData } from "sketchgl/utility"
-import { Timer } from "sketchgl/interactive"
-import { SwapTFRenderer } from "sketchgl/renderer"
-import { WaveParticleCamera } from "@/lib/feature/particle/wave-particle-camera"
-import { WavePlaneCamera } from "@/lib/feature/particle/wave-plane"
 
 const sketch: SketchFn = ({ gl, canvas }) => {
   const uniformsFor = {
