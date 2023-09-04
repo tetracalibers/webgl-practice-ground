@@ -6,6 +6,7 @@ import mdx from "@astrojs/mdx"
 import rehypeKatex from "rehype-katex"
 import remarkMath from "remark-math"
 import svelte from "@astrojs/svelte"
+import glslify from "vite-plugin-glslify"
 const __dirname = new URL(".", import.meta.url).pathname
 
 // https://astro.build/config
@@ -17,7 +18,12 @@ export default defineConfig(
         alias: {
           "@": resolve(__dirname, "src")
         }
-      }
+      },
+      plugins: [
+        glslify({
+          include: ["**/*.glsl", "**/*.vs", "**/*.fs", "**/*.vert", "**/*.frag"]
+        })
+      ]
     },
     integrations: [
       // @ts-ignore
