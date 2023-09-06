@@ -1,5 +1,4 @@
 import { SketchFrg, type FragmentSketchConfig, type FragmentSketchFn } from "sketchgl"
-import { Timer } from "sketchgl/interactive"
 import { Uniforms } from "sketchgl/program"
 
 import frag from "./index.frag"
