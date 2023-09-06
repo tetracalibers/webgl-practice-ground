@@ -1,68 +1,18 @@
 ---
-import ShaderDemo from "@/components/shader-demo.astro"
-import fragmentSource from "./index.frag?raw"
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+import indexFrag from "./index.frag?raw"
+
+const shaders = [
+  {
+    frag: { title: "index.frag", src: indexFrag }
+  }
+]
 ---
 
-<ShaderDemo fragSrc={fragmentSource} canvasSize={"full-screen"} />
+<WebglDemo canvasSize={"full-screen"} glSrc={glSrc} shaders={shaders} />
 
 <script>
-  import { Space } from "@/lib/canvas/index"
-  import { Program } from "@/lib/webgl/program"
-  import vertexSource from "./index.vert?raw"
-  import fragmentSource from "./index.frag?raw"
-  import type { Attribute, Uniform } from "@/lib/webgl/shader-data.type"
-  import { UniformReflect } from "@/lib/webgl/uniform-reflect"
-  import { Timer } from "@/lib/control/timer"
-  import { Clock } from "@/lib/event/clock"
-
-  window.onload = () => {
-    const space = new Space("gl-canvas")
-    const canvas = space.canvas
-    const gl = space.gl
-    if (!canvas || !gl) return
-
-    let reflect: UniformReflect
-    let timer: Timer
-    let clock: Clock
-
-    const configure = () => {
-      space.autoResize(() => space.fitScreen())
-
-      // canvasを初期化する色を設定する
-      gl.clearColor(0.0, 0.0, 0.0, 1.0)
-      // canvasを初期化する際の深度を設定する
-      gl.clearDepth(1.0)
-
-      const program = new Program(gl, vertexSource, fragmentSource)
-
-      const attributes: Attribute[] = []
-      const uniforms: Uniform[] = ["uResolution", "uTime"]
-
-      program.load(attributes, uniforms)
-
-      reflect = new UniformReflect(gl, program)
-      clock = new Clock()
-      timer = new Timer()
-
-      timer.start()
-    }
-
-    const draw = () => {
-      // canvasを初期化
-      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-
-      reflect.time(timer.elapsed)
-      reflect.resolution()
-
-      gl.drawArrays(gl.TRIANGLE_FAN, 0, 3)
-    }
-
-    const init = () => {
-      configure()
-      clock.on("tick", draw)
-    }
-
-    init()
-  }
+  import { onload } from "./render"
+  window.onload = onload
 </script>
