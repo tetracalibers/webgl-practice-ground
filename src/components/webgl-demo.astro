@@ -6,7 +6,7 @@ interface Props {
   glSrc?: string
   vertSrc?: string
   fragSrc?: string
-  shaders?: { vert: { title: string; src: string }; frag: { title: string; src: string } }[]
+  shaders?: { vert?: { title: string; src: string }; frag: { title: string; src: string } }[]
   canvasSize: "js-fit" | "full-screen" | "full-square" | "full-horizontal" | [number, number]
 }
 
@@ -33,7 +33,7 @@ const { fragSrc, canvasSize, vertSrc, glSrc, shaders } = Astro.props
         shaders.map(({ vert, frag }) => {
           return (
             <>
-              <CodeBlock title={vert.title} src={vert.src} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />
+              {vert && <CodeBlock title={vert.title} src={vert.src} lang="glsl" bgcolor="rgba(181, 241, 204, 0.3)" />}
               <CodeBlock title={frag.title} src={frag.src} lang="glsl" bgcolor="rgba(180, 228, 255, 0.3)" />
             </>
           )
