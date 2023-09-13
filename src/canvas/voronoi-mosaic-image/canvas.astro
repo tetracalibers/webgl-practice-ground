@@ -1,0 +1,26 @@
+---
+import WebglDemo from "@/components/webgl-demo.astro"
+import glSrc from "./render?raw"
+import indexVert from "./index.vert?raw"
+import indexFrag from "./index.frag?raw"
+import voronoiVert from "./voronoi.vert?raw"
+import voronoiFrag from "./voronoi.frag?raw"
+
+const shaders = [
+  {
+    vert: { title: "voronoi.vert", src: voronoiVert },
+    frag: { title: "voronoi.frag", src: voronoiFrag }
+  },
+  {
+    vert: { title: "index.vert", src: indexVert },
+    frag: { title: "index.frag", src: indexFrag }
+  }
+]
+---
+
+<WebglDemo canvasSize={"js-fit"} glSrc={glSrc} shaders={shaders} />
+
+<script>
+  import { onload } from "./render"
+  window.onload = onload
+</script>
